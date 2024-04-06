@@ -20,6 +20,7 @@ dependencies {
 	implementation 'org.projectlombok:lombok:1.18.26'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	implementation 'org.springframework.boot:spring-boot-devtools' //서버 재시작 없이 html 수정
 
 	implementation group: 'com.google.zxing', name: 'core', version: '3.5.3'
 	implementation group: 'com.google.zxing', name: 'javase', version: '3.5.3'

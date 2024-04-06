@@ -4,12 +4,193 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>이미지 업로드</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #drop-area {
+            border: 2px dashed #ccc;
+            border-radius: 20px;
+            width: 300px;
+            height: 200px;
+            margin: 50px auto;
+            text-align: center;
+            padding: 20px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #uploaded-image {
+            max-width: 100%;
+            max-height: calc(100% - 40px);
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: none;
+        }
+
+        /* 버튼 공통 스타일 */
+        button {
+            border: 2px solid #007bff;
+            border-radius: 5px;
+            padding: 10px 20px;
+            background-color: transparent;
+            color: #007bff;
+
+        }
+
+        button:hover {
+            background-color: #007bff;
+            color: #fff;
+        }
+        /* 이미지 선택 버튼 스타일 */
+        #image-select-button {
+            margin-bottom: 10px; /* 제출 버튼과의 간격을 지정합니다. */
+            width: 500px; /* highlight-line의 가로 길이에 맞춰서 버튼의 너비를 설정합니다. */
+
+        }
+
+        /* 제출 버튼 스타일 */
+        #upload-buttons button[type="submit"] {
+            margin-top: 10px; /* 이미지 선택 버튼과의 간격을 조정합니다. */
+            width: 500px; /* highlight-line의 가로 길이에 맞춰서 버튼의 너비를 설정합니다. */
+        }
+    </style>
 </head>
 <body>
-<h2>이미지 업로드</h2>
-<form action="/scan" method="post" enctype="multipart/form-data">
-    <input type="file" name="image" accept="image/*">
-    <button type="submit">업로드</button>
-</form>
+<div id="drop-area" ondragover="handleDragOver(event);" ondragleave="handleDragLeave(event);" ondrop="handleDrop(event);">
+    <div id="highlight-line"></div>
+    <p>이미지를 드래그하거나<br>이미지 선택 버튼으로 이미지를 업로드하세요.</p>
+    <input type="file" id="image-input" name="image" accept="image/*" style="display: none;">
+    <img id="uploaded-image" src="" alt="Uploaded Image">
+</div>
+<button id="image-select-button" onclick="document.getElementById('image-input').click();">이미지 선택</button>
+<div id="upload-buttons">
+    <form action="/scan" method="post" enctype="multipart/form-data">
+        <button type="submit">업로드</button>
+    </form>
+</div>
+
+
+
+<script>
+    function handleDragOver(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        document.getElementById('drop-area').classList.add('highlight');
+    }
+
+    function handleDragLeave(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        document.getElementById('drop-area').classList.remove('highlight');
+    }
+
+    function handleDrop(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        document.getElementById('drop-area').classList.remove('highlight');
+        const file = event.dataTransfer.files[0];
+
+        document.getElementById('uploaded-image').file = file;
+        document.getElementById('image-input').file  = file;
+
+        handleFiles(file);
+    }
+
+    function handleFiles(_file) {
+        const file = _file;
+        if (file.type.startsWith('image/')) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const uploadedImage = document.getElementById('uploaded-image');
+                uploadedImage.src = e.target.result;
+                uploadedImage.style.display = 'block';
+                document.querySelector('#drop-area p').style.display = 'none';
+            };
+            reader.readAsDataURL(file); // 미리보기 처리
+        } else {
+            alert('이미지 파일을 업로드해주세요.');
+        }
+
+    }
+    document.getElementById('image-input').addEventListener('change', function (event) {
+        const file = event.target.files[0];
+
+        if (file.type.startsWith('image/')) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const uploadedImage = document.getElementById('uploaded-image');
+                uploadedImage.src = e.target.result;
+                uploadedImage.style.display = 'block';
+                document.querySelector('#drop-area p').style.display = 'none';
+
+            };
+            reader.readAsDataURL(file); // 미리보기 처리
+        } else {
+            alert('이미지 파일을 업로드해주세요.');
+        }
+    });
+
+    document.getElementById('image-input').addEventListener('change', function (event) {
+        handleFiles(event.target.files);
+    });
+
+    document.querySelector('#upload-buttons form').addEventListener('submit', function (event) {
+        event.preventDefault(); // 기본 동작 방지
+
+        // FormData 객체 생성
+        const formData = new FormData();
+
+        // 드래그해서 올린 이미지 또는 파일 시스템에서 선택한 이미지 가져오기
+        const uploadedImage = document.getElementById('uploaded-image').file;
+        const fileInput = document.getElementById('image-input');
+        const selectedFile = fileInput.files[0];
+
+        // FormData에 이미지 추가
+        if (uploadedImage) {
+            formData.append('image', uploadedImage);
+        } else if (selectedFile) {
+            formData.append('image', selectedFile);
+        }
+
+        // 웹 서버로 FormData 전송 (AJAX를 사용하여 비동기적으로 전송할 수 있음)
+        // 이 예시에서는 단순히 form의 action 속성으로 전송하는 것을 가정합니다.
+        const form = document.querySelector('#upload-buttons form');
+        const actionUrl = form.getAttribute('action');
+        const method = form.getAttribute('method');
+
+        // 폼 데이터 전송
+        fetch(actionUrl, {
+            method: method,
+            body: formData
+        })
+            .then(response => {
+                // 서버 응답 처리
+                if (response.ok) {
+                    console.log('이미지가 성공적으로 업로드되었습니다.');
+                    // 여기에 추가적인 성공 처리 로직을 추가할 수 있습니다.
+                } else {
+                    console.error('이미지 업로드 중 오류가 발생했습니다.');
+                    // 오류 처리 로직 추가
+                }
+            })
+            .catch(error => {
+                console.error('이미지 업로드 중 오류가 발생했습니다.', error);
+                // 오류 처리 로직 추가
+            });
+    });
+
+
+</script>
+
 </body>
 </html>

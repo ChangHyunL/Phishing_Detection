@@ -24,9 +24,9 @@ public class QRcodeScan {
         }
     }
 
-    public void scan(){
+    public void scan(String filePath){
         try {
-            File file = new File("C:\\Users\\Public\\tools\\QRcodes\\1km8E.jpg");
+            File file = new File(filePath);
             String decodedText = decodeQRCode(file);
             if(decodedText == null) {
                 System.out.println("No QR Code found in the image");
