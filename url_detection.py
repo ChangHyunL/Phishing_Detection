@@ -7,17 +7,18 @@
 import re
 
 
-def long_url(url):
+def long_url(url):  # url의 길이가 75자 보다 큰 경우 비정상
     if len(url) > 75:
         return 1
     else:
         return 0
 
 
-def having_ip(url):
+def having_ip(url):  # url의 형태가 ip주소 형태인 경우 비정상
+    # 000.000.000.000
     pattern = r'^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$'
-    pattern += r'|((?:0x[0-9a-fA-F]{1,2}\.){3}0x[0-9a-fA-F]{1,2})'
-    pattern += r'|(?:[a-fA-F0-9]{1,4}:){7}[a-fA-F0-9]{1,4}'
+    pattern += r'|((?:0x[0-9a-fA-F]{1,2}\.){3}0x[0-9a-fA-F]{1,2})'  # 16진수 ip형태
+    pattern += r'|(?:[a-fA-F0-9]{1,4}:){7}[a-fA-F0-9]{1,4}'  # ipv6
 
     if re.match(pattern, url):
         return 1
@@ -25,7 +26,7 @@ def having_ip(url):
         return 0
 
 
-def having_symbol(url):
+def having_symbol(url):  # url에 악의적으로 사용될 가능성이 있는 문자가 사용된 경우 비정상
     pattern = r'[@\-_]|(//)'
     if re.search(pattern, url):
         return 1
@@ -33,12 +34,25 @@ def having_symbol(url):
         return 0
 
 
-def sub_domains(url):
-    pass
+def sub_domains(url):   # url에 .이 5개 이상 있는 경우 비정상
+    if url.count(".") > 5:
+        return 1
+    else:
+        return 0
 
 
-def long_host(url):
-    pass
+def long_host(url):  # url의 호스트 이름이 30글자보다 큰 경우 비정상
+    start = url.find("://")
+    end = url.find("/", start)
+    if end == -1:
+        hostname = url[start:]
+    else:
+        hostname = url[start:end]
+
+    if len(hostname) > 30:
+        return 1
+    else:
+        return 0
 
 
 def similar_url(url):

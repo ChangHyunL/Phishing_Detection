@@ -1,6 +1,6 @@
 import re
 
-url = "https://greeksharifa.github.io/%EC%@A0%95%EA%B7%9C%ED%91-usage-03-basic/"
+url = "https://greekaa....aasaasharifa.github.io/%EC%@A0%95%EA%B7%9C%ED%91-usage-03-basic/"
 
 
 def long_url(url):
@@ -32,6 +32,30 @@ def having_symbol(url):
         return print(f"{url}는 유효한 url 주소입니다. ✅")
 
 
+def sub_domains(url):
+    print('sub_domains')
+    if url.count(".") > 5:
+        return print(f"{url}는 유효하지 않은 url 주소입니다. ❌")
+    else:
+        return print(f"{url}는 유효한 url 주소입니다. ✅")
+
+
+def long_host(url):
+    print('long_host')
+    start = url.find("://")+3
+    end = url.find("/", start)
+    if end == -1:
+        hostname = url[start:]
+    else:
+        hostname = url[start:end]
+    if len(hostname) > 30:
+        return print(f"{url}는 유효하지 않은 url 주소입니다. ❌")
+    else:
+        return print(f"{url}는 유효한 url 주소입니다. ✅")
+
+
 long_url(url)
 having_ip(url)
 having_symbol(url)
+sub_domains(url)
+long_host(url)
