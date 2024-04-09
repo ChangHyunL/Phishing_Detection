@@ -5,6 +5,7 @@
 # 5. 유명 사이트와 유사한 url의 경우
 # 6. 웹사이트가 google 인덱스에 없는 경우
 import re
+import Levenshtein
 
 
 def long_url(url):  # url의 길이가 75자 보다 큰 경우 비정상
@@ -55,8 +56,22 @@ def long_host(url):  # url의 호스트 이름이 30글자보다 큰 경우 비�
         return 0
 
 
-def similar_url(url):
-    pass
+# url이 잘 알려진 url과 비슷하게 생긴 경우 비정상 -> hostname 비교
+def similar_url(url, well_known_url, threshold=2):
+    print('similar_url')
+    start = url.find("://") + 3
+
+    end = url.find("/", start)
+    if end == -1:
+        hostname = url[start:]
+    else:
+        hostname = url[start:end]
+
+    distance = Levenshtein.distance(hostname, well_known_url)
+    if distance <= threshold:
+        return 1
+    else:
+        return 0
 
 
 def google_index(url):
