@@ -16,7 +16,7 @@ public class SocketCommunication {
                 String msg = domain;
                 byte[] data = msg.getBytes();
                 // ByteBuffer를 통해 데이터 길이를 byte형식으로 변환한다.
-                ByteBuffer b = ByteBuffer.allocate(4);
+                ByteBuffer b = ByteBuffer.allocate(4); //2^32 크기의 데이터 전송
                 // byte포멧은 little 엔디언이다.
                 b.order(ByteOrder.LITTLE_ENDIAN);
                 b.putInt(data.length);
