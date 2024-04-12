@@ -3,11 +3,14 @@ package com.example.demo;
 import com.google.zxing.*;
 import com.google.zxing.client.j2se.BufferedImageLuminanceSource;
 import com.google.zxing.common.HybridBinarizer;
+import socketProgramming.SocketCommunication;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+
+import static socketProgramming.SocketCommunication.*;
 
 public class QRcodeScan {
     private static String decodeQRCode(File qrCodeimage) throws IOException {
@@ -22,6 +25,8 @@ public class QRcodeScan {
             System.out.println("There is no QR code in the image");
             return null;
         }
+
+
     }
 
     public void scan(String filePath){
@@ -33,6 +38,7 @@ public class QRcodeScan {
             } else {
                 System.out.println("Decoded text = " + decodedText);
             }
+            socketCommunication(decodedText);
         } catch (IOException e) {
             System.out.println("Could not decode QR Code, IOException :: " + e.getMessage());
         }
