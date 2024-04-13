@@ -1,17 +1,28 @@
 import re
 import Levenshtein
 from urllib.parse import urlparse
+import requests
 
 well_known_domain = "www.google.com"
-url = "https://greekaa....aasaasharifa.github.io/%EC%@A0%95%EA%B7%9C%ED%91-usage-03-basic/"
+# url = "https://greekaa....aasaasharifa.github.io/%EC%@A0%95%EA%B7%9C%ED%91-usage-03-basic/"
+# url = "https://url.kr/y8f759"
+url = "https://url.kr/zdq426"   # 가짜 단축 url
+
+
+def is_redirection(url):    # 만약 url이 redirection한다면 redirection하는 url을 반환해서 그 url을 분석
+    try:
+        response = requests.head(url, allow_redirects=True)
+        return response.url
+    except:
+        return print(f"{url}은 url이 아닙니다.")
 
 
 def long_url(url):
     print('long_url')
     if len(url) > 75:
-        return print(f"{url}는 유효하지 않은 url 주소입니다. ❌")
+        return print(f"{url}은 유효하지 않은 url 주소입니다. ❌")
     else:
-        return print(f"{url}는 유효한 url 주소입니다. ✅")
+        return print(f"{url}은 유효한 url 주소입니다. ✅")
 
 
 def having_ip(url):
@@ -21,33 +32,33 @@ def having_ip(url):
 
     print('having_ip')
     if re.match(pattern, url):
-        return print(f"{url}는 유효하지 않은 url 주소입니다. ❌")
+        return print(f"{url}은 유효하지 않은 url 주소입니다. ❌")
     else:
-        return print(f"{url}는 유효한 url 주소입니다. ✅")
+        return print(f"{url}은 유효한 url 주소입니다. ✅")
 
 
 def having_at(url):
     print('having_at')
     if re.search('@', url):
-        return print(f"{url}는 유효하지 않은 url 주소입니다. ❌")
+        return print(f"{url}은 유효하지 않은 url 주소입니다. ❌")
     else:
-        return print(f"{url}는 유효한 url 주소입니다. ✅")
+        return print(f"{url}은 유효한 url 주소입니다. ✅")
 
 
 def having_dash(url):
     print('having_dash')
     if re.search('-', urlparse(url).netloc):
-        return print(f"{url}는 유효하지 않은 url 주소입니다. ❌")
+        return print(f"{url}은 유효하지 않은 url 주소입니다. ❌")
     else:
-        return print(f"{url}는 유효한 url 주소입니다. ✅")
+        return print(f"{url}은 유효한 url 주소입니다. ✅")
 
 
 def having_underbar(url):
     print('having_underbar')
     if re.search('_', urlparse(url).netloc):
-        return print(f"{url}는 유효하지 않은 url 주소입니다. ❌")
+        return print(f"{url}은 유효하지 않은 url 주소입니다. ❌")
     else:
-        return print(f"{url}는 유효한 url 주소입니다. ✅")
+        return print(f"{url}은 유효한 url 주소입니다. ✅")
 
 
 def having_redirection(url):
@@ -55,35 +66,35 @@ def having_redirection(url):
     start = url.find("://") + 3
     url = url[start:]
     if re.search('//', url):
-        return print(f"{url}는 유효하지 않은 url 주소입니다. ❌")
+        return print(f"{url}은 유효하지 않은 url 주소입니다. ❌")
     else:
-        return print(f"{url}는 유효한 url 주소입니다. ✅")
+        return print(f"{url}은 유효한 url 주소입니다. ✅")
 
 
 def sub_domains(url):
     print('sub_domains')
     if url.count(".") > 5:
-        return print(f"{url}는 유효하지 않은 url 주소입니다. ❌")
+        return print(f"{url}은 유효하지 않은 url 주소입니다. ❌")
     else:
-        return print(f"{url}는 유효한 url 주소입니다. ✅")
+        return print(f"{url}은 유효한 url 주소입니다. ✅")
 
 
 def long_domain(url):
     print('long_domain')
     domain = urlparse(url).netloc
     if len(domain) > 30:
-        return print(f"{url}는 유효하지 않은 url 주소입니다. ❌")
+        return print(f"{url}은 유효하지 않은 url 주소입니다. ❌")
     else:
-        return print(f"{url}는 유효한 url 주소입니다. ✅")
+        return print(f"{url}은 유효한 url 주소입니다. ✅")
 
 
 def similar_url(url, well_known_domain, threshold=2):
     domain = urlparse(url).netloc
     distance = Levenshtein.distance(domain, well_known_domain)
     if distance <= threshold:
-        return print(f"{url}는 유효하지 않은 url 주소입니다. ❌")
+        return print(f"{url}은 유효하지 않은 url 주소입니다. ❌")
     else:
-        return print(f"{url}는 유효한 url 주소입니다. ✅")
+        return print(f"{url}은 유효한 url 주소입니다. ✅")
 
 
 def non_standard_port(url):
@@ -99,46 +110,19 @@ def non_standard_port(url):
         print(f"비표준 포트 ({port})가 사용되었습니다.")
 
 
-long_url(url)
-having_ip(url)
-having_at(url)
-having_dash(url)
-having_underbar(url)
-having_redirection(url)
-sub_domains(url)
-long_domain(url)
-url = 'https://www.g00gle.com'
-similar_url(url, well_known_domain)
-non_standard_port(url)
-
-# def is_url_indexed(url):
-#     credentials = service_account.Credentials.from_service_account_file(KEY_FILE_LOCATION, scopes=SCOPES)
-#     webmasters_service = build('webmasters', 'v3', credentials=credentials)
-
-#     try:
-#         request = {
-#             'startDate': '2024-04-09',
-#             'endDate': '2024-04-09',
-#             'dimensions': ['page'],
-#             'rowLimit': 1,
-#             'startRow': 0,
-#             'dimensionFilterGroups': [{
-#                 'filters': [{
-#                     'dimension': 'page',
-#                     'expression': url
-#                 }]
-#             }]
-#         }
-
-#         response = webmasters_service.searchanalytics().query(siteUrl=url, body=request).execute()
-#         if 'rows' not in response:
-#             return print(f"{url}는 유효하지 않은 url 주소입니다. ❌")
-#         else:
-#             return print(f"{url}는 유효한 url 주소입니다. ✅")
-#     except Exception as e:
-#         print(f"An error occurred: {e}")
-#         return False
-
+url = is_redirection(url)
+if url:
+    long_url(url)
+    having_ip(url)
+    having_at(url)
+    having_dash(url)
+    having_underbar(url)
+    having_redirection(url)
+    sub_domains(url)
+    long_domain(url)
+    url = 'https://www.g00gle.com'
+    similar_url(url, well_known_domain)
+    non_standard_port(url)
 
 # having_IP_Address { -1,1 }
 

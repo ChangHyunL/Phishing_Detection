@@ -14,6 +14,15 @@
 import re
 import Levenshtein
 from urllib.parse import urlparse
+import requests
+
+
+def is_redirection(url):    # 만약 url이 redirection한다면 redirection하는 url을 반환해서 그 url을 분석
+    try:
+        response = requests.head(url, allow_redirects=True)
+        return response.url
+    except:
+        return print(f"{url}은 url이 아닙니다.")
 
 
 def long_url(url):  # url의 길이가 75자 보다 큰 경우 비정상
