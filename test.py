@@ -2,11 +2,19 @@ import re
 import Levenshtein
 from urllib.parse import urlparse
 import requests
+import ssl
+import socket
 
-well_known_domain = "www.google.com"
+trusted_cas = ["GeoTrust", "GoDaddy", "Network Solutions",
+               "Thawte", "Comode", "Doster", "VeriSign",
+               "Let's Encrypt", "DigiCert", "GlobalSign",
+               "Symantec", "RapidSSL", "Entrust", "Comodo CA",
+               "Google Trust Services LLC", "Sectigo"]
+
+well_known_hostname = "www.google.com"
 # url = "https://greekaa....aasaasharifa.github.io/%EC%@A0%95%EA%B7%9C%ED%91-usage-03-basic/"
-# url = "https://url.kr/y8f759"
-url = "https://url.kr/zdq426"   # 가짜 단축 url
+url = "https://url.kr/y8f759"
+# url = "https://url.kr/zdq426"   # 가짜 단축 url
 
 
 def is_redirection(url):    # 만약 url이 redirection한다면 redirection하는 url을 반환해서 그 url을 분석
@@ -79,18 +87,18 @@ def sub_domains(url):
         return print(f"{url}은 유효한 url 주소입니다. ✅")
 
 
-def long_domain(url):
-    print('long_domain')
-    domain = urlparse(url).netloc
-    if len(domain) > 30:
+def long_hostname(url):
+    print('long_hostname')
+    hostname = urlparse(url).netloc
+    if len(hostname) > 30:
         return print(f"{url}은 유효하지 않은 url 주소입니다. ❌")
     else:
         return print(f"{url}은 유효한 url 주소입니다. ✅")
 
 
-def similar_url(url, well_known_domain, threshold=2):
-    domain = urlparse(url).netloc
-    distance = Levenshtein.distance(domain, well_known_domain)
+def similar_url(url, well_known_hostname, threshold=2):
+    hostname = urlparse(url).netloc
+    distance = Levenshtein.distance(hostname, well_known_hostname)
     if distance <= threshold:
         return print(f"{url}은 유효하지 않은 url 주소입니다. ❌")
     else:
@@ -110,6 +118,26 @@ def non_standard_port(url):
         print(f"비표준 포트 ({port})가 사용되었습니다.")
 
 
+def is_trusted_cert(url):
+    try:
+        hostname = urlparse(url).netloc
+        context = ssl.create_default_context()
+        conn = context.wrap_socket(socket.socket(
+            socket.AF_INET), server_hostname=hostname)
+        conn.connect((hostname, 443))
+        cert = conn.getpeercert()
+        issuer = dict(x[0] for x in cert['issuer'])
+        issuer_name = issuer.get('organizationName', '')
+        print(f"Issuer: {issuer_name}")
+        for trusted_ca in trusted_cas:
+            if trusted_ca in issuer_name:
+                return print(f"{url}의 인증기관은 신뢰받는 기관입니다. ✅")
+        return print(f"{url}의 인증기관은 신뢰받지 못하는 기관입니다. ❌")
+    except Exception as e:
+        print(f"Error while checking url {url}: {e}")
+        return False
+
+
 url = is_redirection(url)
 if url:
     long_url(url)
@@ -119,10 +147,68 @@ if url:
     having_underbar(url)
     having_redirection(url)
     sub_domains(url)
-    long_domain(url)
-    url = 'https://www.g00gle.com'
-    similar_url(url, well_known_domain)
+    long_hostname(url)
+    is_trusted_cert(url)
     non_standard_port(url)
+    url = 'https://www.g00gle.com'
+    similar_url(url, well_known_hostname)
+
+
+# url 인증기관과 수명 확인하는 코드
+
+
+# from datetime import datetime
+# from urllib.parse import urlparse
+# import ssl
+# import socket
+
+# trusted_cas = ["GeoTrust", "GoDaddy", "Network Solutions",
+#                "Thawte", "Comode", "Doster", "VeriSign",
+#                "Let's Encrypt", "DigiCert", "GlobalSign",
+#                "Symantec", "RapidSSL", "Entrust", "Comodo CA"]
+# min_lifetime_years = 2
+
+
+# def get_cert_lifetime(domain):
+#     try:
+#         hostname = urlparse(domain).netloc
+#         context = ssl.create_default_context()
+#         conn = context.wrap_socket(socket.socket(
+#             socket.AF_INET), server_hostname=hostname)
+#         conn.connect((hostname, 443))
+#         cert = conn.getpeercert()
+#         not_after_str = cert['notAfter']
+#         not_after = datetime.strptime(not_after_str, "%b %d %H:%M:%S %Y %Z")
+#         return (not_after - datetime.utcnow()).days / 365.0
+#     except Exception as e:
+#         print(f"Error while checking domain {domain}: {e}")
+#         return None
+
+
+# def is_trusted_cert(cert):
+#     issuer = dict(x[0] for x in cert['issuer'])
+#     for trusted_ca in trusted_cas:
+#         if trusted_ca in issuer['organizationName']:
+#             return True
+#     return False
+
+
+# def find_domains_with_trusted_cert(domains):
+#     result = []
+#     for domain in domains:
+#         lifetime = get_cert_lifetime(domain)
+#         print(lifetime)
+#         if lifetime is not None and lifetime >= min_lifetime_years:
+#             result.append(domain)
+#     return result
+
+# domains_to_check = ["https://example.com", "https://naver.com", "https://url.kr/y8f759",
+#                     "https://www.google.com", "https://www.microsoft.com", "https://www.youtube.com", "https://www.apple.com/store"]
+# trusted_domains = find_domains_with_trusted_cert(domains_to_check)
+# print("Domains with trusted certificate and minimum 2 years lifetime:")
+# for domain in trusted_domains:
+#     print(domain)
+
 
 # having_IP_Address { -1,1 }
 

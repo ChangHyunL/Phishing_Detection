@@ -15,6 +15,14 @@ import re
 import Levenshtein
 from urllib.parse import urlparse
 import requests
+import ssl
+import socket
+
+trusted_cas = ["GeoTrust", "GoDaddy", "Network Solutions",
+               "Thawte", "Comode", "Doster", "VeriSign",
+               "Let's Encrypt", "DigiCert", "GlobalSign",
+               "Symantec", "RapidSSL", "Entrust", "Comodo CA",
+               "Google Trust Services LLC", "Sectigo"]
 
 
 def is_redirection(url):    # 만약 url이 redirection한다면 redirection하는 url을 반환해서 그 url을 분석
@@ -109,4 +117,26 @@ def non_standard_port(url):
     elif port == 443:   # https 포트
         return 0
     else:
+        return 1
+
+
+# 신뢰받는 인증기관인지, 인증서의 수명도 확인하려했으나 실제로 신뢰받는 사이트의 인증서의 수명이 길지않음 -> 불필요한 것 같음
+# 구글, 마이크로소프트, 애플의 인증서의 수명이 1년이 안됨
+def is_trusted_cert(url):
+    try:
+        hostname = urlparse(url).netloc
+        context = ssl.create_default_context()
+        conn = context.wrap_socket(socket.socket(
+            socket.AF_INET), server_hostname=hostname)
+        conn.connect((hostname, 443))
+        cert = conn.getpeercert()
+        issuer = dict(x[0] for x in cert['issuer'])
+        issuer_name = issuer.get('organizationName', '')
+        print(f"Issuer: {issuer_name}")
+        for trusted_ca in trusted_cas:
+            if trusted_ca in issuer_name:
+                return 0
+        return 1
+    except Exception as e:
+        print(f"Error while checking url {url}: {e}")
         return 1
