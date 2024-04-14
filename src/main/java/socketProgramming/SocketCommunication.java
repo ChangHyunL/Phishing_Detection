@@ -33,8 +33,8 @@ public class SocketCommunication {
                 int length = b.getInt();
                 data = new byte[length];
                 receiver.read(data, 0, length);
-                msg = new String(data, "UTF-8");
-                System.out.println(msg);
+                msg = new String(data, "UTF-8"); //머신러닝 결과 값
+
             }
         } catch (Throwable e) {
             e.printStackTrace();
