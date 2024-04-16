@@ -12,12 +12,15 @@
 # 11. 호스트 네임이 url에 없는 경우 (abnormal domain)
 # 12. 도메인이 6개월 이내에 생성된 경우
 # 13. 도메인의 인증기관이 신뢰받는 기관이 아닌 경우                 o
+from datetime import datetime
 import re
 import Levenshtein
 from urllib.parse import urlparse
 import requests
 import ssl
 import socket
+
+import whois
 
 trusted_cas = ["GeoTrust", "GoDaddy", "Network Solutions",
                "Thawte", "Comode", "Doster", "VeriSign",
@@ -145,9 +148,42 @@ def is_trusted_cert(url):
 
 
 def is_https(url):
-    print('is_https')
-    parsed_url = urlparse(url)
-    if parsed_url.scheme == 'https':
+    if urlparse(url).scheme == 'https':
         return 0
     else:
         return 1
+
+
+def get_creation_date(url):
+    try:
+        domain = whois.whois(url)
+        creation_date = domain.creation_date
+        if isinstance(creation_date, list):
+            creation_date = creation_date[0]
+        today = datetime.now()
+        age = today - creation_date
+    except Exception as e:
+        print(f"Error: {e}")
+        return 1
+    if age.days < 180:
+        return 1
+    else:
+        return 0
+
+
+def get_expiration_date(url):
+    try:
+        domain = whois.whois(url)
+        expiration_date = domain.expiration_date
+        if isinstance(expiration_date, list):
+            expiration_date = expiration_date[0]
+        today = datetime.now()
+        age = expiration_date - today
+        print(age.days)
+    except Exception as e:
+        print(f"Error: {e}")
+        return 1
+    if age.days < 365:
+        return 1
+    else:
+        return 0

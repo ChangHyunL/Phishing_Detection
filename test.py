@@ -4,6 +4,8 @@ from urllib.parse import urlparse
 import requests
 import ssl
 import socket
+from datetime import datetime
+import whois
 
 trusted_cas = ["GeoTrust", "GoDaddy", "Network Solutions",
                "Thawte", "Comode", "Doster", "VeriSign",
@@ -142,11 +144,47 @@ def is_trusted_cert(url):
 
 def is_https(url):
     print('is_https')
-    parsed_url = urlparse(url)
-    if parsed_url.scheme == 'https':
+    if urlparse(url).scheme == 'https':
         return print(f"{url}은 유효한 url 주소입니다. ✅")
     else:
         return print(f"{url}은 유효하지 않은 url 주소입니다. ❌")
+
+
+def get_creation_date(url):
+    print('get_creation_date')
+    try:
+        domain = whois.whois(url)
+        creation_date = domain.creation_date
+        if isinstance(creation_date, list):
+            creation_date = creation_date[0]
+        today = datetime.now()
+        age = today - creation_date
+    except Exception as e:
+        print(f"Error: {e}")
+        return print(f"{url}은 유효하지 않은 url 주소입니다. ❌")
+    if age.days < 180:
+        return print(f"{url}은 유효하지 않은 url 주소입니다. ❌")
+    else:
+        return print(f"{url}은 유효한 url 주소입니다. ✅")
+
+
+def get_expiration_date(url):
+    print('get_expiration_date')
+    try:
+        domain = whois.whois(url)
+        expiration_date = domain.expiration_date
+        if isinstance(expiration_date, list):
+            expiration_date = expiration_date[0]
+        today = datetime.now()
+        age = expiration_date - today
+        print(age.days)
+    except Exception as e:
+        print(f"Error: {e}")
+        return print(f"{url}은 유효하지 않은 url 주소입니다. ❌")
+    if age.days < 365:
+        return print(f"{url}은 유효하지 않은 url 주소입니다. ❌")
+    else:
+        return print(f"{url}은 유효한 url 주소입니다. ✅")
 
 
 url = is_redirection(url)
@@ -162,7 +200,10 @@ if url:
     is_trusted_cert(url)
     non_standard_port(url)
     is_https(url)
-    url = 'https://www.g00gle.com'
+    get_creation_date(url)
+    url = 'https://www.google.com'
+    get_expiration_date(url)
+    print(urlparse(url).netloc)
     similar_url(url, well_known_hostname)
 
 
@@ -241,66 +282,60 @@ if url:
 # Domain_registeration_length { -1,1 }
 # Rule: {If Using HTTP Token in Domain Part of The URL → Phishing, Otherwise → Legitimate}
 # Request_URL { 1,-1 }
-
 # Rule: {If Age Of Domain≥6 months → Legitimate, Otherwise → Phishing}
 # DNSRecord { -1,1 }
-
 # Rule: {If Domains Expires on 1 years → Phishing, Otherwise → Legitimate}
+
 # Favicon { 1,-1 }
-
-# Rule: {If The Host Name Is Not Included In URL → Phishing, Otherwise → Legitimate}
-# Redirect { 0,1 }
-
 # Rule: {If Website Rank<100,000 → Legitimate, Else if Website Rank>100,000 → Suspicious, Otherwise → Phishing}
+
 # Page_Rank { -1,1 }
-
 # Rule: {If PageRank<0.2 → Phishing, Otherwise → Legitimate}
+
 # Google_Index { 1,-1 }
-
 # Rule: {If Webpage Indexed by Google → Legitimate, Otherwise → Phishing}
+
 # Links_pointing_to_page { 1,0,-1 }
-
 # Rule: {If Favicon Loaded From External Domain → Phishing, Otherwise → Legitimate}
+
 # port { 1,-1 }
-
 # Rule: {If Port # is of the Preffered Status → Phishing, Otherwise → Legitimate}
+
 # HTTPS_token { -1,1 }
-
 # Rule: {If % of Request URL <22% → Legitimate, Else if % of Request URL≥22% and 61% → Suspicious, Otherwise → Phishing}
+
 # URL_of_Anchor { -1,0,1 }
-
 # Rule: {If % of URL Of Anchor <31% → Legitimate, Else if% of URL Of Anchor ≥31% And≤67% → Suspicious Otherwise → Phishing}
+
 # Links_in_tags { 1,-1,0 }
-
 # Rule: {If % of Links in "", "<Script>" and ""<17% → Legitimate, Else if % of Links in ", "<Script>" and "" ≥17% And≤81% → Suspicious, Otherwise → Phishing}
+
 # SFH { -1,1,0 }
-
 # Rule: {If SFH is "about: blank" Or Is Empty → Phishing, Else if SFH Refers To A Different Domain → Suspicious, Otherwise → Legitimate}
+
 # Submitting_to_email { -1,1 }
-
 # Rule: {If Using "mail()" or "mailto:" Function to Submit User Information → Phishing, Otherwise → Legitimate}
+
 # Abnormal_URL { -1,1 }
-
 # Rule: {If #ofRedirect Page≤1 → Legitimate, Else if #of Redirect Page≥2 And<4 → Suspicious, Otherwise → Phishing}
+
 # on_mouseover { 1,-1 }
-
 # Rule: {If onMouseOver Changes Status Bar → Phishing, Else if It Does't Change Status Bar → Legitimate}
+
 # RightClick { 1,-1 }
-
 # Rule: {If Right Click Disabled → Phishing, Otherwise → Legitimate}
+
 # popUpWidnow { 1,-1 }
-
 # Rule: {If Popoup Window Contains Text Fields→ Phishing, Otherwise → Legitimate}
+
 # Iframe { 1,-1 }
-
 # Rule: {If Using iframe → Phishing, Otherwise → Legitimate}
+
 # age_of_domain { -1,1 }
-
 # Rule: {If no DNS Record For The Domain → Phishing, Otherwise → Legitimate}
+
 # web_traffic { -1,0,1 }
-
 # Rule: {If # of Link Pointing to The Webpage=0 → Phishing, Else if #Of Link Pointing to The Webpage>0 and≤2 → Suspicious, Otherwise → Legitimate}
-# Statistical_report { -1,1 }
 
+# Statistical_report { -1,1 }
 # Rule: {If Host Belongs to Top Phishing IPs or Top Phishing Domains → Phishing, Otherwise → Legitimate}
-# Result { 0,1 }
