@@ -11,6 +11,7 @@
 # 10. 파비콘이 외부 도메인에서 오는 경우
 # 11. 호스트 네임이 url에 없는 경우 (abnormal domain)
 # 12. 도메인이 6개월 이내에 생성된 경우
+# 13. 도메인의 인증기관이 신뢰받는 기관이 아닌 경우                 o
 import re
 import Levenshtein
 from urllib.parse import urlparse
@@ -76,7 +77,8 @@ def having_underbar(url):
 def having_redirection(url):
     start = url.find("://") + 3
     url = url[start:]
-    if re.search('//', url):
+    url_check = url[start:]
+    if re.search('//', url_check):
         return 1
     else:
         return 0
@@ -139,4 +141,13 @@ def is_trusted_cert(url):
         return 1
     except Exception as e:
         print(f"Error while checking url {url}: {e}")
+        return 1
+
+
+def is_https(url):
+    print('is_https')
+    parsed_url = urlparse(url)
+    if parsed_url.scheme == 'https':
+        return 0
+    else:
         return 1

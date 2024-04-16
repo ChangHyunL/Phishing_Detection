@@ -72,8 +72,8 @@ def having_underbar(url):
 def having_redirection(url):
     print('having_redirection')
     start = url.find("://") + 3
-    url = url[start:]
-    if re.search('//', url):
+    url_check = url[start:]
+    if re.search('//', url_check):
         return print(f"{url}은 유효하지 않은 url 주소입니다. ❌")
     else:
         return print(f"{url}은 유효한 url 주소입니다. ✅")
@@ -106,6 +106,7 @@ def similar_url(url, well_known_hostname, threshold=2):
 
 
 def non_standard_port(url):
+    print('non_standard_port')
     parsed_url = urlparse(url)
     port = parsed_url.port
     if port is None:
@@ -119,6 +120,7 @@ def non_standard_port(url):
 
 
 def is_trusted_cert(url):
+    print('is_trusted_cert')
     try:
         hostname = urlparse(url).netloc
         context = ssl.create_default_context()
@@ -138,6 +140,15 @@ def is_trusted_cert(url):
         return False
 
 
+def is_https(url):
+    print('is_https')
+    parsed_url = urlparse(url)
+    if parsed_url.scheme == 'https':
+        return print(f"{url}은 유효한 url 주소입니다. ✅")
+    else:
+        return print(f"{url}은 유효하지 않은 url 주소입니다. ❌")
+
+
 url = is_redirection(url)
 if url:
     long_url(url)
@@ -150,6 +161,7 @@ if url:
     long_hostname(url)
     is_trusted_cert(url)
     non_standard_port(url)
+    is_https(url)
     url = 'https://www.g00gle.com'
     similar_url(url, well_known_hostname)
 
@@ -211,42 +223,48 @@ if url:
 
 
 # having_IP_Address { -1,1 }
-
 # Rule: {If the Domain Part has an IP Address → Phishing, Otherwise→ Legitimate}
 # URL_Length { 1,0,-1 }
-
 # Rule: {If URL length <54 → Legitimate, else if URL length 54 and 75 → Suspicious, Otherwise → Phishing}
 # Shortining_Service { 1,-1 }
-
 # Rule: {TinyURL → Phishing, Otherwise → Legitimate}
 # having_At_Symbol { 1,-1 }
-
 # Rule: {If Url Having @ Symbol → Phishing, Otherwise → Legitimate}
 # double_slash_redirecting { -1,1 }
-
 # Rule: {If the Position of the Last Occurrence of "//" in the URL > 7→ Phishing, Otherwise→ Legitimate}
 # Prefix_Suffix { -1,1 }
-
 # Rule: {If Domain Name Part Includes (-) Symbol → Phishing. Otherwise → Legitimate}
 # having_Sub_Domain { -1,0,1 }
-
-# Rule: {If Domain Name Part Includes (-) Symbol → Phishing, Otherwise → Legitimate}
+# Rule: {If Domain Name Part Includes (.) Symbol → Phishing, Otherwise → Legitimate}
 # SSLfinal_State { -1,1,0 }
-
 # Rule: {If Use https and Issuer Is Trusted and Age of Certificate 1 Years → Legitimate, Else If Using https and Issuer is not Trusted → Suspicious, Otherwise → Phishing}
 # Domain_registeration_length { -1,1 }
+# Rule: {If Using HTTP Token in Domain Part of The URL → Phishing, Otherwise → Legitimate}
+# Request_URL { 1,-1 }
+
+# Rule: {If Age Of Domain≥6 months → Legitimate, Otherwise → Phishing}
+# DNSRecord { -1,1 }
 
 # Rule: {If Domains Expires on 1 years → Phishing, Otherwise → Legitimate}
 # Favicon { 1,-1 }
+
+# Rule: {If The Host Name Is Not Included In URL → Phishing, Otherwise → Legitimate}
+# Redirect { 0,1 }
+
+# Rule: {If Website Rank<100,000 → Legitimate, Else if Website Rank>100,000 → Suspicious, Otherwise → Phishing}
+# Page_Rank { -1,1 }
+
+# Rule: {If PageRank<0.2 → Phishing, Otherwise → Legitimate}
+# Google_Index { 1,-1 }
+
+# Rule: {If Webpage Indexed by Google → Legitimate, Otherwise → Phishing}
+# Links_pointing_to_page { 1,0,-1 }
 
 # Rule: {If Favicon Loaded From External Domain → Phishing, Otherwise → Legitimate}
 # port { 1,-1 }
 
 # Rule: {If Port # is of the Preffered Status → Phishing, Otherwise → Legitimate}
 # HTTPS_token { -1,1 }
-
-# Rule: {If Using HTTP Token in Domain Part of The URL → Phishing, Otherwise → Legitimate}
-# Request_URL { 1,-1 }
 
 # Rule: {If % of Request URL <22% → Legitimate, Else if % of Request URL≥22% and 61% → Suspicious, Otherwise → Phishing}
 # URL_of_Anchor { -1,0,1 }
@@ -263,9 +281,6 @@ if url:
 # Rule: {If Using "mail()" or "mailto:" Function to Submit User Information → Phishing, Otherwise → Legitimate}
 # Abnormal_URL { -1,1 }
 
-# Rule: {If The Host Name Is Not Included In URL → Phishing, Otherwise → Legitimate}
-# Redirect { 0,1 }
-
 # Rule: {If #ofRedirect Page≤1 → Legitimate, Else if #of Redirect Page≥2 And<4 → Suspicious, Otherwise → Phishing}
 # on_mouseover { 1,-1 }
 
@@ -281,25 +296,11 @@ if url:
 # Rule: {If Using iframe → Phishing, Otherwise → Legitimate}
 # age_of_domain { -1,1 }
 
-# Rule: {If Age Of Domain≥6 months → Legitimate, Otherwise → Phishing}
-# DNSRecord { -1,1 }
-
 # Rule: {If no DNS Record For The Domain → Phishing, Otherwise → Legitimate}
 # web_traffic { -1,0,1 }
-
-# Rule: {If Website Rank<100,000 → Legitimate, Else if Website Rank>100,000 → Suspicious, Otherwise → Phishing}
-# Page_Rank { -1,1 }
-
-# Rule: {If PageRank<0.2 → Phishing, Otherwise → Legitimate}
-# Google_Index { 1,-1 }
-
-# Rule: {If Webpage Indexed by Google → Legitimate, Otherwise → Phishing}
-# Links_pointing_to_page { 1,0,-1 }
 
 # Rule: {If # of Link Pointing to The Webpage=0 → Phishing, Else if #Of Link Pointing to The Webpage>0 and≤2 → Suspicious, Otherwise → Legitimate}
 # Statistical_report { -1,1 }
 
 # Rule: {If Host Belongs to Top Phishing IPs or Top Phishing Domains → Phishing, Otherwise → Legitimate}
 # Result { 0,1 }
-
-# Rule: {If 0 → Phishing, Else If 1 → Legitimate}
