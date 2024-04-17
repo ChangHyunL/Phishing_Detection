@@ -6,6 +6,7 @@ import ssl
 import socket
 from datetime import datetime
 import whois
+from bs4 import BeautifulSoup
 
 trusted_cas = ["GeoTrust", "GoDaddy", "Network Solutions",
                "Thawte", "Comode", "Doster", "VeriSign",
@@ -186,6 +187,32 @@ def get_expiration_date(url):
     else:
         return print(f"{url}은 유효한 url 주소입니다. ✅")
 
+    try:
+        # Get the HTML content of the webpage
+        response = requests.get(url)
+        html_content = response.text
+
+        # Parse the HTML content
+        soup = BeautifulSoup(html_content, "html.parser")
+
+        # Find the favicon link tag
+        favicon_tag = soup.find("link", rel="icon")
+
+        # Extract the href attribute value of the favicon tag
+        if favicon_tag:
+            favicon_url = favicon_tag.get("href")
+
+            # Check if the favicon URL is from an external domain
+            parsed_favicon_url = urlparse(favicon_url)
+            parsed_url = urlparse(url)
+            return parsed_favicon_url.netloc != parsed_url.netloc
+        else:
+            return False
+
+    except requests.exceptions.RequestException as e:
+        print("Error fetching webpage:", e)
+        return False
+
 
 url = is_redirection(url)
 if url:
@@ -206,136 +233,51 @@ if url:
     print(urlparse(url).netloc)
     similar_url(url, well_known_hostname)
 
-
-# url 인증기관과 수명 확인하는 코드
-
-
-# from datetime import datetime
-# from urllib.parse import urlparse
-# import ssl
-# import socket
-
-# trusted_cas = ["GeoTrust", "GoDaddy", "Network Solutions",
-#                "Thawte", "Comode", "Doster", "VeriSign",
-#                "Let's Encrypt", "DigiCert", "GlobalSign",
-#                "Symantec", "RapidSSL", "Entrust", "Comodo CA"]
-# min_lifetime_years = 2
-
-
-# def get_cert_lifetime(domain):
-#     try:
-#         hostname = urlparse(domain).netloc
-#         context = ssl.create_default_context()
-#         conn = context.wrap_socket(socket.socket(
-#             socket.AF_INET), server_hostname=hostname)
-#         conn.connect((hostname, 443))
-#         cert = conn.getpeercert()
-#         not_after_str = cert['notAfter']
-#         not_after = datetime.strptime(not_after_str, "%b %d %H:%M:%S %Y %Z")
-#         return (not_after - datetime.utcnow()).days / 365.0
-#     except Exception as e:
-#         print(f"Error while checking domain {domain}: {e}")
-#         return None
-
-
-# def is_trusted_cert(cert):
-#     issuer = dict(x[0] for x in cert['issuer'])
-#     for trusted_ca in trusted_cas:
-#         if trusted_ca in issuer['organizationName']:
-#             return True
-#     return False
-
-
-# def find_domains_with_trusted_cert(domains):
-#     result = []
-#     for domain in domains:
-#         lifetime = get_cert_lifetime(domain)
-#         print(lifetime)
-#         if lifetime is not None and lifetime >= min_lifetime_years:
-#             result.append(domain)
-#     return result
-
-# domains_to_check = ["https://example.com", "https://naver.com", "https://url.kr/y8f759",
-#                     "https://www.google.com", "https://www.microsoft.com", "https://www.youtube.com", "https://www.apple.com/store"]
-# trusted_domains = find_domains_with_trusted_cert(domains_to_check)
-# print("Domains with trusted certificate and minimum 2 years lifetime:")
-# for domain in trusted_domains:
-#     print(domain)
-
-
-# having_IP_Address { -1,1 }
-# Rule: {If the Domain Part has an IP Address → Phishing, Otherwise→ Legitimate}
-# URL_Length { 1,0,-1 }
-# Rule: {If URL length <54 → Legitimate, else if URL length 54 and 75 → Suspicious, Otherwise → Phishing}
-# Shortining_Service { 1,-1 }
-# Rule: {TinyURL → Phishing, Otherwise → Legitimate}
-# having_At_Symbol { 1,-1 }
-# Rule: {If Url Having @ Symbol → Phishing, Otherwise → Legitimate}
-# double_slash_redirecting { -1,1 }
-# Rule: {If the Position of the Last Occurrence of "//" in the URL > 7→ Phishing, Otherwise→ Legitimate}
-# Prefix_Suffix { -1,1 }
-# Rule: {If Domain Name Part Includes (-) Symbol → Phishing. Otherwise → Legitimate}
-# having_Sub_Domain { -1,0,1 }
-# Rule: {If Domain Name Part Includes (.) Symbol → Phishing, Otherwise → Legitimate}
-# SSLfinal_State { -1,1,0 }
-# Rule: {If Use https and Issuer Is Trusted and Age of Certificate 1 Years → Legitimate, Else If Using https and Issuer is not Trusted → Suspicious, Otherwise → Phishing}
-# Domain_registeration_length { -1,1 }
-# Rule: {If Using HTTP Token in Domain Part of The URL → Phishing, Otherwise → Legitimate}
-# Request_URL { 1,-1 }
-# Rule: {If Age Of Domain≥6 months → Legitimate, Otherwise → Phishing}
-# DNSRecord { -1,1 }
-# Rule: {If Domains Expires on 1 years → Phishing, Otherwise → Legitimate}
+# html 코드 분석이 필요함
 
 # Favicon { 1,-1 }
-# Rule: {If Website Rank<100,000 → Legitimate, Else if Website Rank>100,000 → Suspicious, Otherwise → Phishing}
+# Rule: {If Favicon Loaded From External Domain → Phishing, Otherwise → Legitimate}
+# 파비콘이 외부 도메인으로부터 오는지를 확인하여 피싱 여붑 판단
+# Request_URL { 1,-1 }
+# Rule: {If % of Request URL <22% → Legitimate, Else if % of Request URL≥22% and 61% → Suspicious, Otherwise → Phishing}
+# 웹 페이지가 로드될 때 발생하는 요청 중에서 외부 도메인의 비율을 기준으로 피싱 여부를 판단
+# URL_of_Anchor { -1,0,1 }
+# Rule: {If % of URL Of Anchor <31% → Legitimate, Else if% of URL Of Anchor ≥31% And≤67% → Suspicious Otherwise → Phishing}
+# 페이지의 앵커(링크) 태그 내에서 외부 도메인을 가리키는 링크의 비율을 기준으로 피싱 여부를 판단
+# Links_in_tags { 1,-1,0 }
+# Rule: {If % of Links in "", "<Script>" and ""<17% → Legitimate, Else if % of Links in ", "<Script>" and "" ≥17% And≤81% → Suspicious, Otherwise → Phishing}
+# 페이지의 태그(예: <script>) 내에서 외부 도메인을 가리키는 링크의 비율을 기준으로 피싱 여부를 판단
+# SFH { -1,1,0 }
+# Rule: {If SFH is "about: blank" Or Is Empty → Phishing, Else if SFH Refers To A Different Domain → Suspicious, Otherwise → Legitimate}
+# SFH는 폼(form) 제출 후에 사용자를 이동시킬 페이지를 가리킴
+# SFH가 비어있거나 "about:blank"이면 제출된 데이터가 악의적으로 사용될 수 있으므로 피싱
+# Submitting_to_email { -1,1 }
+# Rule: {If Using "mail()" or "mailto:" Function to Submit User Information → Phishing, Otherwise → Legitimate}
+# Redirect { 0,1 }
+# Rule: {If #ofRedirect Page≤1 → Legitimate, Else if #of Redirect Page≥2 And<4 → Suspicious, Otherwise → Phishing}
+# 페이지가 너무 많은 리다이렉트를 포함하는 경우 사용자를 다른 곳으로 유도할 수 있으므로 피싱으로 분류
+# on_mouseover { 1,-1 }
+# Rule: {If onMouseOver Changes Status Bar → Phishing, Else if It Does't Change Status Bar → Legitimate}
+# onMouseOver 이벤트가 상태 표시줄을 변경하는 경우 사용자를 속일 수 있으므로 피싱으로 판단
+# RightClick { 1,-1 }
+# Rule: {If Right Click Disabled → Phishing, Otherwise → Legitimate}
+# 우클릭을 비활성화하는 것은 사용자의 편의를 해치는 것이며, 이는 피싱 사이트의 특징일 수 있으므로 피싱으로 분류 -> 복사를 막는 경우가 많은데?
+# popUpWidnow { 1,-1 }
+# Rule: {If Popoup Window Contains Text Fields→ Phishing, Otherwise → Legitimate}
+# 팝업 창이 텍스트 필드를 포함한다면, 사용자로부터 민감한 정보를 요구하는 피싱 시도일 수 있으므로 피싱으로 간주
+# Iframe { 1,-1 }
+# Rule: {If Using iframe → Phishing, Otherwise → Legitimate}
+# 피싱 사이트는 다른 사이트의 컨텐츠를 iframe으로 가져와 사용자를 속임
 
-# Page_Rank { -1,1 }
-# Rule: {If PageRank<0.2 → Phishing, Otherwise → Legitimate}
+
+# api를 발급받아야 하므로 단순 detection보다 더 심화된 내용 -> 추가적인 detectiondl 필요할 때 사용할 예정
+
+# web_traffic { -1,0,1 }
+# Rule: {If Website Rank<100,000 → Legitimate, Else if Website Rank>100,000 → Suspicious, Otherwise → Phishing}
+# similarweb api 를 사용하여 순위에 없는경우 피싱
 
 # Google_Index { 1,-1 }
 # Rule: {If Webpage Indexed by Google → Legitimate, Otherwise → Phishing}
-
 # Links_pointing_to_page { 1,0,-1 }
-# Rule: {If Favicon Loaded From External Domain → Phishing, Otherwise → Legitimate}
-
-# port { 1,-1 }
-# Rule: {If Port # is of the Preffered Status → Phishing, Otherwise → Legitimate}
-
-# HTTPS_token { -1,1 }
-# Rule: {If % of Request URL <22% → Legitimate, Else if % of Request URL≥22% and 61% → Suspicious, Otherwise → Phishing}
-
-# URL_of_Anchor { -1,0,1 }
-# Rule: {If % of URL Of Anchor <31% → Legitimate, Else if% of URL Of Anchor ≥31% And≤67% → Suspicious Otherwise → Phishing}
-
-# Links_in_tags { 1,-1,0 }
-# Rule: {If % of Links in "", "<Script>" and ""<17% → Legitimate, Else if % of Links in ", "<Script>" and "" ≥17% And≤81% → Suspicious, Otherwise → Phishing}
-
-# SFH { -1,1,0 }
-# Rule: {If SFH is "about: blank" Or Is Empty → Phishing, Else if SFH Refers To A Different Domain → Suspicious, Otherwise → Legitimate}
-
-# Submitting_to_email { -1,1 }
-# Rule: {If Using "mail()" or "mailto:" Function to Submit User Information → Phishing, Otherwise → Legitimate}
-
-# Abnormal_URL { -1,1 }
-# Rule: {If #ofRedirect Page≤1 → Legitimate, Else if #of Redirect Page≥2 And<4 → Suspicious, Otherwise → Phishing}
-
-# on_mouseover { 1,-1 }
-# Rule: {If onMouseOver Changes Status Bar → Phishing, Else if It Does't Change Status Bar → Legitimate}
-
-# RightClick { 1,-1 }
-# Rule: {If Right Click Disabled → Phishing, Otherwise → Legitimate}
-
-# popUpWidnow { 1,-1 }
-# Rule: {If Popoup Window Contains Text Fields→ Phishing, Otherwise → Legitimate}
-
-# Iframe { 1,-1 }
-# Rule: {If Using iframe → Phishing, Otherwise → Legitimate}
-
-# age_of_domain { -1,1 }
-# Rule: {If no DNS Record For The Domain → Phishing, Otherwise → Legitimate}
-
-# web_traffic { -1,0,1 }
 # Rule: {If # of Link Pointing to The Webpage=0 → Phishing, Else if #Of Link Pointing to The Webpage>0 and≤2 → Suspicious, Otherwise → Legitimate}
-
-# Statistical_report { -1,1 }
-# Rule: {If Host Belongs to Top Phishing IPs or Top Phishing Domains → Phishing, Otherwise → Legitimate}
+# google search console을 이용하여 확인 구글 인덱스에 없는 경우 피싱, 링크 데이터 확인

@@ -1,17 +1,4 @@
-# 1. url의 길이가 75자보다 긴 경우                                  o
-#  -> 이를 피하기 위해 단축 url을 사용하는 경우
-# 2. ip주소를 사용하는 경우                                         o
-# 3. @,//,-,_, 또는 비표준 포트가 포함된 경우                       o
-# 4. host의 길이가 30자보다 길거나 ‘.’이 5개 이상 포함된 경우        o
-# 5. 유명 사이트와 유사한 url의 경우                                o
-# 6. 트레픽이 현저히 낮은 경우
-# 7. 구글 인덱스에 없는 경우
-# 8. http를 사용하는 경우
-# 9. 도메인이 1년이내에 만료되는 경우
-# 10. 파비콘이 외부 도메인에서 오는 경우
-# 11. 호스트 네임이 url에 없는 경우 (abnormal domain)
-# 12. 도메인이 6개월 이내에 생성된 경우
-# 13. 도메인의 인증기관이 신뢰받는 기관이 아닌 경우                 o
+# url이 블랙리스트에 있는지 확인하는 코드 필요 -> 이 코드는 학습을 위한 코드이므로 일단 빼둠 마지막에 DB구성 후 추가할 예정
 from datetime import datetime
 import re
 import Levenshtein
@@ -19,7 +6,6 @@ from urllib.parse import urlparse
 import requests
 import ssl
 import socket
-
 import whois
 
 trusted_cas = ["GeoTrust", "GoDaddy", "Network Solutions",
@@ -125,8 +111,18 @@ def non_standard_port(url):
         return 1
 
 
+def is_https(url):
+    if urlparse(url).scheme == 'https':
+        return 0
+    else:
+        return 1
+
+# 네트워크가 필요함
+
 # 신뢰받는 인증기관인지, 인증서의 수명도 확인하려했으나 실제로 신뢰받는 사이트의 인증서의 수명이 길지않음 -> 불필요한 것 같음
 # 구글, 마이크로소프트, 애플의 인증서의 수명이 1년이 안됨
+
+
 def is_trusted_cert(url):
     try:
         hostname = urlparse(url).netloc
@@ -144,13 +140,6 @@ def is_trusted_cert(url):
         return 1
     except Exception as e:
         print(f"Error while checking url {url}: {e}")
-        return 1
-
-
-def is_https(url):
-    if urlparse(url).scheme == 'https':
-        return 0
-    else:
         return 1
 
 
