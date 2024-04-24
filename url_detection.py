@@ -8,12 +8,6 @@ import ssl
 import socket
 import whois
 
-trusted_cas = ["GeoTrust", "GoDaddy", "Network Solutions",
-               "Thawte", "Comode", "Doster", "VeriSign",
-               "Let's Encrypt", "DigiCert", "GlobalSign",
-               "Symantec", "RapidSSL", "Entrust", "Comodo CA",
-               "Google Trust Services LLC", "Sectigo"]
-
 
 def is_redirection(url):    # 만약 url이 redirection한다면 redirection하는 url을 반환해서 그 url을 분석
     try:
@@ -89,13 +83,14 @@ def long_domain(url):  # url의 호스트 이름이 30글자보다 큰 경우 �
 
 
 # url의 도메인이 잘 알려진 url의 도메인과 비슷하게 생긴 경우 비정상
-def similar_url(url, well_known_domain, threshold=2):
-    domain = urlparse(url).netloc
-    distance = Levenshtein.distance(domain, well_known_domain)
-    if distance <= threshold:
-        return 1
-    else:
-        return 0
+def similar_url(url, well_known_hostname, threshold=2):
+    hostname = urlparse(url).netloc
+    distance = Levenshtein.distance(hostname, well_known_hostname)
+    if hostname != well_known_hostname:
+        if distance <= threshold:
+            return 1
+        else:
+            return 0
 
 
 def non_standard_port(url):
@@ -134,7 +129,9 @@ def is_trusted_cert(url):
         issuer = dict(x[0] for x in cert['issuer'])
         issuer_name = issuer.get('organizationName', '')
         print(f"Issuer: {issuer_name}")
-        for trusted_ca in trusted_cas:
+        with open('IncludedCACertificateReportForMSFT.csv', 'r', encoding='utf-8') as f:
+            trusted_issuer = f.read()
+        for trusted_ca in trusted_issuer:
             if trusted_ca in issuer_name:
                 return 0
         return 1

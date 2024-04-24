@@ -8,11 +8,11 @@ from datetime import datetime
 import whois
 from bs4 import BeautifulSoup
 
-trusted_cas = ["GeoTrust", "GoDaddy", "Network Solutions",
-               "Thawte", "Comode", "Doster", "VeriSign",
-               "Let's Encrypt", "DigiCert", "GlobalSign",
-               "Symantec", "RapidSSL", "Entrust", "Comodo CA",
-               "Google Trust Services LLC", "Sectigo"]
+# trusted_cas = ["GeoTrust", "GoDaddy", "Network Solutions",
+#                "Thawte", "Comode", "Doster", "VeriSign",
+#                "Let's Encrypt", "DigiCert", "GlobalSign",
+#                "Symantec", "RapidSSL", "Entrust", "Comodo CA",
+#                "Google Trust Services LLC", "Sectigo"]
 
 well_known_hostname = "www.google.com"
 # url = "https://greekaa....aasaasharifa.github.io/%EC%@A0%95%EA%B7%9C%ED%91-usage-03-basic/"
@@ -102,8 +102,11 @@ def long_hostname(url):
 def similar_url(url, well_known_hostname, threshold=2):
     hostname = urlparse(url).netloc
     distance = Levenshtein.distance(hostname, well_known_hostname)
-    if distance <= threshold:
-        return print(f"{url}은 유효하지 않은 url 주소입니다. ❌")
+    if hostname != well_known_hostname:
+        if distance <= threshold:
+            return print(f"{url}은 유효하지 않은 url 주소입니다. ❌")
+        else:
+            return print(f"{url}은 유효한 url 주소입니다. ✅")
     else:
         return print(f"{url}은 유효한 url 주소입니다. ✅")
 
@@ -122,8 +125,27 @@ def non_standard_port(url):
         print(f"비표준 포트 ({port})가 사용되었습니다.")
 
 
+# def is_trusted_cert(url):
+#     trusted_cas = get_trusted_issuer()
+#     print('is_trusted_cert')
+#     try:
+#         hostname = urlparse(url).netloc
+#         context = ssl.create_default_context()
+#         conn = context.wrap_socket(socket.socket(
+#             socket.AF_INET), server_hostname=hostname)
+#         conn.connect((hostname, 443))
+#         cert = conn.getpeercert()
+#         issuer = dict(x[0] for x in cert['issuer'])
+#         issuer_name = issuer.get('organizationName', '')
+#         print(f"Issuer: {issuer_name}")
+#         for trusted_ca in trusted_cas:
+#             if trusted_ca in issuer_name:
+#                 return print(f"{url}의 인증기관은 신뢰받는 기관입니다. ✅")
+#         return print(f"{url}의 인증기관은 신뢰받지 못하는 기관입니다. ❌")
+#     except Exception as e:
+#         print(f"Error while checking url {url}: {e}")
+#         return False
 def is_trusted_cert(url):
-    print('is_trusted_cert')
     try:
         hostname = urlparse(url).netloc
         context = ssl.create_default_context()
@@ -134,13 +156,15 @@ def is_trusted_cert(url):
         issuer = dict(x[0] for x in cert['issuer'])
         issuer_name = issuer.get('organizationName', '')
         print(f"Issuer: {issuer_name}")
-        for trusted_ca in trusted_cas:
+        with open('IncludedCACertificateReportForMSFT.csv', 'r', encoding='utf-8') as f:
+            trusted_issuer = f.read()
+        for trusted_ca in trusted_issuer:
             if trusted_ca in issuer_name:
-                return print(f"{url}의 인증기관은 신뢰받는 기관입니다. ✅")
-        return print(f"{url}의 인증기관은 신뢰받지 못하는 기관입니다. ❌")
+                return 0
+        return 1
     except Exception as e:
         print(f"Error while checking url {url}: {e}")
-        return False
+        return 1
 
 
 def is_https(url):
@@ -214,6 +238,12 @@ def get_expiration_date(url):
         return False
 
 
+# def get_trusted_issuer():
+#     with open('IncludedCACertificateReportForMSFT.csv', 'r', encoding='utf-8') as f:
+#         trusted_issuer = f.read()
+#     return trusted_issuer
+
+
 url = is_redirection(url)
 if url:
     long_url(url)
@@ -224,13 +254,12 @@ if url:
     having_redirection(url)
     sub_domains(url)
     long_hostname(url)
-    is_trusted_cert(url)
     non_standard_port(url)
     is_https(url)
     get_creation_date(url)
     url = 'https://www.google.com'
+    is_trusted_cert(url)
     get_expiration_date(url)
-    print(urlparse(url).netloc)
     similar_url(url, well_known_hostname)
 
 # html 코드 분석이 필요함
