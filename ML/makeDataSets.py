@@ -5,8 +5,8 @@ import os
 # print("현재 디렉토리:", os.getcwd())
 
 # # 입력 파일(txt)과 출력 파일(csv) 경로 설정
-# input_file_path = 'C:/Users/dlckd/Desktop/2024-1학기/캡스톤디자인/Phising_Detection/ML/non_phishing.txt'
-# output_file_path = 'C:/Users/dlckd/Desktop/2024-1학기/캡스톤디자인/Phising_Detection/ML/non_phishing.csv'
+# input_file_path = 'C:/Users/dlckd/Desktop/2024-1학기/캡스톤디자인/Phising_Detection/ML/Datasets/non_phishing.txt'
+# output_file_path = 'C:/Users/dlckd/Desktop/2024-1학기/캡스톤디자인/Phising_Detection/ML/Datasets/non_phishing.csv'
 
 # # txt 파일에서 각 줄을 읽어와서 "https://www."를 추가한 후 csv 파일에 쓰기
 # with open(input_file_path, 'r', encoding='utf-8') as input_file, open(output_file_path, 'w', newline='', encoding='utf-8') as output_file:
@@ -21,8 +21,8 @@ import os
 import csv
 
 # 입력 파일(csv)과 출력 파일(csv) 경로 설정
-input_file_path = 'C:/Users/dlckd/Desktop/2024-1학기/캡스톤디자인/Phising_Detection/ML/phishtank.csv'
-output_file_path = 'C:/Users/dlckd/Desktop/2024-1학기/캡스톤디자인/Phising_Detection/ML/phishing.csv'
+input_file_path = 'C:/Users/dlckd/Desktop/2024-1학기/캡스톤디자인/Phising_Detection/ML/Datasets/phishtank.csv'
+output_file_path = 'C:/Users/dlckd/Desktop/2024-1학기/캡스톤디자인/Phising_Detection/ML/Datasets/phishing.csv'
 
 # 2번째 열의 정보만 추출하여 새로운 csv 파일에 쓰기
 with open(input_file_path, 'r', newline='', encoding='utf-8') as input_file, open(output_file_path, 'w', newline='', encoding='utf-8') as output_file:
