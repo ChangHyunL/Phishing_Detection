@@ -3,6 +3,7 @@ package com.example.demo;
 import com.google.zxing.*;
 import com.google.zxing.client.j2se.BufferedImageLuminanceSource;
 import com.google.zxing.common.HybridBinarizer;
+import lombok.RequiredArgsConstructor;
 import socketProgramming.SocketCommunication;
 
 import javax.imageio.ImageIO;
@@ -10,8 +11,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-import static socketProgramming.SocketCommunication.*;
-
+@RequiredArgsConstructor
 public class QRcodeScan {
     private static String decodeQRCode(File qrCodeimage) throws IOException {
         BufferedImage bufferedImage = ImageIO.read(qrCodeimage);
@@ -38,7 +38,7 @@ public class QRcodeScan {
             } else {
                 System.out.println("Decoded text = " + decodedText);
             }
-            socketCommunication(decodedText);
+            SocketCommunication.socketCommunication(decodedText);
         } catch (IOException e) {
             System.out.println("Could not decode QR Code, IOException :: " + e.getMessage());
         }

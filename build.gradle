@@ -27,6 +27,8 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	implementation group: 'com.google.zxing', name: 'core', version: '3.5.3'
 	implementation group: 'com.google.zxing', name: 'javase', version: '3.5.3'
+	// https://mvnrepository.com/artifact/com.oracle.ojdbc/ojdbc8
+	implementation group: 'com.oracle.ojdbc', name: 'ojdbc8', version: '19.3.0.0'
 
 }
 

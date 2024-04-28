@@ -1,12 +1,21 @@
 package socketProgramming;
+import Entity.Phishing;
+import Service.PhishingService;
+import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
+
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.util.ArrayList;
+import java.util.List;
 
+@RequiredArgsConstructor
 public class SocketCommunication {
+    private final PhishingService phishingService;
     public static void socketCommunication(String domain){
         try (Socket client = new Socket()) {
 
@@ -34,10 +43,40 @@ public class SocketCommunication {
                 data = new byte[length];
                 receiver.read(data, 0, length);
                 msg = new String(data, "UTF-8"); //머신러닝 결과 값
+                System.out.println("Socket.msg = " + msg);
+                List<Integer> detectedData = splitMsg(msg);//String > List
+                System.out.println("detectedData.get(detectedData.size()) = " + detectedData.get(detectedData.size()-1));
+                if(detectedData.get(detectedData.size()-1)>0){
+                    //phishing domain //phishing=1 //normal=0
+                    /*
+                    * 피싱 사이트가 탐지되었고 그 결과를 웹으로 전송하려면
+                    * 그 결과 값을 파이썬으로부터 받는다는 가정으로 진행 생각
+                    * */
+                    Phishing newPhishing = new Phishing(detectedData);
+                    System.out.println("newPhishing = " + newPhishing);
+                }else {
+                    //common domain
+                    System.out.println("newPhishing = None ");
 
+
+                }
             }
         } catch (Throwable e) {
             e.printStackTrace();
         }
+    }
+
+    private static List<Integer> splitMsg(String msg) {
+        // 대괄호와 공백을 제거한 문자열 생성
+        String numbersOnly = msg.replaceAll("[\\[\\]\\s]", "");
+
+        // 쉼표를 기준으로 문자열을 분리하여 배열로 변환
+        String[] numArray = numbersOnly.split(",");
+        // 문자열 배열을 정수 리스트로 변환
+        List<Integer> resultList = new ArrayList<>();
+        for (String num : numArray) {
+            resultList.add(Integer.parseInt(num));
+        }
+        return resultList;
     }
 }
