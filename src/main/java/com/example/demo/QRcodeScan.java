@@ -1,10 +1,12 @@
 package com.example.demo;
 
+import com.example.demo.Entity.Phishing;
 import com.google.zxing.*;
 import com.google.zxing.client.j2se.BufferedImageLuminanceSource;
 import com.google.zxing.common.HybridBinarizer;
 import lombok.RequiredArgsConstructor;
-import socketProgramming.SocketCommunication;
+import org.springframework.stereotype.Component;
+import com.example.demo.socketProgramming.SocketCommunication;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -12,6 +14,7 @@ import java.io.File;
 import java.io.IOException;
 
 @RequiredArgsConstructor
+@Component
 public class QRcodeScan {
     private static String decodeQRCode(File qrCodeimage) throws IOException {
         BufferedImage bufferedImage = ImageIO.read(qrCodeimage);
@@ -25,11 +28,10 @@ public class QRcodeScan {
             System.out.println("There is no QR code in the image");
             return null;
         }
-
-
     }
 
-    public void scan(String filePath){
+    public Phishing scan(String filePath){
+        Phishing phishing = null;
         try {
             File file = new File(filePath);
             String decodedText = decodeQRCode(file);
@@ -38,9 +40,10 @@ public class QRcodeScan {
             } else {
                 System.out.println("Decoded text = " + decodedText);
             }
-            SocketCommunication.socketCommunication(decodedText);
+            phishing = SocketCommunication.socketCommunication(decodedText);
         } catch (IOException e) {
             System.out.println("Could not decode QR Code, IOException :: " + e.getMessage());
         }
+        return phishing;
     }
 }

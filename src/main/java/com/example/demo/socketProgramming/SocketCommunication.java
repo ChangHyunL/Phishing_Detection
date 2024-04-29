@@ -1,8 +1,6 @@
-package socketProgramming;
-import Entity.Phishing;
-import Service.PhishingService;
-import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
+package com.example.demo.socketProgramming;
+import com.example.demo.Entity.Phishing;
+import org.springframework.stereotype.Component;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -13,10 +11,11 @@ import java.nio.ByteOrder;
 import java.util.ArrayList;
 import java.util.List;
 
-@RequiredArgsConstructor
+@Component
 public class SocketCommunication {
-    private final PhishingService phishingService;
-    public static void socketCommunication(String domain){
+
+    public static Phishing socketCommunication(String domain){
+        Phishing newPhishing = null;
         try (Socket client = new Socket()) {
 
             InetSocketAddress ipep = new InetSocketAddress("127.0.0.1", 9999); // 소켓에 접속하기 위한 접속 정보를 선언한다.
@@ -24,19 +23,15 @@ public class SocketCommunication {
             try (OutputStream sender = client.getOutputStream(); InputStream receiver = client.getInputStream();) {
                 String msg = domain;
                 byte[] data = msg.getBytes();
-                // ByteBuffer를 통해 데이터 길이를 byte형식으로 변환한다.
-                ByteBuffer b = ByteBuffer.allocate(4); //2^32 크기의 데이터 전송
-                // byte포멧은 little 엔디언이다.
+                ByteBuffer b = ByteBuffer.allocate(4);
                 b.order(ByteOrder.LITTLE_ENDIAN);
                 b.putInt(data.length);
-                // 데이터 길이 전송
                 sender.write(b.array(), 0, 4);
                 sender.write(data);
                 //============데이터 전송==============//
                 data = new byte[4];
                 // 데이터 길이를 받는다.
                 receiver.read(data, 0, 4);
-                // ByteBuffer를 통해 little 엔디언 형식으로 데이터 길이를 구한다.
                 b = ByteBuffer.wrap(data);
                 b.order(ByteOrder.LITTLE_ENDIAN);
                 int length = b.getInt();
@@ -52,18 +47,17 @@ public class SocketCommunication {
                     * 피싱 사이트가 탐지되었고 그 결과를 웹으로 전송하려면
                     * 그 결과 값을 파이썬으로부터 받는다는 가정으로 진행 생각
                     * */
-                    Phishing newPhishing = new Phishing(detectedData);
+                    newPhishing = new Phishing(detectedData);
                     System.out.println("newPhishing = " + newPhishing);
                 }else {
                     //common domain
                     System.out.println("newPhishing = None ");
-
-
                 }
             }
         } catch (Throwable e) {
             e.printStackTrace();
         }
+        return newPhishing;
     }
 
     private static List<Integer> splitMsg(String msg) {

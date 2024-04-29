@@ -1,5 +1,5 @@
 <!doctype html>
-<html class="header-ui" lang="en-US" prefix="og: https://ogp.me/ns#">
+<html class="header-ui" lang="en-US" prefix="og: https://ogp.me/ns#" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -127,10 +127,15 @@
 
         }
 
-        button:hover {
+        #image-select-button:hover {
             background-color: #007bff;
             color: #fff;
         }
+        #image-summit-button:hover {
+            background-color: #007bff;
+            color: #fff;
+        }
+
         /* 이미지 선택 버튼 스타일 */
         #image-select-button {
             width: 500px;
@@ -148,6 +153,20 @@
             margin-left: auto; /* 버튼을 가운데로 정렬합니다. */
             margin-right: auto; /* 버튼을 가운데로 정렬합니다. */
             display: block; /* 수평 가운데 정렬을 위해 block 요소로 설정 */
+        }
+
+    </style>
+
+
+    <style>
+        .input-group {
+            height: auto;
+        }
+
+        .btn-primary {
+            height: auto;
+            padding-top: 0.5rem;
+            padding-bottom: 0.5rem;
         }
     </style>
     <script src="https://checkphish.bolster.ai/wp-content/themes/checkphish/assets/js/index.js?ver=6.4.4" id="twentytwenty-js-js" defer data-wp-strategy="defer"></script>
@@ -214,8 +233,7 @@
                                                 <button aria-controls="dm-tab-pane" aria-selected="true" class="nav-link"
                                                         data-bs-target="#dm-tab-pane" data-bs-toggle="tab" id="dm-tab"
                                                         role="tab" type="button">
-                                                    URL Scanner
-                                                </button>
+                                                    URL Scanner</button>
                                             </li>
                                         </ul>
                                         <div class="tab-content" id="myTabContent">
@@ -229,39 +247,23 @@
                                                 </div>
                                                 <button id="image-select-button" onclick="document.getElementById('image-input').click();">이미지 선택</button>
                                                 <div id="upload-buttons">
-                                                    <form action="/scan" method="post" enctype="multipart/form-data">
-                                                        <button type="submit">스캔</button>
+                                                    <form action="/scanQRcode" method="post" enctype="multipart/form-data">
+                                                        <button id="image-summit-button" type="submit">스캔</button>
                                                     </form>
                                                 </div>
                                             </div>
                                             <div aria-labelledby="dm-tab" class="tab-pane fade" id="dm-tab-pane"
                                                  role="tabpanel" tabindex="0">
-                                                <form action="#" class="bs-div-a-form theme-b js-domain-monitoring with-setting" method="post"
-                                                      name="bs-div-a-form">
-                                                    <div class="form-group with-masking">
-                                                        <div class="bs-div-a-form-l">
-                                                            <div class="form-control-wrapper">
-                                                                <input autocomplete="off" class="form-control bs-submit-url" name="input-name"
-                                                                       placeholder="Scan a URL"
-                                                                       type="text" value>
-                                                            </div>
+                                                <div>
+                                                    <form action="/scanURL" method="post" class="d-flex">
+                                                        <div class="input-group me-2">
+                                                            <input type="text" class="form-control" id="url-input" name="url" placeholder="http://example.com" required>
                                                         </div>
-                                                        <div class="bs-div-a-form-r">
-                                                            <button aria-label="Help" class="bs-help-desk"
-                                                                    type="button">
-                                                                <i aria-hidden="true" class="bs-icon-help">
-                                                                    <svg focusable="false" tabindex="-1">
-                                                                        <use xlink:href="#bs-icon-help"></use>
-                                                                    </svg>
-                                                                </i>
-                                                            </button>
-                                                            <button class="btn btn-primary bs-monitoring-button"
-                                                                    type="submit">Scan
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                </form>
+                                                        <button type="submit" class="btn btn-primary rounded-start rounded-end " style="min-width: 120px;">스캔</button>
+                                                    </form>
+                                                </div>
                                             </div>
+
                                         </div>
                                     </div>
                                 </div>
@@ -285,8 +287,8 @@
                                         <div class="bs-text-a">
                                             <h2 class="h3 text-tangaroa" data-fadeup>
                                                 머신러닝을 통한 탐지 결과 </h2>
-                                            <div class="h4 bs-text-desc text-east-bay" data-fadeup>
-                                                <p> 탐지한 결과 'www.naver.com' 사이트는 피싱 사이트가 아닙니다. </p>
+                                            <div class="h4 bs-text-desc text-east-bay" data-fadeup th:text="${result}">
+                                                <p th:if="${result == null || result == ''}">&nbsp;</p>
                                             </div>
                                         </div>
                                     </div>
@@ -344,6 +346,7 @@
                                             </span>
                                             <h3 class="h4">리다이렉션 여부</h3>
                                             <div class="bs-text-desc">
+                                                <p></p>
                                             </div>
                                         </div>
                                     </div>
@@ -356,6 +359,7 @@
                                             </span>
                                             <h3 class="h4">긴 URL</h3>
                                             <div class="bs-text-desc">
+                                                <p></p>
                                             </div>
                                         </div>
                                     </div>
@@ -366,8 +370,9 @@
                                                     <img loading="lazy" class="lazyload" src="https://checkphish.bolster.ai/wp-content/uploads/2024/02/cp-global-blue.svg" alt="#2 Threat Category">
                                                 </span>
                                             </span>
-                                            <h3 class="h4">IP 포함 여부</h3>
+                                            <h3 class="h4">IP 여부</h3>
                                             <div class="bs-text-desc">
+                                                <p></p>
                                             </div>
                                         </div>
                                     </div>
@@ -378,23 +383,9 @@
                                                     <img loading="lazy" class="lazyload" src="https://checkphish.bolster.ai/wp-content/uploads/2024/02/cp-money-recive-blue.svg" alt="4.2 Million">
                                                 </span>
                                             </span>
-                                            <h3 class="h4"> '@' 기호 포함 여부</h3>
+                                            <h3 class="h4">'@'포함 여부</h3>
                                             <div class="bs-text-desc">
-                                                <p>Fraudulent websites are recorded by Bolster in 2022 yielding to major losses to brands</p>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-12 col-sm-6 col-lg-3" data-fadeup>
-                                        <div class="bs-text-a with-type-bg-a">
-                                            <span class="bs-div-j-icon ratio ratio-1x1">
-                                                <span class="lazy-loader">
-                                                    <img loading="lazy" class="lazyload" src="https://checkphish.bolster.ai/wp-content/uploads/2024/02/cp-money-recive-blue.svg" alt="4.2 Million">
-                                                </span>
-                                            </span>
-                                            <h3 class="h4">대시('-') 포함 여부</h3>
-                                            <div class="bs-text-desc">
-                                                <p>Fraudulent websites are recorded by Bolster in 2022 yielding to major losses to brands</p>
+                                                <p></p>
                                             </div>
                                         </div>
                                     </div>
@@ -406,9 +397,9 @@
                                                     <img loading="lazy" class="lazyload" src="https://checkphish.bolster.ai/wp-content/uploads/2024/02/cp-money-recive-blue.svg" alt="4.2 Million">
                                                 </span>
                                             </span>
-                                            <h3 class="h4">밑줄('_') 포함 여부</h3>
+                                            <h3 class="h4">'-' 포함 여부</h3>
                                             <div class="bs-text-desc">
-                                                <p>Fraudulent websites are recorded by Bolster in 2022 yielding to major losses to brands</p>
+                                                <p></p>
                                             </div>
                                         </div>
                                     </div>
@@ -420,9 +411,9 @@
                                                     <img loading="lazy" class="lazyload" src="https://checkphish.bolster.ai/wp-content/uploads/2024/02/cp-money-recive-blue.svg" alt="4.2 Million">
                                                 </span>
                                             </span>
-                                            <h3 class="h4">리다이렉션 포함 여부</h3>
+                                            <h3 class="h4">'_' 포함 여부</h3>
                                             <div class="bs-text-desc">
-                                                <p>Fraudulent websites are recorded by Bolster in 2022 yielding to major losses to brands</p>
+                                                <p></p>
                                             </div>
                                         </div>
                                     </div>
@@ -434,9 +425,9 @@
                                                     <img loading="lazy" class="lazyload" src="https://checkphish.bolster.ai/wp-content/uploads/2024/02/cp-money-recive-blue.svg" alt="4.2 Million">
                                                 </span>
                                             </span>
-                                            <h3 class="h4">하위 도메인</h3>
+                                            <h3 class="h4">리다이렉션 이후</h3>
                                             <div class="bs-text-desc">
-                                                <p>Fraudulent websites are recorded by Bolster in 2022 yielding to major losses to brands</p>
+                                                <p></p>
                                             </div>
                                         </div>
                                     </div>
@@ -448,9 +439,23 @@
                                                     <img loading="lazy" class="lazyload" src="https://checkphish.bolster.ai/wp-content/uploads/2024/02/cp-money-recive-blue.svg" alt="4.2 Million">
                                                 </span>
                                             </span>
-                                            <h3 class="h4">긴 도메인</h3>
+                                            <h3 class="h4">서브 도메인 개수</h3>
                                             <div class="bs-text-desc">
-                                                <p>Fraudulent websites are recorded by Bolster in 2022 yielding to major losses to brands</p>
+                                                <p></p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12 col-sm-6 col-lg-3" data-fadeup>
+                                        <div class="bs-text-a with-type-bg-a">
+                                            <span class="bs-div-j-icon ratio ratio-1x1">
+                                                <span class="lazy-loader">
+                                                    <img loading="lazy" class="lazyload" src="https://checkphish.bolster.ai/wp-content/uploads/2024/02/cp-money-recive-blue.svg" alt="4.2 Million">
+                                                </span>
+                                            </span>
+                                            <h3 class="h4">긴 호스트 네임</h3>
+                                            <div class="bs-text-desc">
+                                                <p></p>
                                             </div>
                                         </div>
                                     </div>
@@ -464,7 +469,7 @@
                                             </span>
                                             <h3 class="h4">유사한 URL</h3>
                                             <div class="bs-text-desc">
-                                                <p>Fraudulent websites are recorded by Bolster in 2022 yielding to major losses to brands</p>
+                                                <p></p>
                                             </div>
                                         </div>
                                     </div>
@@ -476,9 +481,23 @@
                                                     <img loading="lazy" class="lazyload" src="https://checkphish.bolster.ai/wp-content/uploads/2024/02/cp-money-recive-blue.svg" alt="4.2 Million">
                                                 </span>
                                             </span>
-                                            <h3 class="h4">표준이 아닌 포트 사용 여부</h3>
+                                            <h3 class="h4">비표준 포트</h3>
                                             <div class="bs-text-desc">
-                                                <p>Fraudulent websites are recorded by Bolster in 2022 yielding to major losses to brands</p>
+                                                <p></p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12 col-sm-6 col-lg-3" data-fadeup>
+                                        <div class="bs-text-a with-type-bg-a">
+                                            <span class="bs-div-j-icon ratio ratio-1x1">
+                                                <span class="lazy-loader">
+                                                    <img loading="lazy" class="lazyload" src="https://checkphish.bolster.ai/wp-content/uploads/2024/02/cp-money-recive-blue.svg" alt="4.2 Million">
+                                                </span>
+                                            </span>
+                                            <h3 class="h5">신뢰 가능한 인증서</h3>
+                                            <div class="bs-text-desc">
+                                                <p></p>
                                             </div>
                                         </div>
                                     </div>
@@ -492,7 +511,7 @@
                                             </span>
                                             <h3 class="h4">HTTPS 여부</h3>
                                             <div class="bs-text-desc">
-                                                <p>Fraudulent websites are recorded by Bolster in 2022 yielding to major losses to brands</p>
+                                                <p></p>
                                             </div>
                                         </div>
                                     </div>
@@ -504,9 +523,9 @@
                                                     <img loading="lazy" class="lazyload" src="https://checkphish.bolster.ai/wp-content/uploads/2024/02/cp-money-recive-blue.svg" alt="4.2 Million">
                                                 </span>
                                             </span>
-                                            <h3 class="h4">신뢰할 수 있는 인증서 여부</h3>
+                                            <h3 class="h4">생성날짜 가져오기</h3>
                                             <div class="bs-text-desc">
-                                                <p>Fraudulent websites are recorded by Bolster in 2022 yielding to major losses to brands</p>
+                                                <p></p>
                                             </div>
                                         </div>
                                     </div>
@@ -518,23 +537,9 @@
                                                     <img loading="lazy" class="lazyload" src="https://checkphish.bolster.ai/wp-content/uploads/2024/02/cp-money-recive-blue.svg" alt="4.2 Million">
                                                 </span>
                                             </span>
-                                            <h3 class="h4">생성일 조회</h3>
+                                            <h3 class="h4">만료날짜가져오기</h3>
                                             <div class="bs-text-desc">
-                                                <p>Fraudulent websites are recorded by Bolster in 2022 yielding to major losses to brands</p>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-12 col-sm-6 col-lg-3" data-fadeup>
-                                        <div class="bs-text-a with-type-bg-a">
-                                            <span class="bs-div-j-icon ratio ratio-1x1">
-                                                <span class="lazy-loader">
-                                                    <img loading="lazy" class="lazyload" src="https://checkphish.bolster.ai/wp-content/uploads/2024/02/cp-money-recive-blue.svg" alt="4.2 Million">
-                                                </span>
-                                            </span>
-                                            <h3 class="h4">만료일 조회</h3>
-                                            <div class="bs-text-desc">
-                                                <p>Fraudulent websites are recorded by Bolster in 2022 yielding to major losses to brands</p>
+                                                <p></p>
                                             </div>
                                         </div>
                                     </div>
@@ -548,6 +553,20 @@
         </div>
     </section>
 </main>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('.bs-div-j-row .col-12').each(function() {
+            var havingAt = parseInt($(this).data('havingAt'));
+
+            // havingAt 값에 따라 메시지를 설정합니다.
+            var message = (havingAt === 1) ? "유효하지 않은 URL 주소입니다" : "유효한 URL 주소입니다";
+
+            // 해당 메시지를 출력합니다.
+            $(this).find('.bs-text-desc p').text(message);
+        });
+    });
+</script>
 <script>
     function handleDragOver(event) {
         event.preventDefault();

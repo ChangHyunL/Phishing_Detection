@@ -1,11 +1,9 @@
-package Service;
-
-import Entity.Phishing;
-import Repository.PhishingRepository;
+package com.example.demo.Service;
+import com.example.demo.Entity.Phishing;
+import com.example.demo.Repository.PhishingRepository;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import java.util.Optional;
 
 @Service
@@ -27,6 +25,4 @@ public class PhishingService {
             return null; //추후 변경
         }
     }
-
-
 }
