@@ -22,7 +22,7 @@ X_train, X_test, y_train, y_test = train_test_split(
 logistic_model = LogisticRegression()
 logistic_model.fit(X_train, y_train)
 
-joblib.dump(model, 'logistic_model.pkl')
+joblib.dump(logistic_model, 'logistic_model.pkl')
 model_loaded = joblib.load('logistic_model.pkl')
 
 # 테스트 데이터로 모델 성능 평가
