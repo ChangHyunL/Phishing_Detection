@@ -287,9 +287,11 @@
                                         <div class="bs-text-a">
                                             <h2 class="h3 text-tangaroa" data-fadeup>
                                                 머신러닝을 통한 탐지 결과 </h2>
-                                            <div class="h4 bs-text-desc text-east-bay" data-fadeup th:text="${result}">
-                                                <p th:if="${result == null || result == ''}">&nbsp;</p>
+                                            <div class="h4 bs-text-desc text-east-bay" data-fadeup th:text="${url}">
+                                                <span th:if="${url == null || url == ''}">&nbsp;</span>
                                             </div>
+                                            <div class="h4 bs-text-desc text-east-bay" th:inline="none" th:if="${phishingCheck == 1 and url != null}">은(는) 피싱 사이트 입니다.</div>
+                                            <div class="h4 bs-text-desc text-east-bay" th:inline="none" th:if="${phishingCheck != 1 and url != null}">은(는) 정상 사이트 입니다.</div>
                                         </div>
                                     </div>
                                 </div>
@@ -328,7 +330,7 @@
                         <div class="bs-div-wrap">
                             <div class="bs-text-a">
                                 <div class="h6 text-royal-blue" data-fadeup>
-                                    Challenge </div>
+                                     </div>
                                 <h2 class="h3 text-tangaroa" data-fadeup>
                                     QR코드/URL 피싱 탐지 내용 </h2>
                                 <div class="bs-text-desc text-east-bay" data-fadeup>
@@ -345,9 +347,12 @@
                                                 </span>
                                             </span>
                                             <h3 class="h4">리다이렉션 여부</h3>
-                                            <div class="bs-text-desc">
-                                                <p></p>
-                                            </div>
+                                            <p th:if="${result != null}">
+                                                <span th:text="${result.isRedirection}"/>
+                                                <span th:if="${result.isRedirection == 1}">유효하지 않은 URL 주소입니다.</span>
+                                                <span th:unless="${result.isRedirection == 1}">유효한 URL 주소입니다.</span>
+                                            </p>
+
                                         </div>
                                     </div>
                                     <div class="col-12 col-sm-6 col-lg-3" data-fadeup>
@@ -359,7 +364,12 @@
                                             </span>
                                             <h3 class="h4">긴 URL</h3>
                                             <div class="bs-text-desc">
-                                                <p></p>
+                                                <p th:if="${result != null}">
+                                                    <span th:text="${result.longUrl}"/>
+                                                    <span th:if="${result.longUrl == 1}">유효하지 않은 URL 주소입니다.</span>
+                                                    <span th:unless="${result.longUrl == 1}">유효한 URL 주소입니다.</span>
+                                                </p>
+
                                             </div>
                                         </div>
                                     </div>
@@ -372,7 +382,12 @@
                                             </span>
                                             <h3 class="h4">IP 여부</h3>
                                             <div class="bs-text-desc">
-                                                <p></p>
+                                                <p th:if="${result != null}">
+                                                    <span th:text="${result.havingIp}"/>
+                                                    <span th:if="${result.havingIp == 1}">유효하지 않은 URL 주소입니다.</span>
+                                                    <span th:unless="${result.havingIp == 1}">유효한 URL 주소입니다.</span>
+                                                </p>
+
                                             </div>
                                         </div>
                                     </div>
@@ -385,7 +400,12 @@
                                             </span>
                                             <h3 class="h4">'@'포함 여부</h3>
                                             <div class="bs-text-desc">
-                                                <p></p>
+                                                <p th:if="${result != null}">
+                                                    <span th:text="${result.havingAt}"/>
+                                                    <span th:if="${result.havingAt == 1}">유효하지 않은 URL 주소입니다.</span>
+                                                    <span th:unless="${result.havingAt == 1}">유효한 URL 주소입니다.</span>
+                                                </p>
+
                                             </div>
                                         </div>
                                     </div>
@@ -399,7 +419,12 @@
                                             </span>
                                             <h3 class="h4">'-' 포함 여부</h3>
                                             <div class="bs-text-desc">
-                                                <p></p>
+                                                <p th:if="${result != null}">
+                                                    <span th:text="${result.havingDash}"/>
+                                                    <span th:if="${result.havingDash == 1}">유효하지 않은 URL 주소입니다.</span>
+                                                    <span th:unless="${result.havingDash == 1}">유효한 URL 주소입니다.</span>
+                                                </p>
+
                                             </div>
                                         </div>
                                     </div>
@@ -413,7 +438,12 @@
                                             </span>
                                             <h3 class="h4">'_' 포함 여부</h3>
                                             <div class="bs-text-desc">
-                                                <p></p>
+                                                <p th:if="${result != null}">
+                                                    <span th:text="${result.havingUnderbar}"/>
+                                                    <span th:if="${result.havingUnderbar == 1}">유효하지 않은 URL 주소입니다.</span>
+                                                    <span th:unless="${result.havingUnderbar == 1}">유효한 URL 주소입니다.</span>
+                                                </p>
+
                                             </div>
                                         </div>
                                     </div>
@@ -427,7 +457,12 @@
                                             </span>
                                             <h3 class="h4">리다이렉션 이후</h3>
                                             <div class="bs-text-desc">
-                                                <p></p>
+                                                <p th:if="${result != null}">
+                                                    <span th:text="${result.havingRedirection}"/>
+                                                    <span th:if="${result.havingRedirection == 1}">유효하지 않은 URL 주소입니다.</span>
+                                                    <span th:unless="${result.havingRedirection == 1}">유효한 URL 주소입니다.</span>
+                                                </p>
+
                                             </div>
                                         </div>
                                     </div>
@@ -441,7 +476,12 @@
                                             </span>
                                             <h3 class="h4">서브 도메인 개수</h3>
                                             <div class="bs-text-desc">
-                                                <p></p>
+                                                <p th:if="${result != null}">
+                                                    <span th:text="${result.subDomains}"/>
+                                                    <span th:if="${result.subDomains == 1}">유효하지 않은 URL 주소입니다.</span>
+                                                    <span th:unless="${result.subDomains == 1}">유효한 URL 주소입니다.</span>
+                                                </p>
+
                                             </div>
                                         </div>
                                     </div>
@@ -455,7 +495,12 @@
                                             </span>
                                             <h3 class="h4">긴 호스트 네임</h3>
                                             <div class="bs-text-desc">
-                                                <p></p>
+                                                <p th:if="${result != null}">
+                                                    <span th:text="${result.longDomain}"/>
+                                                    <span th:if="${result.longDomain == 1}">유효하지 않은 URL 주소입니다.</span>
+                                                    <span th:unless="${result.longDomain == 1}">유효한 URL 주소입니다.</span>
+                                                </p>
+
                                             </div>
                                         </div>
                                     </div>
@@ -469,7 +514,12 @@
                                             </span>
                                             <h3 class="h4">유사한 URL</h3>
                                             <div class="bs-text-desc">
-                                                <p></p>
+                                                <p th:if="${result != null}">
+                                                    <span th:text="${result.similarUrl}"/>
+                                                    <span th:if="${result.similarUrl == 1}">유효하지 않은 URL 주소입니다.</span>
+                                                    <span th:unless="${result.similarUrl == 1}">유효한 URL 주소입니다.</span>
+                                                </p>
+
                                             </div>
                                         </div>
                                     </div>
@@ -483,7 +533,11 @@
                                             </span>
                                             <h3 class="h4">비표준 포트</h3>
                                             <div class="bs-text-desc">
-                                                <p></p>
+                                                <p th:if="${result != null}">
+                                                    <span th:text="${result.nonStandardPort}"/>
+                                                    <span th:if="${result.nonStandardPort == 1}">유효하지 않은 URL 주소입니다.</span>
+                                                    <span th:unless="${result.nonStandardPort == 1}">유효한 URL 주소입니다.</span>
+                                                </p>
                                             </div>
                                         </div>
                                     </div>
@@ -497,7 +551,12 @@
                                             </span>
                                             <h3 class="h5">신뢰 가능한 인증서</h3>
                                             <div class="bs-text-desc">
-                                                <p></p>
+                                                <p th:if="${result != null}">
+                                                    <span th:text="${result.isHttps}"/>
+                                                    <span th:if="${result.isHttps == 1}">유효하지 않은 URL 주소입니다.</span>
+                                                    <span th:unless="${result.isHttps == 1}">유효한 URL 주소입니다.</span>
+                                                </p>
+
                                             </div>
                                         </div>
                                     </div>
@@ -511,7 +570,12 @@
                                             </span>
                                             <h3 class="h4">HTTPS 여부</h3>
                                             <div class="bs-text-desc">
-                                                <p></p>
+                                                <p th:if="${result != null}">
+                                                    <span th:text="${result.isTrustedCert}"/>
+                                                    <span th:if="${result.isTrustedCert == 1}">유효하지 않은 URL 주소입니다.</span>
+                                                    <span th:unless="${result.isTrustedCert == 1}">유효한 URL 주소입니다.</span>
+                                                </p>
+
                                             </div>
                                         </div>
                                     </div>
@@ -525,7 +589,11 @@
                                             </span>
                                             <h3 class="h4">생성날짜 가져오기</h3>
                                             <div class="bs-text-desc">
-                                                <p></p>
+                                                <p th:if="${result != null}">
+                                                    <span th:text="${result.creationDate}"/>
+                                                    <span th:if="${result.creationDate == 1}">유효하지 않은 URL 주소입니다.</span>
+                                                    <span th:unless="${result.creationDate == 1}">유효한 URL 주소입니다.</span>
+                                                </p>
                                             </div>
                                         </div>
                                     </div>
@@ -539,7 +607,11 @@
                                             </span>
                                             <h3 class="h4">만료날짜가져오기</h3>
                                             <div class="bs-text-desc">
-                                                <p></p>
+                                                <p th:if="${result != null}">
+                                                    <span th:text="${result.expirationDate}"/>
+                                                    <span th:if="${result.expirationDate == 1}">유효하지 않은 URL 주소입니다.</span>
+                                                    <span th:unless="${result.expirationDate == 1}">유효한 URL 주소입니다.</span>
+                                                </p>
                                             </div>
                                         </div>
                                     </div>
@@ -553,20 +625,7 @@
         </div>
     </section>
 </main>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-    $(document).ready(function() {
-        $('.bs-div-j-row .col-12').each(function() {
-            var havingAt = parseInt($(this).data('havingAt'));
 
-            // havingAt 값에 따라 메시지를 설정합니다.
-            var message = (havingAt === 1) ? "유효하지 않은 URL 주소입니다" : "유효한 URL 주소입니다";
-
-            // 해당 메시지를 출력합니다.
-            $(this).find('.bs-text-desc p').text(message);
-        });
-    });
-</script>
 <script>
     function handleDragOver(event) {
         event.preventDefault();

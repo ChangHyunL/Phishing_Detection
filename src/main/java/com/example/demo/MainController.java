@@ -3,8 +3,6 @@ package com.example.demo;
 import com.example.demo.Entity.Phishing;
 import com.example.demo.Service.PhishingService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -46,14 +44,19 @@ public class MainController {
     }
     @PostMapping("/scanURL")
     public String handleFileUpload_URL(@RequestParam("url") String url, Model model){
+        int phishingCheck=0;
         if (url.isEmpty()) {
             return null;
         }
-
         Phishing result = urlScan.scan(url);
-        phishingService.create(result);
-        System.out.println("handleFileUpload_URL_result = " + result);
-        model.addAttribute("result", url);
+        phishingCheck = phishingService.phishingCheck(result);
+        if(phishingCheck==1){
+            phishingService.create(result);
+            System.out.println("handleFileUpload_URL_result = " + result);
+            model.addAttribute("phishingCheck", phishingCheck);
+        }
+        model.addAttribute("url", url);
+        model.addAttribute("result",result);
         return "QRcodeScanner";
     }
 }
