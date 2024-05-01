@@ -15,6 +15,7 @@ from bs4 import BeautifulSoup
 #                "Google Trust Services LLC", "Sectigo"]
 
 well_known_hostname = "www.google.com"
+filepath = "C:/Users/dlckd/Desktop/2024-1학기/캡스톤디자인/Phising_Detection/ML/Datasets/non_phishing.csv"
 # url = "https://greekaa....aasaasharifa.github.io/%EC%@A0%95%EA%B7%9C%ED%91-usage-03-basic/"
 url = "https://url.kr/y8f759"
 # url = "https://url.kr/zdq426"   # 가짜 단축 url
@@ -99,16 +100,36 @@ def long_hostname(url):
         return print(f"{url}은 유효한 url 주소입니다. ✅")
 
 
-def similar_url(url, well_known_hostname, threshold=2):
+def similar_url(url, filepath, threshold=2):
     hostname = urlparse(url).netloc
-    distance = Levenshtein.distance(hostname, well_known_hostname)
-    if hostname != well_known_hostname:
-        if distance <= threshold:
-            return print(f"{url}은 유효하지 않은 url 주소입니다. ❌")
+
+    # 파일에서 well_known_hostname 목록을 읽어온다.
+    with open(filepath, 'r') as file:
+        well_known_hostnames = [
+            urlparse(line).netloc for line in file.read().splitlines()]
+
+    for well_known_hostname in well_known_hostnames:
+        distance = Levenshtein.distance(hostname, well_known_hostname)
+
+        # hostname과 well_known_hostname이 일치하지 않는 경우만 거리를 계산
+        if hostname != well_known_hostname:
+            if distance <= threshold:
+                return print(f"{url}은 유효하지 않은 url 주소입니다. ❌")
         else:
             return print(f"{url}은 유효한 url 주소입니다. ✅")
-    else:
-        return print(f"{url}은 유효한 url 주소입니다. ✅")
+    return print(f"{url}은 유효한 url 주소입니다. ✅")
+
+
+# def similar_url(url, well_known_hostname, threshold=2):
+#     hostname = urlparse(url).netloc
+#     distance = Levenshtein.distance(hostname, well_known_hostname)
+#     if hostname != well_known_hostname:
+#         if distance <= threshold:
+#             return print(f"{url}은 유효하지 않은 url 주소입니다. ❌")
+#         else:
+#             return print(f"{url}은 유효한 url 주소입니다. ✅")
+#     else:
+#         return print(f"{url}은 유효한 url 주소입니다. ✅")
 
 
 def non_standard_port(url):
@@ -260,7 +281,8 @@ if url:
     url = 'https://www.google.com'
     is_trusted_cert(url)
     get_expiration_date(url)
-    similar_url(url, well_known_hostname)
+    url = 'https://www.kissmeaaaaaaaaaaatrics.com'
+    similar_url(url, filepath)
 
 # html 코드 분석이 필요함
 

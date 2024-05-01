@@ -9,6 +9,9 @@ import socket
 import whois
 
 
+filepath = "C:/Users/dlckd/Desktop/2024-1학기/캡스톤디자인/Phising_Detection/ML/Datasets/non_phishing.csv"
+
+
 def is_redirection(url):    # 만약 url이 redirection한다면 redirection하는 url을 반환해서 그 url을 분석
     try:
         response = requests.head(url, allow_redirects=True)
@@ -83,14 +86,25 @@ def long_domain(url):  # url의 호스트 이름이 30글자보다 큰 경우 �
 
 
 # url의 도메인이 잘 알려진 url의 도메인과 비슷하게 생긴 경우 비정상
-def similar_url(url, well_known_hostname, threshold=2):
+def similar_url(url, filepath, threshold=2):
     hostname = urlparse(url).netloc
-    distance = Levenshtein.distance(hostname, well_known_hostname)
-    if hostname != well_known_hostname:
-        if distance <= threshold:
-            return 1
+
+    # 파일에서 well_known_hostname 목록을 읽어온다.
+    with open(filepath, 'r') as file:
+        well_known_hostnames = [
+            urlparse(line).netloc for line in file.read().splitlines()]
+        print(well_known_hostnames)
+
+    for well_known_hostname in well_known_hostnames:
+        distance = Levenshtein.distance(hostname, well_known_hostname)
+
+        # hostname과 well_known_hostname이 일치하지 않는 경우만 거리를 계산
+        if hostname != well_known_hostname:
+            if distance <= threshold:
+                return 1
         else:
             return 0
+    return 0
 
 
 def non_standard_port(url):
