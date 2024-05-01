@@ -23,6 +23,6 @@ joblib.dump(random_forest_model, 'random_forest_model.pkl')
 model_loaded = joblib.load('random_forest_model.pkl')
 
 # 예측 및 성능 평가
-predictions = model_loaded(X_test)
+predictions = model_loaded.predict(X_test)
 print("Accuracy: ", accuracy_score(y_test, predictions))
 print("Classification Report: \n", classification_report(y_test, predictions))
