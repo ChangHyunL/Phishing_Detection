@@ -1,5 +1,5 @@
-# import csv
-# import os
+import csv
+import os
 
 # # 현재 작업 디렉토리 확인
 # print("현재 디렉토리:", os.getcwd())
@@ -16,6 +16,18 @@
 #         csv_writer.writerow(['https://www.' + line.strip()])
 
 # print(f"CSV 파일이 생성되었습니다: {output_file_path}")
+
+import pandas as pd
+input_file_path = "C:/Users/dlckd/Desktop/2024-1학기/캡스톤디자인/Phising_Detection/RuleDetection/IncludedCACertificateReportForMSFT.csv"
+output_file_path = "C:/Users/dlckd/Desktop/2024-1학기/캡스톤디자인/Phising_Detection/RuleDetection/trusted_ca.csv"
+# 원본 CSV 파일 읽기
+df = pd.read_csv(input_file_path, encoding='utf-8')
+
+# 2번째 열의 데이터 선택 및 중복 제거
+unique_data = df.iloc[:, 1].drop_duplicates()
+
+# 결과 데이터를 새로운 CSV 파일에 저장
+unique_data.to_csv(output_file_path, index=False, encoding='utf-8')
 
 
 # import csv
@@ -35,30 +47,30 @@
 # print(f"CSV 파일이 생성되었습니다: {output_file_path}")
 
 
-import pandas as pd
+# import pandas as pd
 
-# CSV 파일 읽기
+# # CSV 파일 읽기
 
-input_file_path = 'C:/Users/dlckd/Desktop/2024-1학기/캡스톤디자인/Phising_Detection/ML/Datasets/non_phishing.csv'
-output_file_path = 'C:/Users/dlckd/Desktop/2024-1학기/캡스톤디자인/Phising_Detection/ML/Datasets/processed_non_phishing_urls.csv'
-df = pd.read_csv(input_file_path, header=None, names=['url'])
+# input_file_path = 'C:/Users/dlckd/Desktop/2024-1학기/캡스톤디자인/Phising_Detection/ML/Datasets/non_phishing.csv'
+# output_file_path = 'C:/Users/dlckd/Desktop/2024-1학기/캡스톤디자인/Phising_Detection/ML/Datasets/processed_non_phishing_urls.csv'
+# df = pd.read_csv(input_file_path, header=None, names=['url'])
 
-# long_url 규칙 함수 정의
-
-
-def long_url(url):
-    if len(url) > 75:
-        return 1
-    else:
-        return 0
-
-# 여기에 추가 규칙 함수를 정의할 수 있습니다.
+# # long_url 규칙 함수 정의
 
 
-# 규칙 적용
-df['long_url'] = df['url'].apply(long_url)
+# def long_url(url):
+#     if len(url) > 75:
+#         return 1
+#     else:
+#         return 0
 
-# 추가 규칙 적용 예시: df['rule2'] = df['url'].apply(rule2)
+# # 여기에 추가 규칙 함수를 정의할 수 있습니다.
 
-# 결과를 새로운 CSV 파일로 저장
-df.to_csv(output_file_path, index=False)
+
+# # 규칙 적용
+# df['long_url'] = df['url'].apply(long_url)
+
+# # 추가 규칙 적용 예시: df['rule2'] = df['url'].apply(rule2)
+
+# # 결과를 새로운 CSV 파일로 저장
+# df.to_csv(output_file_path, index=False)
