@@ -168,6 +168,9 @@
             padding-top: 0.5rem;
             padding-bottom: 0.5rem;
         }
+         .phishingURL {
+             color: red;
+         }
     </style>
     <script src="https://checkphish.bolster.ai/wp-content/themes/checkphish/assets/js/index.js?ver=6.4.4" id="twentytwenty-js-js" defer data-wp-strategy="defer"></script>
     <link rel="https://api.w.org/" href="https://checkphish.bolster.ai/wp-json/" /><link rel="alternate" type="application/json" href="https://checkphish.bolster.ai/wp-json/wp/v2/pages/6" /><link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://checkphish.bolster.ai/xmlrpc.php?rsd" />
@@ -347,12 +350,13 @@
                                                 </span>
                                             </span>
                                             <h3 class="h4">리다이렉션 여부</h3>
-                                            <p th:if="${result != null}">
-                                                <span th:text="${result.isRedirection}"/>
-                                                <span th:if="${result.isRedirection == 1}">유효하지 않은 URL 주소입니다.</span>
+                                            <p th:if="${result == null}">
+                                                피싱 사이트는 사용자를 다른 사이트로 리디렉션하여 개인 정보를 탈취하거나 악성 코드를 전파할 수 있습니다. 따라서 리디렉션이 있을 경우 주의가 필요합니다.
+                                            </p>
+                                            <p th:if="${result != null}" >
+                                                <span class="phishingURL" th:if="${result.isRedirection == 1}">유효하지 않은 URL 주소입니다.</span>
                                                 <span th:unless="${result.isRedirection == 1}">유효한 URL 주소입니다.</span>
                                             </p>
-
                                         </div>
                                     </div>
                                     <div class="col-12 col-sm-6 col-lg-3" data-fadeup>
@@ -364,9 +368,11 @@
                                             </span>
                                             <h3 class="h4">긴 URL</h3>
                                             <div class="bs-text-desc">
+                                                <p th:if="${result == null}">
+                                                    피싱 사이트는 긴 URL을 사용하여 신뢰할 수 없는 사이트로 사용자를 유인할 수 있습니다. 이 속성은 긴 URL을 감지하여 사이트의 신뢰성을 판단하는 데 사용될 수 있습니다.
+                                                </p>
                                                 <p th:if="${result != null}">
-                                                    <span th:text="${result.longUrl}"/>
-                                                    <span th:if="${result.longUrl == 1}">유효하지 않은 URL 주소입니다.</span>
+                                                    <span class="phishingURL" th:if="${result.longUrl == 1}">유효하지 않은 URL 주소입니다.</span>
                                                     <span th:unless="${result.longUrl == 1}">유효한 URL 주소입니다.</span>
                                                 </p>
 
@@ -382,9 +388,11 @@
                                             </span>
                                             <h3 class="h4">IP 여부</h3>
                                             <div class="bs-text-desc">
+                                                <p th:if="${result == null}">
+                                                    피싱 사이트는 IP 주소를 URL에 포함하여 사용자를 속일 수 있습니다. 이는 일반적으로 사이트의 도메인 이름 대신 IP 주소를 사용하는 것을 의미합니다. 이러한 사이트는 보통 신뢰할 수 없는 사이트일 가능성이 높습니다.
+                                                </p>
                                                 <p th:if="${result != null}">
-                                                    <span th:text="${result.havingIp}"/>
-                                                    <span th:if="${result.havingIp == 1}">유효하지 않은 URL 주소입니다.</span>
+                                                    <span class="phishingURL" th:if="${result.havingIp == 1}">유효하지 않은 URL 주소입니다.</span>
                                                     <span th:unless="${result.havingIp == 1}">유효한 URL 주소입니다.</span>
                                                 </p>
 
@@ -400,9 +408,11 @@
                                             </span>
                                             <h3 class="h4">'@'포함 여부</h3>
                                             <div class="bs-text-desc">
+                                                <p th:if="${result == null}">
+                                                    일부 피싱 사이트는 이메일 주소와 유사한 형식을 가진 URL을 사용하여 사용자를 속일 수 있습니다. 이러한 URL에는 일반적으로 "@" 기호가 포함됩니다.
+                                                </p>
                                                 <p th:if="${result != null}">
-                                                    <span th:text="${result.havingAt}"/>
-                                                    <span th:if="${result.havingAt == 1}">유효하지 않은 URL 주소입니다.</span>
+                                                    <span class="phishingURL" th:if="${result.havingAt == 1}">유효하지 않은 URL 주소입니다.</span>
                                                     <span th:unless="${result.havingAt == 1}">유효한 URL 주소입니다.</span>
                                                 </p>
 
@@ -419,9 +429,11 @@
                                             </span>
                                             <h3 class="h4">'-' 포함 여부</h3>
                                             <div class="bs-text-desc">
+                                                <p th:if="${result == null}">
+                                                    피싱 사이트는 URL에 대시를 사용하여 사용자를 속일 수 있습니다. 예를 들어, 신뢰할 수 있는 사이트의 도메인 이름과 유사하게 보이는 도메인에 대시를 추가하여 피싱 사이트로 속일 수 있습니다.
+                                                </p>
                                                 <p th:if="${result != null}">
-                                                    <span th:text="${result.havingDash}"/>
-                                                    <span th:if="${result.havingDash == 1}">유효하지 않은 URL 주소입니다.</span>
+                                                    <span class="phishingURL" th:if="${result.havingDash == 1}">유효하지 않은 URL 주소입니다.</span>
                                                     <span th:unless="${result.havingDash == 1}">유효한 URL 주소입니다.</span>
                                                 </p>
 
@@ -438,9 +450,11 @@
                                             </span>
                                             <h3 class="h4">'_' 포함 여부</h3>
                                             <div class="bs-text-desc">
+                                                <p th:if="${result == null}">
+                                                    마찬가지로, 밑줄도 URL에 사용될 수 있는 특수 문자 중 하나입니다. 피싱 사이트는 밑줄을 사용하여 사용자를 속일 수 있습니다. 신뢰할 수 있는 사이트의 도메인 이름과 유사한 도메인에 밑줄을 추가하여 피싱 사이트를 만들 수 있습니다.
+                                                </p>
                                                 <p th:if="${result != null}">
-                                                    <span th:text="${result.havingUnderbar}"/>
-                                                    <span th:if="${result.havingUnderbar == 1}">유효하지 않은 URL 주소입니다.</span>
+                                                    <span class="phishingURL" th:if="${result.havingUnderbar == 1}">유효하지 않은 URL 주소입니다.</span>
                                                     <span th:unless="${result.havingUnderbar == 1}">유효한 URL 주소입니다.</span>
                                                 </p>
 
@@ -457,9 +471,11 @@
                                             </span>
                                             <h3 class="h4">리다이렉션 이후</h3>
                                             <div class="bs-text-desc">
+                                                <p th:if="${result == null}">
+                                                    리디렉션을 가지고 있는지 여부를 나타내는 부울 값입니다. 이것은 보다 일반적인 형태의 질문으로, 특정 웹사이트나 URL이 리디렉션을 포함하는지를 확인하는 데 사용될 수 있습니다.
+                                                </p>
                                                 <p th:if="${result != null}">
-                                                    <span th:text="${result.havingRedirection}"/>
-                                                    <span th:if="${result.havingRedirection == 1}">유효하지 않은 URL 주소입니다.</span>
+                                                    <span class="phishingURL" th:if="${result.havingRedirection == 1}">유효하지 않은 URL 주소입니다.</span>
                                                     <span th:unless="${result.havingRedirection == 1}">유효한 URL 주소입니다.</span>
                                                 </p>
 
@@ -476,8 +492,10 @@
                                             </span>
                                             <h3 class="h4">서브 도메인 개수</h3>
                                             <div class="bs-text-desc">
+                                                <p th:if="${result == null}">
+                                                    피싱 공격에서 공격자들은 종종 신뢰할 수 있는 사이트처럼 보이게 하기 위해 서브 도메인을 사용할 수 있습니다. 이것은 사용자에게 속임수를 부리거나 피해를 입히려는 목적으로 이루어집니다.
+                                                </p>
                                                 <p th:if="${result != null}">
-                                                    <span th:text="${result.subDomains}"/>
                                                     <span th:if="${result.subDomains == 1}">유효하지 않은 URL 주소입니다.</span>
                                                     <span th:unless="${result.subDomains == 1}">유효한 URL 주소입니다.</span>
                                                 </p>
@@ -495,8 +513,10 @@
                                             </span>
                                             <h3 class="h4">긴 호스트 네임</h3>
                                             <div class="bs-text-desc">
+                                                <p th:if="${result == null}">
+                                                    도메인 이름이 지나치게 길거나 이상하게 보일 경우, 이는 사용자에게 의심스러운 사이트임을 알리는 신호가 될 수 있습니다.
+                                                </p>
                                                 <p th:if="${result != null}">
-                                                    <span th:text="${result.longDomain}"/>
                                                     <span th:if="${result.longDomain == 1}">유효하지 않은 URL 주소입니다.</span>
                                                     <span th:unless="${result.longDomain == 1}">유효한 URL 주소입니다.</span>
                                                 </p>
@@ -514,8 +534,10 @@
                                             </span>
                                             <h3 class="h4">유사한 URL</h3>
                                             <div class="bs-text-desc">
+                                                <p th:if="${result == null}">
+                                                    입력된 URL이 기존의 URL과 유사한지 여부를 나타냅니다. 피싱 공격자는 기존의 신뢰할 만한 사이트와 비슷한 도메인을 생성하여 사용자를 속일 수 있습니다.
+                                                </p>
                                                 <p th:if="${result != null}">
-                                                    <span th:text="${result.similarUrl}"/>
                                                     <span th:if="${result.similarUrl == 1}">유효하지 않은 URL 주소입니다.</span>
                                                     <span th:unless="${result.similarUrl == 1}">유효한 URL 주소입니다.</span>
                                                 </p>
@@ -533,8 +555,10 @@
                                             </span>
                                             <h3 class="h4">비표준 포트</h3>
                                             <div class="bs-text-desc">
+                                                <p th:if="${result == null}">
+                                                    표준이 아닌 포트를 사용하는 경우, 일반적인 웹사이트가 아닐 가능성이 있으며, 피싱 사이트일 수 있습니다.
+                                                </p>
                                                 <p th:if="${result != null}">
-                                                    <span th:text="${result.nonStandardPort}"/>
                                                     <span th:if="${result.nonStandardPort == 1}">유효하지 않은 URL 주소입니다.</span>
                                                     <span th:unless="${result.nonStandardPort == 1}">유효한 URL 주소입니다.</span>
                                                 </p>
@@ -551,8 +575,9 @@
                                             </span>
                                             <h3 class="h5">신뢰 가능한 인증서</h3>
                                             <div class="bs-text-desc">
+                                                <p th:if="${result == null}">
+                                                    주어진 웹사이트의 SSL/TLS 인증서가 신뢰할 수 있는 인증 기관에 의해 서명되었는지 여부를 나타내는 부울 값입니다. 웹사이트가 신뢰할 수 있는 인증 기관에 의해 발급된 인증서를 사용하면, 사용자의 브라우저는 해당 인증서를 신뢰하고 안전한 연결임을 보장할 수 있습니다.                                                 </p>
                                                 <p th:if="${result != null}">
-                                                    <span th:text="${result.isHttps}"/>
                                                     <span th:if="${result.isHttps == 1}">유효하지 않은 URL 주소입니다.</span>
                                                     <span th:unless="${result.isHttps == 1}">유효한 URL 주소입니다.</span>
                                                 </p>
@@ -570,8 +595,10 @@
                                             </span>
                                             <h3 class="h4">HTTPS 여부</h3>
                                             <div class="bs-text-desc">
+                                                <p th:if="${result == null}">
+                                                    데이터를 암호화하여 보안을 강화하는 프로토콜입니다. 사용자의 브라우저와 웹서버 간 통신을 안전하게 유지하는 데 사용됩니다. 피싱 사이트는 종종 HTTPS를 사용하지 않거나, HTTPS가 아니더라도 HTTP를 통해 연결을 시도할 수 있습니다.
+                                                </p>
                                                 <p th:if="${result != null}">
-                                                    <span th:text="${result.isTrustedCert}"/>
                                                     <span th:if="${result.isTrustedCert == 1}">유효하지 않은 URL 주소입니다.</span>
                                                     <span th:unless="${result.isTrustedCert == 1}">유효한 URL 주소입니다.</span>
                                                 </p>
@@ -589,8 +616,10 @@
                                             </span>
                                             <h3 class="h4">생성날짜 가져오기</h3>
                                             <div class="bs-text-desc">
+                                                <p th:if="${result == null}">
+                                                    주어진 URL이나 도메인이 생성된 날짜를 나타내는 정보입니다. 이것은 해당 웹사이트나 도메인이 언제 만들어졌는지를 나타내며, 피싱 사이트를 식별하거나 새로운 도메인을 감지하는 데 도움이 될 수 있습니다.
+                                                </p>
                                                 <p th:if="${result != null}">
-                                                    <span th:text="${result.creationDate}"/>
                                                     <span th:if="${result.creationDate == 1}">유효하지 않은 URL 주소입니다.</span>
                                                     <span th:unless="${result.creationDate == 1}">유효한 URL 주소입니다.</span>
                                                 </p>
@@ -607,8 +636,10 @@
                                             </span>
                                             <h3 class="h4">만료날짜가져오기</h3>
                                             <div class="bs-text-desc">
+                                                <p th:if="${result == null}">
+                                                    주어진 URL이나 도메인의 만료일을 나타냅니다. 도메인 등록은 특정 기간 동안 유효하며, 만료일 이후에는 도메인이 재등록되지 않는 한 사용할 수 없습니다. 피싱 사이트는 종종 짧은 기간 동안만 활성화되므로, 만료일이 가까운 도메인이나 URL은 피싱 사이트일 가능성이 높습니다.
+                                                </p>
                                                 <p th:if="${result != null}">
-                                                    <span th:text="${result.expirationDate}"/>
                                                     <span th:if="${result.expirationDate == 1}">유효하지 않은 URL 주소입니다.</span>
                                                     <span th:unless="${result.expirationDate == 1}">유효한 URL 주소입니다.</span>
                                                 </p>
