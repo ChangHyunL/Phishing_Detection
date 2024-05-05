@@ -1,33 +1,43 @@
 import csv
 import os
 
-# # 현재 작업 디렉토리 확인
-# print("현재 디렉토리:", os.getcwd())
+# 현재 작업 디렉토리 확인
+print("현재 디렉토리:", os.getcwd())
 
-# # 입력 파일(txt)과 출력 파일(csv) 경로 설정
-# input_file_path = 'C:/Users/dlckd/Desktop/2024-1학기/캡스톤디자인/Phising_Detection/ML/Datasets/non_phishing.txt'
-# output_file_path = 'C:/Users/dlckd/Desktop/2024-1학기/캡스톤디자인/Phising_Detection/ML/Datasets/non_phishing.csv'
+# 입력 파일(txt)과 출력 파일(csv) 경로 설정
+input_file_path = 'C:/Users/dlckd/Desktop/2024-1학기/캡스톤디자인/Phising_Detection/ML/Datasets/top50K.csv'
+output_file_path = 'C:/Users/dlckd/Desktop/2024-1학기/캡스톤디자인/Phising_Detection/ML/Datasets/non_phishing.csv'
 
-# # txt 파일에서 각 줄을 읽어와서 "https://www."를 추가한 후 csv 파일에 쓰기
-# with open(input_file_path, 'r', encoding='utf-8') as input_file, open(output_file_path, 'w', newline='', encoding='utf-8') as output_file:
-#     csv_writer = csv.writer(output_file)
-#     for line in input_file:
-#         # 각 줄의 앞에 "https://www."를 추가하여 쓰기
-#         csv_writer.writerow(['https://www.' + line.strip()])
+# txt 파일에서 각 줄을 읽어와서 "https://www."를 추가한 후 csv 파일에 쓰기
+with open(input_file_path, 'r', encoding='utf-8') as input_file, open(output_file_path, 'w', newline='', encoding='utf-8') as output_file:
+    # csv_writer = csv.writer(output_file)
+    # for line in input_file:
+    #     # 각 줄의 앞에 "https://www."를 추가하여 쓰기
+    #     csv_writer.writerow(['https://www.' + line[0].strip()])
 
-# print(f"CSV 파일이 생성되었습니다: {output_file_path}")
+    csv_reader = csv.reader(input_file)
+    csv_writer = csv.writer(output_file)
 
-import pandas as pd
-input_file_path = "C:/Users/dlckd/Desktop/2024-1학기/캡스톤디자인/Phising_Detection/RuleDetection/IncludedCACertificateReportForMSFT.csv"
-output_file_path = "C:/Users/dlckd/Desktop/2024-1학기/캡스톤디자인/Phising_Detection/RuleDetection/trusted_ca.csv"
-# 원본 CSV 파일 읽기
-df = pd.read_csv(input_file_path, encoding='utf-8')
+    for row in csv_reader:
+        # 첫 번째 열에 "https://www."를 추가
+        if row:  # 비어있지 않은 행만 처리
+            modified_url = 'https://www.' + row[0].strip()
+            # 한 항목만 포함된 리스트로 쓰기
+            csv_writer.writerow([modified_url])
 
-# 2번째 열의 데이터 선택 및 중복 제거
-unique_data = df.iloc[:, 1].drop_duplicates()
+print(f"CSV 파일이 생성되었습니다: {output_file_path}")
 
-# 결과 데이터를 새로운 CSV 파일에 저장
-unique_data.to_csv(output_file_path, index=False, encoding='utf-8')
+# import pandas as pd
+# input_file_path = "C:/Users/dlckd/Desktop/2024-1학기/캡스톤디자인/Phising_Detection/RuleDetection/IncludedCACertificateReportForMSFT.csv"
+# output_file_path = "C:/Users/dlckd/Desktop/2024-1학기/캡스톤디자인/Phising_Detection/RuleDetection/trusted_ca.csv"
+# # 원본 CSV 파일 읽기
+# df = pd.read_csv(input_file_path, encoding='utf-8')
+
+# # 2번째 열의 데이터 선택 및 중복 제거
+# unique_data = df.iloc[:, 1].drop_duplicates()
+
+# # 결과 데이터를 새로운 CSV 파일에 저장
+# unique_data.to_csv(output_file_path, index=False, encoding='utf-8')
 
 
 # import csv

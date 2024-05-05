@@ -12,9 +12,11 @@ import pandas as pd
 
 filepath = "C:/Users/dlckd/Desktop/2024-1학기/캡스톤디자인/Phising_Detection/ML/Datasets/non_phishing.csv"
 ca_filepath = "C:/Users/dlckd/Desktop/2024-1학기/캡스톤디자인/Phising_Detection/RuleDetection/trusted_ca.csv"
-input_file_path = 'C:/Users/dlckd/Desktop/2024-1학기/캡스톤디자인/Phising_Detection/ML/Datasets/non_phishing.csv'
-output_file_path = 'C:/Users/dlckd/Desktop/2024-1학기/캡스톤디자인/Phising_Detection/ML/Datasets/processed_non_phishing_urls.csv'
-df = pd.read_csv(input_file_path, header=None, names=['url'])
+input_file_path = 'C:/Users/dlckd/Desktop/2024-1학기/캡스톤디자인/Phising_Detection/ML/Datasets/phishing.csv'
+output_file_path = 'C:/Users/dlckd/Desktop/2024-1학기/캡스톤디자인/Phising_Detection/ML/Datasets/processed_phishing_urls.csv'
+
+df = pd.read_csv(input_file_path, nrows=10000, header=None, names=['url'])
+# df = pd.read_csv(input_file_path, header=None, names=['url'])
 
 
 # def is_redirection(url):    # 만약 url이 redirection한다면 redirection하는 url을 반환해서 그 url을 분석
