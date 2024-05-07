@@ -13,9 +13,9 @@ import pandas as pd
 filepath = "C:/Users/dlckd/Desktop/2024-1학기/캡스톤디자인/Phising_Detection/ML/Datasets/rawdata/non_phishing.csv"
 ca_filepath = "C:/Users/dlckd/Desktop/2024-1학기/캡스톤디자인/Phising_Detection/RuleDetection/trusted_ca.csv"
 input_file_path = 'C:/Users/dlckd/Desktop/2024-1학기/캡스톤디자인/Phising_Detection/ML/Datasets/normal_url.csv'
-output_file_path = 'C:/Users/dlckd/Desktop/2024-1학기/캡스톤디자인/Phising_Detection/ML/Datasets/processed_normal_url.csv'
+output_file_path = 'C:/Users/dlckd/Desktop/2024-1학기/캡스톤디자인/Phising_Detection/ML/Datasets/processed_normal_url1.csv'
 
-df = pd.read_csv(input_file_path, header=None, names=['is_redirection'])
+df = pd.read_csv(input_file_path, usecols=[1])
 # df = pd.read_csv(input_file_path, header=None, names=['url'])
 
 
@@ -179,27 +179,23 @@ def is_trusted_cert(url, trusted_issuer):
 
 
 def get_creation_date(url):
-    url = urlparse(url).netloc
+    # url = urlparse(url).netloc
     try:
         domain = whois.whois(url)
-        print(domain.creation_date)
         creation_date = domain.creation_date
         if isinstance(creation_date, list):
             creation_date = creation_date[0]
-        if not isinstance(creation_date, datetime):
-            try:
-                creation_date = parser.parse(str(creation_date))
-            except ValueError:
-                print("Creation date format is not supported.")
-                return 1
+        print(
+            f'{url}: type: {type(creation_date)}, {creation_date}')
         today = datetime.now()
         age = today - creation_date
+        print(age)
         if age.days < 180:
             return 1
         else:
             return 0
     except Exception as e:
-        print(f"Error: {e}")
+        print(f"{url}, Error: {e}")
         return 1
 
 
@@ -209,14 +205,11 @@ def get_expiration_date(url):
         expiration_date = domain.expiration_date
         if isinstance(expiration_date, list):
             expiration_date = expiration_date[0]
-        if not isinstance(creation_date, datetime):
-            try:
-                creation_date = parser.parse(str(creation_date))
-            except ValueError:
-                print("Creation date format is not supported.")
-                return 1
+        print(
+            f'{url}: type: {type(expiration_date)}, {expiration_date}, {expiration_date.year}')
         today = datetime.now()
         age = expiration_date - today
+        print(age)
         if age.days < 365:
             return 1
         else:
@@ -228,26 +221,26 @@ def get_expiration_date(url):
 
 # df['is_redirection'] = df['url'].apply(is_redirection)
 
-df['long_url'] = df['is_redirection'].apply(long_url)
-df['having_ip'] = df['is_redirection'].apply(having_ip)
-df['having_at'] = df['is_redirection'].apply(having_at)
-df['having_dash'] = df['is_redirection'].apply(having_dash)
-df['having_underbar'] = df['is_redirection'].apply(having_underbar)
-df['having_redirection'] = df['is_redirection'].apply(having_redirection)
-df['sub_domains'] = df['is_redirection'].apply(sub_domains)
-df['long_domain'] = df['is_redirection'].apply(long_domain)
-df.to_csv(output_file_path, index=False)
-well_known_hostnames = read_well_known_hostnames(filepath)
-df['similar_url'] = df['is_redirection'].apply(
-    lambda x: similar_url(x, well_known_hostnames, threshold=2))
-df.to_csv(output_file_path, index=False)
-df['non_standard_port'] = df['is_redirection'].apply(non_standard_port)
-df['is_https'] = df['is_redirection'].apply(is_https)
-df.to_csv(output_file_path, index=False)
-trusted_issuer = read_trusted_ca(ca_filepath)
-df['is_trusted_cert'] = df['is_redirection'].apply(
-    lambda x: is_trusted_cert(x, trusted_issuer))
-df.to_csv(output_file_path, index=False)
+# df['long_url'] = df['is_redirection'].apply(long_url)
+# df['having_ip'] = df['is_redirection'].apply(having_ip)
+# df['having_at'] = df['is_redirection'].apply(having_at)
+# df['having_dash'] = df['is_redirection'].apply(having_dash)
+# df['having_underbar'] = df['is_redirection'].apply(having_underbar)
+# df['having_redirection'] = df['is_redirection'].apply(having_redirection)
+# df['sub_domains'] = df['is_redirection'].apply(sub_domains)
+# df['long_domain'] = df['is_redirection'].apply(long_domain)
+# df.to_csv(output_file_path, index=False)
+# well_known_hostnames = read_well_known_hostnames(filepath)
+# df['similar_url'] = df['is_redirection'].apply(
+#     lambda x: similar_url(x, well_known_hostnames, threshold=2))
+# df.to_csv(output_file_path, index=False)
+# df['non_standard_port'] = df['is_redirection'].apply(non_standard_port)
+# df['is_https'] = df['is_redirection'].apply(is_https)
+# df.to_csv(output_file_path, index=False)
+# trusted_issuer = read_trusted_ca(ca_filepath)
+# df['is_trusted_cert'] = df['is_redirection'].apply(
+#     lambda x: is_trusted_cert(x, trusted_issuer))
+# df.to_csv(output_file_path, index=False)
 df['get_creation_date'] = df['is_redirection'].apply(get_creation_date)
 df.to_csv(output_file_path, index=False)
 df['get_expiration_date'] = df['is_redirection'].apply(get_expiration_date)
