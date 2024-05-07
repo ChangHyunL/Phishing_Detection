@@ -10,12 +10,12 @@ import socket
 import whois
 import pandas as pd
 
-filepath = "C:/Users/dlckd/Desktop/2024-1학기/캡스톤디자인/Phising_Detection/ML/Datasets/non_phishing.csv"
+filepath = "C:/Users/dlckd/Desktop/2024-1학기/캡스톤디자인/Phising_Detection/ML/Datasets/rawdata/non_phishing.csv"
 ca_filepath = "C:/Users/dlckd/Desktop/2024-1학기/캡스톤디자인/Phising_Detection/RuleDetection/trusted_ca.csv"
-input_file_path = 'C:/Users/dlckd/Desktop/2024-1학기/캡스톤디자인/Phising_Detection/ML/Datasets/phishing.csv'
-output_file_path = 'C:/Users/dlckd/Desktop/2024-1학기/캡스톤디자인/Phising_Detection/ML/Datasets/processed_phishing_urls.csv'
+input_file_path = 'C:/Users/dlckd/Desktop/2024-1학기/캡스톤디자인/Phising_Detection/ML/Datasets/normal_url.csv'
+output_file_path = 'C:/Users/dlckd/Desktop/2024-1학기/캡스톤디자인/Phising_Detection/ML/Datasets/processed_normal_url.csv'
 
-df = pd.read_csv(input_file_path, nrows=10000, header=None, names=['url'])
+df = pd.read_csv(input_file_path, header=None, names=['is_redirection'])
 # df = pd.read_csv(input_file_path, header=None, names=['url'])
 
 
@@ -228,27 +228,27 @@ def get_expiration_date(url):
 
 # df['is_redirection'] = df['url'].apply(is_redirection)
 
-df['long_url'] = df['url'].apply(long_url)
-df['having_ip'] = df['url'].apply(having_ip)
-df['having_at'] = df['url'].apply(having_at)
-df['having_dash'] = df['url'].apply(having_dash)
-df['having_underbar'] = df['url'].apply(having_underbar)
-df['having_redirection'] = df['url'].apply(having_redirection)
-df['sub_domains'] = df['url'].apply(sub_domains)
-df['long_domain'] = df['url'].apply(long_domain)
+df['long_url'] = df['is_redirection'].apply(long_url)
+df['having_ip'] = df['is_redirection'].apply(having_ip)
+df['having_at'] = df['is_redirection'].apply(having_at)
+df['having_dash'] = df['is_redirection'].apply(having_dash)
+df['having_underbar'] = df['is_redirection'].apply(having_underbar)
+df['having_redirection'] = df['is_redirection'].apply(having_redirection)
+df['sub_domains'] = df['is_redirection'].apply(sub_domains)
+df['long_domain'] = df['is_redirection'].apply(long_domain)
 df.to_csv(output_file_path, index=False)
 well_known_hostnames = read_well_known_hostnames(filepath)
-df['similar_url'] = df['url'].apply(
+df['similar_url'] = df['is_redirection'].apply(
     lambda x: similar_url(x, well_known_hostnames, threshold=2))
 df.to_csv(output_file_path, index=False)
-df['non_standard_port'] = df['url'].apply(non_standard_port)
-df['is_https'] = df['url'].apply(is_https)
+df['non_standard_port'] = df['is_redirection'].apply(non_standard_port)
+df['is_https'] = df['is_redirection'].apply(is_https)
 df.to_csv(output_file_path, index=False)
 trusted_issuer = read_trusted_ca(ca_filepath)
-df['is_trusted_cert'] = df['url'].apply(
+df['is_trusted_cert'] = df['is_redirection'].apply(
     lambda x: is_trusted_cert(x, trusted_issuer))
 df.to_csv(output_file_path, index=False)
-df['get_creation_date'] = df['url'].apply(get_creation_date)
+df['get_creation_date'] = df['is_redirection'].apply(get_creation_date)
 df.to_csv(output_file_path, index=False)
-df['get_expiration_date'] = df['url'].apply(get_expiration_date)
+df['get_expiration_date'] = df['is_redirection'].apply(get_expiration_date)
 df.to_csv(output_file_path, index=False)
