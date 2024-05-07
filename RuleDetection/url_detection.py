@@ -1,4 +1,5 @@
 # url이 블랙리스트에 있는지 확인하는 코드 필요 -> 이 코드는 학습을 위한 코드이므로 일단 빼둠 마지막에 DB구성 후 추가할 예정
+from dateutil import parser
 from datetime import datetime
 import re
 import Levenshtein
@@ -7,17 +8,27 @@ import requests
 import ssl
 import socket
 import whois
-
+import pandas as pd
 
 filepath = "C:/Users/dlckd/Desktop/2024-1학기/캡스톤디자인/Phising_Detection/ML/Datasets/non_phishing.csv"
+ca_filepath = "C:/Users/dlckd/Desktop/2024-1학기/캡스톤디자인/Phising_Detection/RuleDetection/trusted_ca.csv"
+input_file_path = 'C:/Users/dlckd/Desktop/2024-1학기/캡스톤디자인/Phising_Detection/ML/Datasets/phishing.csv'
+output_file_path = 'C:/Users/dlckd/Desktop/2024-1학기/캡스톤디자인/Phising_Detection/ML/Datasets/processed_phishing_urls.csv'
+
+df = pd.read_csv(input_file_path, nrows=10000, header=None, names=['url'])
+# df = pd.read_csv(input_file_path, header=None, names=['url'])
 
 
-def is_redirection(url):    # 만약 url이 redirection한다면 redirection하는 url을 반환해서 그 url을 분석
-    try:
-        response = requests.head(url, allow_redirects=True)
-        return response.url
-    except:
-        return print(f"{url}은 url이 아닙니다.")
+# def is_redirection(url):    # 만약 url이 redirection한다면 redirection하는 url을 반환해서 그 url을 분석
+#     try:
+#         response = requests.head(url, allow_redirects=True)
+#         if response.url == url:
+#             return 0
+#         else:
+#             return 1
+#     except:
+#         print(f"{url}은 url이 아닙니다.")
+#         return 1
 
 
 def long_url(url):  # url의 길이가 75자 보다 큰 경우 비정상
@@ -86,14 +97,21 @@ def long_domain(url):  # url의 호스트 이름이 30글자보다 큰 경우 �
 
 
 # url의 도메인이 잘 알려진 url의 도메인과 비슷하게 생긴 경우 비정상
-def similar_url(url, filepath, threshold=2):
-    hostname = urlparse(url).netloc
 
-    # 파일에서 well_known_hostname 목록을 읽어온다.
+def read_well_known_hostnames(filepath):
     with open(filepath, 'r') as file:
         well_known_hostnames = [
             urlparse(line).netloc for line in file.read().splitlines()]
-        print(well_known_hostnames)
+    return well_known_hostnames
+
+
+def similar_url(url, well_known_hostnames, threshold=2):
+    hostname = urlparse(url).netloc
+
+    # 파일에서 well_known_hostname 목록을 읽어온다.
+    # with open(filepath, 'r') as file:
+    #     well_known_hostnames = [
+    #         urlparse(line).netloc for line in file.read().splitlines()]
 
     for well_known_hostname in well_known_hostnames:
         distance = Levenshtein.distance(hostname, well_known_hostname)
@@ -132,7 +150,14 @@ def is_https(url):
 # 구글, 마이크로소프트, 애플의 인증서의 수명이 1년이 안됨
 
 
-def is_trusted_cert(url):
+def read_trusted_ca(ca_filepath):
+    with open(ca_filepath, 'r', encoding='utf-8') as f:
+        trusted_issuer = f.read()
+    print(trusted_issuer)
+    return trusted_issuer
+
+
+def is_trusted_cert(url, trusted_issuer):
     try:
         hostname = urlparse(url).netloc
         context = ssl.create_default_context()
@@ -142,9 +167,8 @@ def is_trusted_cert(url):
         cert = conn.getpeercert()
         issuer = dict(x[0] for x in cert['issuer'])
         issuer_name = issuer.get('organizationName', '')
-        print(f"Issuer: {issuer_name}")
-        with open('IncludedCACertificateReportForMSFT.csv', 'r', encoding='utf-8') as f:
-            trusted_issuer = f.read()
+        # with open('IncludedCACertificateReportForMSFT.csv', 'r', encoding='utf-8') as f:
+        #     trusted_issuer = f.read()
         for trusted_ca in trusted_issuer:
             if trusted_ca in issuer_name:
                 return 0
@@ -155,20 +179,28 @@ def is_trusted_cert(url):
 
 
 def get_creation_date(url):
+    url = urlparse(url).netloc
     try:
         domain = whois.whois(url)
+        print(domain.creation_date)
         creation_date = domain.creation_date
         if isinstance(creation_date, list):
             creation_date = creation_date[0]
+        if not isinstance(creation_date, datetime):
+            try:
+                creation_date = parser.parse(str(creation_date))
+            except ValueError:
+                print("Creation date format is not supported.")
+                return 1
         today = datetime.now()
         age = today - creation_date
+        if age.days < 180:
+            return 1
+        else:
+            return 0
     except Exception as e:
         print(f"Error: {e}")
         return 1
-    if age.days < 180:
-        return 1
-    else:
-        return 0
 
 
 def get_expiration_date(url):
@@ -177,13 +209,46 @@ def get_expiration_date(url):
         expiration_date = domain.expiration_date
         if isinstance(expiration_date, list):
             expiration_date = expiration_date[0]
+        if not isinstance(creation_date, datetime):
+            try:
+                creation_date = parser.parse(str(creation_date))
+            except ValueError:
+                print("Creation date format is not supported.")
+                return 1
         today = datetime.now()
         age = expiration_date - today
-        print(age.days)
+        if age.days < 365:
+            return 1
+        else:
+            return 0
     except Exception as e:
         print(f"Error: {e}")
         return 1
-    if age.days < 365:
-        return 1
-    else:
-        return 0
+
+
+# df['is_redirection'] = df['url'].apply(is_redirection)
+
+df['long_url'] = df['url'].apply(long_url)
+df['having_ip'] = df['url'].apply(having_ip)
+df['having_at'] = df['url'].apply(having_at)
+df['having_dash'] = df['url'].apply(having_dash)
+df['having_underbar'] = df['url'].apply(having_underbar)
+df['having_redirection'] = df['url'].apply(having_redirection)
+df['sub_domains'] = df['url'].apply(sub_domains)
+df['long_domain'] = df['url'].apply(long_domain)
+df.to_csv(output_file_path, index=False)
+well_known_hostnames = read_well_known_hostnames(filepath)
+df['similar_url'] = df['url'].apply(
+    lambda x: similar_url(x, well_known_hostnames, threshold=2))
+df.to_csv(output_file_path, index=False)
+df['non_standard_port'] = df['url'].apply(non_standard_port)
+df['is_https'] = df['url'].apply(is_https)
+df.to_csv(output_file_path, index=False)
+trusted_issuer = read_trusted_ca(ca_filepath)
+df['is_trusted_cert'] = df['url'].apply(
+    lambda x: is_trusted_cert(x, trusted_issuer))
+df.to_csv(output_file_path, index=False)
+df['get_creation_date'] = df['url'].apply(get_creation_date)
+df.to_csv(output_file_path, index=False)
+df['get_expiration_date'] = df['url'].apply(get_expiration_date)
+df.to_csv(output_file_path, index=False)
