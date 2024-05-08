@@ -151,17 +151,24 @@ import pandas as pd
 
 
 file = 'C:/Users/dlckd/Desktop/2024-1학기/캡스톤디자인/Phising_Detection/ML/Datasets/processed_normal_url.csv'
-file1 = 'C:/Users/dlckd/Desktop/2024-1학기/캡스톤디자인/Phising_Detection/ML/Datasets/processed_normal_url1.csv'
+# file = 'merged2.csv'
+file1 = 'merged4.csv'
+# file = 'merged.csv'
+# file1 = 'C:/Users/dlckd/Desktop/2024-1학기/캡스톤디자인/Phising_Detection/ML/Datasets/processed_normal_url2_14.csv'
+# file1 = 'C:/Users/dlckd/Desktop/2024-1학기/캡스톤디자인/Phising_Detection/ML/Datasets/processed_normal_url14.csv'
 
 df = pd.read_csv(file)
 add = pd.read_csv(file1)
 
 # df.drop([df.columns[13], df.columns[14]], axis=1, inplace=True)
-# # df.drop(df.columns[0], axis=1, inplace=True)
+# df.drop(df.columns[0], axis=1, inplace=True)
 
-# df.to_csv(file, index=False)
+# df.to_csv('merged2.csv', index=False)
 
 merged_dataframe = pd.concat([df, add], axis=1)
+# merged_dataframe = pd.concat([df, add])
 
 # 결과 저장
-merged_dataframe.to_csv('merged.csv', index=False)
+# merged_dataframe.to_csv('merged1.csv', index=False)
+# merged_dataframe.to_csv('merged.csv', index=False)
+merged_dataframe.to_csv('processed_normal_url1.csv', index=False)

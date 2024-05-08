@@ -210,7 +210,7 @@ def get_expiration_date(url):
         today = datetime.now()
         age = expiration_date - today
         print(age)
-        if age.days < 365:
+        if age.days < 180:
             return 1
         else:
             return 0
