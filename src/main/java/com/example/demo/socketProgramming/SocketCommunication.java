@@ -51,7 +51,6 @@ public class SocketCommunication {
                     * 피싱 사이트가 탐지되었고 그 결과를 웹으로 전송하려면
                     * 그 결과 값을 파이썬으로부터 받는다는 가정으로 진행 생각
                     * */
-                    System.out.println("피싱 탐지!");
                     newPhishing = new Phishing(detectedData);
                     System.out.println("newPhishing = " + newPhishing);
                 }else {
