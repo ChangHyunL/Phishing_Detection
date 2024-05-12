@@ -30,6 +30,6 @@ model_loaded = joblib.load('logistic_model.pkl')
 predictions = model_loaded.predict(X_test)
 
 # 분류 보고서 및 정확도 출력
-print("Classification Report:")
+print("Classification Report: ")
 print(classification_report(y_test, predictions))
 print(f"Accuracy: {accuracy_score(y_test, predictions) * 100:.2f}%")
