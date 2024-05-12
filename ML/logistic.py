@@ -4,15 +4,16 @@ from sklearn.metrics import classification_report, accuracy_score
 import pandas as pd
 import joblib
 
-# 'train_set.csv'가 다음과 같은 구조를 가진다고 가정
-# "real_url", "feature1", "feature2", ..., "feature14", "label"
-# 0은 정상 1은 피싱, "label"은 실제 url이 피싱인지 아닌지를 나타냄
+# 'merged.csv'가 다음과 같은 구조를 가진다고 가정
+# "url", "feature1", "feature2", ..., "feature14", "isphishing"
+# 0은 정상 1은 피싱, "isphishing"은 실제 url이 피싱인지 아닌지를 나타냄
 
-df = pd.read_csv('train_set.csv')
+df = pd.read_csv(
+    'C:/Users/dlckd/Desktop/2024-1학기/캡스톤디자인/Phising_Detection/ML/Datasets/testDataset/merged.csv')
 
 # 특성과 레이블 분리
-X = df.drop('label', axis=1)    # features
-y = df['label']  # target value
+X = df.drop('isphishing', axis=1)    # features
+y = df['isphishing']  # target value
 
 # 데이터셋 분할: 학습 세트와 테스트 세트
 X_train, X_test, y_train, y_test = train_test_split(
