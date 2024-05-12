@@ -16,8 +16,9 @@ from bs4 import BeautifulSoup
 
 well_known_hostname = "www.google.com"
 filepath = "C:/Users/dlckd/Desktop/2024-1학기/캡스톤디자인/Phising_Detection/ML/Datasets/non_phishing.csv"
+ca_filepath = "C:/Users/dlckd/Desktop/2024-1학기/캡스톤디자인/Phising_Detection/RuleDetection/trusted_ca.csv"
 # url = "https://greekaa....aasaasharifa.github.io/%EC%@A0%95%EA%B7%9C%ED%91-usage-03-basic/"
-url = "https://url.kr/y8f759"
+url = "https://www.google.com"
 # url = "https://url.kr/zdq426"   # 가짜 단축 url
 
 
@@ -177,7 +178,7 @@ def is_trusted_cert(url):
         issuer = dict(x[0] for x in cert['issuer'])
         issuer_name = issuer.get('organizationName', '')
         print(f"Issuer: {issuer_name}")
-        with open('IncludedCACertificateReportForMSFT.csv', 'r', encoding='utf-8') as f:
+        with open(ca_filepath, 'r', encoding='utf-8') as f:
             trusted_issuer = f.read()
         for trusted_ca in trusted_issuer:
             if trusted_ca in issuer_name:
@@ -205,13 +206,13 @@ def get_creation_date(url):
             creation_date = creation_date[0]
         today = datetime.now()
         age = today - creation_date
+        if age.days < 180:
+            return print(f"{url}은 유효하지 않은 url 주소입니다. ❌")
+        else:
+            return print(f"{url}은 유효한 url 주소입니다. ✅")
     except Exception as e:
         print(f"Error: {e}")
         return print(f"{url}은 유효하지 않은 url 주소입니다. ❌")
-    if age.days < 180:
-        return print(f"{url}은 유효하지 않은 url 주소입니다. ❌")
-    else:
-        return print(f"{url}은 유효한 url 주소입니다. ✅")
 
 
 def get_expiration_date(url):
@@ -224,13 +225,13 @@ def get_expiration_date(url):
         today = datetime.now()
         age = expiration_date - today
         print(age.days)
+        if age.days < 365:
+            return print(f"{url}은 유효하지 않은 url 주소입니다. ❌")
+        else:
+            return print(f"{url}은 유효한 url 주소입니다. ✅")
     except Exception as e:
         print(f"Error: {e}")
         return print(f"{url}은 유효하지 않은 url 주소입니다. ❌")
-    if age.days < 365:
-        return print(f"{url}은 유효하지 않은 url 주소입니다. ❌")
-    else:
-        return print(f"{url}은 유효한 url 주소입니다. ✅")
 
     try:
         # Get the HTML content of the webpage
@@ -266,6 +267,7 @@ def get_expiration_date(url):
 
 
 url = is_redirection(url)
+print(url)
 if url:
     long_url(url)
     having_ip(url)
