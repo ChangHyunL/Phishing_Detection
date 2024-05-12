@@ -51,6 +51,7 @@ public class SocketCommunication {
                     * 피싱 사이트가 탐지되었고 그 결과를 웹으로 전송하려면
                     * 그 결과 값을 파이썬으로부터 받는다는 가정으로 진행 생각
                     * */
+                    System.out.println("피싱 탐지!");
                     newPhishing = new Phishing(detectedData);
                     System.out.println("newPhishing = " + newPhishing);
                 }else {
@@ -73,11 +74,13 @@ public class SocketCommunication {
         // 쉼표를 기준으로 문자열을 분리하여 배열로 변환
         String[] processedData = numbersOnly.split(",");
         String redirectedUrl = processedData[0];
-        String[] numArray = Arrays.stream(processedData).toList().remove(0).split(",");
+        System.out.println("redirectedUrl = " + redirectedUrl);
+        List<String> list = Arrays.stream(processedData).toList().subList(1, processedData.length);
+        //String[] numArray = Arrays.stream(processedData).toList().remove(0).split(",");
 
         // 문자열 배열을 정수 리스트로 변환
         List<Integer> resultList = new ArrayList<>();
-        for (String num : numArray) {
+        for (String num : list) {
             resultList.add(Integer.parseInt(num));
         }
         return resultList;

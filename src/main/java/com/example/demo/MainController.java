@@ -52,20 +52,13 @@ public class MainController {
         }
         try {
             System.out.println("url = " + url);
-            URL originalUrl = new URL(url);
-            HttpURLConnection conn = (HttpURLConnection) originalUrl.openConnection();
+            URL urlObj = new URL(url);
+            HttpURLConnection connection = (HttpURLConnection) urlObj.openConnection();
+            connection.setRequestMethod("HEAD");
+            int responseCode = connection.getResponseCode();
+            System.out.println("Response Code: " + responseCode);
+            connection.disconnect();
 
-            // 설정을 변경하여 리디렉션을 따라갈 수 있도록 함
-            conn.setInstanceFollowRedirects(true);
-            conn.connect();
-
-            // 최종적인 URL 가져오기
-            String realUrl = conn.getURL().toString();
-
-            System.out.println("Original URL: " + originalUrl);
-            System.out.println("Real URL: " + realUrl);
-
-            conn.disconnect();
         }catch ( Exception e) {
             e.printStackTrace();
             //URL이 아닌 값
