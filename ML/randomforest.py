@@ -5,9 +5,10 @@ from sklearn.metrics import accuracy_score, classification_report
 import joblib
 
 # 데이터 로드
-data = pd.read_csv('train_set.csv')
-X = data.drop('label', axis=1)  # 특성 데이터
-y = data['label']  # 타겟 레이블
+data = pd.read_csv(
+    'C:/Users/dlckd/Desktop/2024-1학기/캡스톤디자인/Phising_Detection/ML/Datasets/testDataset/merged.csv')
+X = data.drop('isphishing', axis=1)  # 특성 데이터
+y = data['isphishing']  # 타겟 레이블
 
 # 데이터 분할
 X_train, X_test, y_train, y_test = train_test_split(
@@ -24,5 +25,6 @@ model_loaded = joblib.load('random_forest_model.pkl')
 
 # 예측 및 성능 평가
 predictions = model_loaded.predict(X_test)
-print("Accuracy: ", accuracy_score(y_test, predictions))
-print("Classification Report: \n", classification_report(y_test, predictions))
+print("Classification Report: ")
+print(classification_report(y_test, predictions))
+print(f"Accuracy: {accuracy_score(y_test, predictions) * 100:.2f}%")
