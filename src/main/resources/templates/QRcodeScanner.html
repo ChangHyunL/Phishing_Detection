@@ -846,32 +846,33 @@
                                             </li>
                                         </ul>
                                         <div class="tab-content" id="myTabContent">
-                                            <form action="/scanQRcode" method="post" enctype="multipart/form-data">
-                                                <div aria-labelledby="url-tab" class="tab-pane fade show active"
-                                                     id="url-tab-pane"
-                                                     role="tabpanel" tabindex="0">
-                                                    <div id="drop-area" ondragover="handleDragOver(event);"
-                                                         ondragleave="handleDragLeave(event);"
-                                                         ondrop="handleDrop(event);">
-                                                        <div id="highlight-line"></div>
-                                                        <p>이미지를 드래그하거나<br>이미지 선택 버튼으로 이미지를 업로드하세요.</p>
-                                                        <input type="file" id="image-input" name="image"
-                                                               accept="image/*"
-                                                               style="display: none;">
-                                                        <img id="uploaded-image" src="" alt="Uploaded Image">
-                                                    </div>
+                                            <div aria-labelledby="url-tab" class="tab-pane fade show active"
+                                                 id="url-tab-pane"
+                                                 role="tabpanel" tabindex="0">
+                                                <div id="drop-area" ondragover="handleDragOver(event);"
+                                                     ondragleave="handleDragLeave(event);"
+                                                     ondrop="handleDrop(event);">
+                                                    <div id="highlight-line"></div>
+                                                    <p>이미지를 드래그하거나<br>이미지 선택 버튼으로 이미지를 업로드하세요.</p>
+                                                    <input type="file" id="image-input" name="image"
+                                                           accept="image/*"
+                                                           style="display: none;">
+                                                    <img id="uploaded-image" src="" alt="Uploaded Image">
+                                                </div>
+                                                <form action="/scanQRcode" method="post" enctype="multipart/form-data">
 
                                                     <div id="upload-buttons">
+
                                                         <button type="submit" id="image-summit-button">스캔</button>
                                                     </div>
+                                                </form>
+                                                <button id="image-select-button"
+                                                        onclick="document.getElementById('image-input').click();">
+                                                    이미지 선택
+                                                </button>
 
+                                            </div>
 
-                                                </div>
-                                            </form>
-                                            <button id="image-select-button"
-                                                    onclick="document.getElementById('image-input').click();">
-                                                이미지 선택
-                                            </button>
                                             <div aria-labelledby="dm-tab" class="tab-pane fade" id="dm-tab-pane"
                                                  role="tabpanel" tabindex="0">
                                                 <div>
