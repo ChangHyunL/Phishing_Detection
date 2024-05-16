@@ -27,10 +27,12 @@ public class MainController {
     }
 
     @PostMapping("/scanQRcode")
-    public String handleFileUpload_QRCode(@RequestParam("image") MultipartFile file, Model model) throws IOException {
+    public String handleFileUpload_QRCode(@RequestParam("QRcodeImage") MultipartFile file, Model model) throws IOException {
         int phishingCheck=0;
+        System.out.println("file = " + file);
+        System.out.println("file.isEmpty() = " + file.isEmpty());
         if (file.isEmpty()) {
-            return null;
+            return "redirect:scan";
         }
 
         String fileName = file.getOriginalFilename();
@@ -77,7 +79,7 @@ public class MainController {
     public String handleFileUpload_URL(@RequestParam("url") String url, Model model){
         int phishingCheck=0;
         if (url.isEmpty()) {
-            return null;
+            return "redirect:scan";
         }
         try {
             System.out.println("url = " + url);
