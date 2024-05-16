@@ -9,7 +9,11 @@ import java.net.Socket;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 @Component
 public class SocketCommunication {
@@ -17,6 +21,7 @@ public class SocketCommunication {
     public static Phishing socketCommunication(String domain){
         Phishing newPhishing = null;
         try (Socket client = new Socket()) {
+
 
             InetSocketAddress ipep = new InetSocketAddress("127.0.0.1", 9999); // 소켓에 접속하기 위한 접속 정보를 선언한다.
             client.connect(ipep);
@@ -40,8 +45,7 @@ public class SocketCommunication {
                 msg = new String(data, "UTF-8"); //머신러닝 결과 값
                 System.out.println("Socket.msg = " + msg);
                 List<Integer> detectedData = splitMsg(msg);//String > List
-                System.out.println("detectedData.get(detectedData.size()) = " + detectedData.get(detectedData.size()-1));
-                if(detectedData.get(detectedData.size()-1)>0){
+                if(detectedData.contains(1)){
                     //phishing domain //phishing=1 //normal=0
                     /*
                     * 피싱 사이트가 탐지되었고 그 결과를 웹으로 전송하려면
@@ -52,10 +56,12 @@ public class SocketCommunication {
                 }else {
                     //common domain
                     System.out.println("newPhishing = None ");
+                    return new Phishing(detectedData);
                 }
             }
         } catch (Throwable e) {
             e.printStackTrace();
+            return null;
         }
         return newPhishing;
     }
@@ -65,10 +71,15 @@ public class SocketCommunication {
         String numbersOnly = msg.replaceAll("[\\[\\]\\s]", "");
 
         // 쉼표를 기준으로 문자열을 분리하여 배열로 변환
-        String[] numArray = numbersOnly.split(",");
+        String[] processedData = numbersOnly.split(",");
+        String redirectedUrl = processedData[0];
+        System.out.println("redirectedUrl = " + redirectedUrl);
+        List<String> list = Arrays.stream(processedData).toList().subList(1, processedData.length);
+        //String[] numArray = Arrays.stream(processedData).toList().remove(0).split(",");
+
         // 문자열 배열을 정수 리스트로 변환
         List<Integer> resultList = new ArrayList<>();
-        for (String num : numArray) {
+        for (String num : list) {
             resultList.add(Integer.parseInt(num));
         }
         return resultList;

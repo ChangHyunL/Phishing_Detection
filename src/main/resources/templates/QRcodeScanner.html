@@ -265,8 +265,10 @@
                                                         <button type="submit" class="btn btn-primary rounded-start rounded-end " style="min-width: 120px;">스캔</button>
                                                     </form>
                                                 </div>
+                                                <div th:if="${wrongUrl==1}">
+                                                    <p style="color: red">정확한 URL를 입력해주세요</p>
+                                                </div>
                                             </div>
-
                                         </div>
                                     </div>
                                 </div>

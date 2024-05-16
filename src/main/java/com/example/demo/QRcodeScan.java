@@ -7,7 +7,8 @@ import com.google.zxing.common.HybridBinarizer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import com.example.demo.socketProgramming.SocketCommunication;
-
+import java.net.HttpURLConnection;
+import java.net.URL;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -32,6 +33,7 @@ public class QRcodeScan {
 
     public Phishing scan(String filePath){
         Phishing phishing = null;
+
         try {
             File file = new File(filePath);
             String decodedText = decodeQRCode(file);
@@ -40,6 +42,12 @@ public class QRcodeScan {
             } else {
                 System.out.println("Decoded text = " + decodedText);
             }
+
+            /*
+            * Phishing > 유효값
+            * normalUrl > Phishing(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0)
+            * ErrorUrl > null
+            * */
             phishing = SocketCommunication.socketCommunication(decodedText);
         } catch (IOException e) {
             System.out.println("Could not decode QR Code, IOException :: " + e.getMessage());

@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 import java.io.File;
 import java.io.IOException;
@@ -48,6 +50,22 @@ public class MainController {
         if (url.isEmpty()) {
             return null;
         }
+        try {
+            System.out.println("url = " + url);
+            URL urlObj = new URL(url);
+            HttpURLConnection connection = (HttpURLConnection) urlObj.openConnection();
+            connection.setRequestMethod("HEAD");
+            int responseCode = connection.getResponseCode();
+            System.out.println("Response Code: " + responseCode);
+            connection.disconnect();
+
+        }catch ( Exception e) {
+            e.printStackTrace();
+            //URL이 아닌 값
+            model.addAttribute("wrongUrl", 1);
+            return "QRcodeScanner";
+        }
+
         Phishing result = urlScan.scan(url);
         phishingCheck = phishingService.phishingCheck(result);
         if(phishingCheck==1){
@@ -57,6 +75,8 @@ public class MainController {
         }
         model.addAttribute("url", url);
         model.addAttribute("result",result);
+        model.addAttribute("wrongUrl", 0);
+
         return "QRcodeScanner";
     }
 }
