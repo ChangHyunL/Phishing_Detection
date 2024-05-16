@@ -17,7 +17,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 @Component
 public class QRcodeScan {
-    private static String decodeQRCode(File qrCodeimage) throws IOException {
+    public static String decodeQRCode(File qrCodeimage) throws IOException {
         BufferedImage bufferedImage = ImageIO.read(qrCodeimage);
         LuminanceSource source = new BufferedImageLuminanceSource(bufferedImage);
         BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(source));
@@ -33,7 +33,6 @@ public class QRcodeScan {
 
     public Phishing scan(String filePath){
         Phishing phishing = null;
-
         try {
             File file = new File(filePath);
             String decodedText = decodeQRCode(file);

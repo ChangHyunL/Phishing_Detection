@@ -27,7 +27,8 @@ public class MainController {
     }
 
     @PostMapping("/scanQRcode")
-    public String handleFileUpload_QRCode(@RequestParam("image") MultipartFile file) throws IOException {
+    public String handleFileUpload_QRCode(@RequestParam("image") MultipartFile file, Model model) throws IOException {
+        int phishingCheck=0;
         if (file.isEmpty()) {
             return null;
         }
@@ -38,9 +39,37 @@ public class MainController {
         String filePath = UPLOAD_DIR + fileName;
         File dest = new File(filePath);
         file.transferTo(dest);
-
         Phishing result = qrCodeScan.scan(filePath);
+        File file1 = new File(filePath);
+        String originalURL = QRcodeScan.decodeQRCode(file1);
+        String redirectURL = null;
+        try {
+            URL url = new URL(originalURL);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setInstanceFollowRedirects(false); // 리다이렉션을 따르지 않도록 설정
+            int responseCode = connection.getResponseCode();
 
+            if (responseCode >= 300 && responseCode < 400) { // 리다이렉션 상태 코드인 경우
+                redirectURL = connection.getHeaderField("Location");
+                System.out.println("Redirect URL: " + redirectURL);
+            } else {
+                System.out.println("No redirection.");
+            }
+
+            connection.disconnect();
+        } catch (IOException e) {
+            model.addAttribute("wrongUrl", 1);
+            e.printStackTrace();
+        }
+
+        phishingCheck = phishingService.phishingCheck(result);
+        if(phishingCheck==1){
+            phishingService.create(result);
+            model.addAttribute("phishingCheck", phishingCheck);
+        }
+        model.addAttribute("url", redirectURL);
+        model.addAttribute("result",result);
+        model.addAttribute("wrongUrl", 0);
         System.out.println("handleFileUpload_QRCode_result = " + result);
         return "QRcodeScanner";
     }
@@ -56,7 +85,9 @@ public class MainController {
             HttpURLConnection connection = (HttpURLConnection) urlObj.openConnection();
             connection.setRequestMethod("HEAD");
             int responseCode = connection.getResponseCode();
+            System.out.println("connection.getURL() = " + connection.getURL());
             System.out.println("Response Code: " + responseCode);
+
             connection.disconnect();
 
         }catch ( Exception e) {
@@ -66,7 +97,7 @@ public class MainController {
             return "QRcodeScanner";
         }
 
-        Phishing result = urlScan.scan(url);
+        Phishing result = urlScan.scan(url); //정상 URL > 모두 0, 피싱 URL > '1' 포함
         phishingCheck = phishingService.phishingCheck(result);
         if(phishingCheck==1){
             phishingService.create(result);
