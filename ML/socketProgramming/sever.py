@@ -1,16 +1,26 @@
 import socket
 import threading
-import numpy as np
-from sklearn.externals import joblib
+import pandas as pd
+import joblib
 
 model = joblib.load(
-    'C:/Users/dlckd/Desktop/2024-1학기/캡스톤디자인/Phising_Detection/ML/Models/logistic_model.pkl')
+    'C:/Users/dlckd/Desktop/2024-1학기/캡스톤디자인/Phising_Detection/ML/Models/isolation_forest_model.pkl')
+
+
+def load_input_data(filepath):
+    df = pd.read_csv(filepath)
+    return df
+
+
+input_data = load_input_data(
+    'C:/Users/dlckd/Desktop/2024-1학기/캡스톤디자인/Phising_Detection/x_input.csv')
+# input_data.values[0]의 형태는 [0 0 0 0 0 0 1 1 0 0 0 0 0 0] 같은 형태 -> 어떤 rule을 위반하는지 표현
 
 
 def predict(input_data):
-    # 입력 데이터를 머신러닝 모델에 넣어 예측값을 얻음
-    prediction = model.predict([input_data])
-    return prediction.tolist()  # 예측값을 리스트로 변환
+    prediction = model.predict(input_data)
+    return prediction
+# [0](정상), [1](피싱) return -> 피싱인지 정상인지 표현
 
 # binder함수는 서버에서 accept가 되면 생성되는 socket 인스턴스를 통해 client로 부터 데이터를 받으면 echo형태로 재송신하는 메소드이다.
 
@@ -31,7 +41,6 @@ def binder(client_socket, addr):
             print('Received from', addr, msg)
 
             # msg를 머신러닝으로 돌려 결과 값 반환
-            # 예시
             input_data = list(map(int, msg.split(' ')))
             sendMessage = predict(input_data)
             data = str(sendMessage).encode()  # 바이너리(byte)형식으로 변환한다.

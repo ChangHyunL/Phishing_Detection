@@ -8,14 +8,19 @@ import whois
 import ssl
 import socket
 from urllib.parse import urlparse
+from tensorflow.keras.models import load_model
 
 
 # 모델과 벡터라이저 로드 (이미 학습된 상태라고 가정)
+# model = load_model(
+#     'C:/Users/dlckd/Desktop/2024-1학기/캡스톤디자인/Phising_Detection/ML/Models/adam_phishing_detection_model.keras')
 model = joblib.load(
-    'C:/Users/dlckd/Desktop/2024-1학기/캡스톤디자인/Phising_Detection/ML/Models/random_forest_model.pkl')
+    'C:/Users/dlckd/Desktop/2024-1학기/캡스톤디자인/Phising_Detection/ML/Models/isolation_forest_model.pkl')
 
 # 테스트할 URL
-test_url = "https://portal.dankook.ac.kr/p/S01/"
+# test_url = "https://portal.dankook.ac.kr/p/S01/"
+# test_url = "https://www.naver.com/"
+test_url = 'https://domain.autopay.electricfarmgates.com/?SMdY280YU=45VQD11D...'
 
 filepath = "C:/Users/dlckd/Desktop/2024-1학기/캡스톤디자인/Phising_Detection/ML/Datasets/rawdata/non_phishing.csv"
 ca_filepath = "C:/Users/dlckd/Desktop/2024-1학기/캡스톤디자인/Phising_Detection/RuleDetection/trusted_ca.csv"
@@ -173,7 +178,6 @@ def get_creation_date(url):
             f'{url}: type: {type(creation_date)}, {creation_date}')
         today = datetime.now()
         age = today - creation_date
-        print(age)
         if age.days < 180:
             return 1
         else:
@@ -193,7 +197,6 @@ def get_expiration_date(url):
             f'{url}: type: {type(expiration_date)}, {expiration_date}, {expiration_date.year}')
         today = datetime.now()
         age = expiration_date - today
-        print(age)
         if age.days < 180:
             return 1
         else:
@@ -206,22 +209,24 @@ def get_expiration_date(url):
 def prepare_input(url):
     well_known_hostnames = read_well_known_hostnames(filepath)
     trusted_issuer = read_trusted_ca(ca_filepath)
+    modified_url = is_redirection(url)
+    # print(modified_url)
     data = {
         'url': [is_redirection(url)],
-        'long_url': [long_url(url)],
-        'having_ip': [having_ip(url)],
-        'having_at': [having_at(url)],
-        'having_dash': [having_dash(url)],
-        'having_underbar': [having_underbar(url)],
-        'having_redirection': [having_redirection(url)],
-        'sub_domains': [sub_domains(url)],
-        'long_domain': [long_domain(url)],
-        'similar_url': [similar_url(url, well_known_hostnames)],
-        'non_standard_port': [non_standard_port(url)],
-        'is_https': [is_https(url)],
-        'is_trusted_cert': [is_trusted_cert(url, trusted_issuer)],
-        'get_creation_date': [get_creation_date(url)],
-        'get_expiration_date': [get_expiration_date(url)]
+        'long_url': [long_url(modified_url)],
+        'having_ip': [having_ip(modified_url)],
+        'having_at': [having_at(modified_url)],
+        'having_dash': [having_dash(modified_url)],
+        'having_underbar': [having_underbar(modified_url)],
+        'having_redirection': [having_redirection(modified_url)],
+        'sub_domains': [sub_domains(modified_url)],
+        'long_domain': [long_domain(modified_url)],
+        'similar_url': [similar_url(modified_url, well_known_hostnames)],
+        'non_standard_port': [non_standard_port(modified_url)],
+        'is_https': [is_https(modified_url)],
+        'is_trusted_cert': [is_trusted_cert(modified_url, trusted_issuer)],
+        'get_creation_date': [get_creation_date(modified_url)],
+        'get_expiration_date': [get_expiration_date(modified_url)]
     }
     df = pd.DataFrame(data)
     X_input = df.drop('url', axis=1)  # URL 열은 피처로 사용하지 않음
@@ -230,9 +235,22 @@ def prepare_input(url):
 
 # 모델로 예측
 X_input = prepare_input(test_url)
-prediction = model.predict(X_input)
+# 전송해야하는 값
+X_input.to_csv('x_input.csv', index=False)
 
-print(X_input.values[0])
-# 예측 결과 해석 (0: 정상, 1: 피싱)
-result = "Phishing" if prediction[0] == 1 else "Not Phishing"
-print(f'The URL {test_url} is {result}.')
+
+def load_input_data(filepath):
+    df = pd.read_csv(filepath)
+    return df
+
+
+input_data = load_input_data(
+    'C:/Users/dlckd/Desktop/2024-1학기/캡스톤디자인/Phising_Detection/x_input.csv')
+prediction = model.predict(input_data)
+# print(input_data.values[0])
+# print(prediction)
+# prediction = model.predict(X_input)
+
+# # 예측 결과 해석 (0: 정상, 1: 피싱)
+# result = "Phishing" if prediction[0] == 1 else "Not Phishing"
+# print(f'The URL {test_url} is {result}.')
