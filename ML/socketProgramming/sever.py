@@ -1,7 +1,20 @@
-import socket, threading
+import socket
+import threading
+import numpy as np
+from sklearn.externals import joblib
 
+model = joblib.load(
+    'C:/Users/dlckd/Desktop/2024-1학기/캡스톤디자인/Phising_Detection/ML/Models/logistic_model.pkl')
+
+
+def predict(input_data):
+    # 입력 데이터를 머신러닝 모델에 넣어 예측값을 얻음
+    prediction = model.predict([input_data])
+    return prediction.tolist()  # 예측값을 리스트로 변환
 
 # binder함수는 서버에서 accept가 되면 생성되는 socket 인스턴스를 통해 client로 부터 데이터를 받으면 echo형태로 재송신하는 메소드이다.
+
+
 def binder(client_socket, addr):
     # 커넥션이 되면 접속 주소가 나온다.
     print('Connected by', addr)
@@ -19,9 +32,10 @@ def binder(client_socket, addr):
 
             # msg를 머신러닝으로 돌려 결과 값 반환
             # 예시
-            sendMessage = [1,1,1,1,1,1,1,-1,-1,1,-1,1,1,1,1]
-            data = sendMessage.__str__().encode()  # 바이너리(byte)형식으로 변환한다.
-            #data = msg.encode()  # 바이너리(byte)형식으로 변환한다.
+            input_data = list(map(int, msg.split(',')))
+            sendMessage = predict(input_data)
+            data = str(sendMessage).encode()  # 바이너리(byte)형식으로 변환한다.
+            # data = msg.encode()  # 바이너리(byte)형식으로 변환한다.
             length = len(data)  # 바이너리의 데이터 사이즈를 구한다.
             # 데이터 사이즈를 little 엔디언 형식으로 byte로 변환한 다음 전송한다.
             client_socket.sendall(length.to_bytes(4, byteorder='little'))

@@ -11,8 +11,8 @@ spring:
         format_sql: true
   datasource:
     driver-class-name: oracle.jdbc.driver.OracleDriver
-    url: jdbc:oracle:thin:@localhost:1521/xe
-    username: C##32182559
+    url: jdbc:oracle:thin:@175.45.200.166:1521/xe
+    username: c##32182559
     password: 1234
   sql:
     init:
