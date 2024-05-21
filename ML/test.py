@@ -15,12 +15,13 @@ from tensorflow.keras.models import load_model
 # model = load_model(
 #     'C:/Users/dlckd/Desktop/2024-1학기/캡스톤디자인/Phising_Detection/ML/Models/adam_phishing_detection_model.keras')
 model = joblib.load(
-    'C:/Users/dlckd/Desktop/2024-1학기/캡스톤디자인/Phising_Detection/ML/Models/isolation_forest_model.pkl')
+    'C:/Users/dlckd/Desktop/2024-1학기/캡스톤디자인/Phising_Detection/ML/Models/random_forest_model.pkl')
 
 # 테스트할 URL
-# test_url = "https://portal.dankook.ac.kr/p/S01/"
+test_url = "http://ajbell123123-co.com"
 # test_url = "https://www.naver.com/"
-test_url = 'https://domain.autopay.electricfarmgates.com/?SMdY280YU=45VQD11D...'
+# test_url = 'https://domain.autopay.electricfarmgates.com/?SMdY280YU=45VQD11D...'
+# test_url = 'https://0948481wklnyj.plenoinversiones.cl/indexes1.php?=https://www.ir...'
 
 filepath = "C:/Users/dlckd/Desktop/2024-1학기/캡스톤디자인/Phising_Detection/ML/Datasets/rawdata/non_phishing.csv"
 ca_filepath = "C:/Users/dlckd/Desktop/2024-1학기/캡스톤디자인/Phising_Detection/RuleDetection/trusted_ca.csv"
@@ -210,24 +211,42 @@ def prepare_input(url):
     well_known_hostnames = read_well_known_hostnames(filepath)
     trusted_issuer = read_trusted_ca(ca_filepath)
     modified_url = is_redirection(url)
-    # print(modified_url)
-    data = {
-        'url': [is_redirection(url)],
-        'long_url': [long_url(modified_url)],
-        'having_ip': [having_ip(modified_url)],
-        'having_at': [having_at(modified_url)],
-        'having_dash': [having_dash(modified_url)],
-        'having_underbar': [having_underbar(modified_url)],
-        'having_redirection': [having_redirection(modified_url)],
-        'sub_domains': [sub_domains(modified_url)],
-        'long_domain': [long_domain(modified_url)],
-        'similar_url': [similar_url(modified_url, well_known_hostnames)],
-        'non_standard_port': [non_standard_port(modified_url)],
-        'is_https': [is_https(modified_url)],
-        'is_trusted_cert': [is_trusted_cert(modified_url, trusted_issuer)],
-        'get_creation_date': [get_creation_date(modified_url)],
-        'get_expiration_date': [get_expiration_date(modified_url)]
-    }
+    if modified_url == 1:
+        data = {
+            'url': [1],
+            'long_url': [1],
+            'having_ip': [1],
+            'having_at': [1],
+            'having_dash': [1],
+            'having_underbar': [1],
+            'having_redirection': [1],
+            'sub_domains': [1],
+            'long_domain': [1],
+            'similar_url': [1],
+            'non_standard_port': [1],
+            'is_https': [1],
+            'is_trusted_cert': [1],
+            'get_creation_date': [1],
+            'get_expiration_date': [1]
+        }
+    else:
+        data = {
+            'url': [is_redirection(url)],
+            'long_url': [long_url(modified_url)],
+            'having_ip': [having_ip(modified_url)],
+            'having_at': [having_at(modified_url)],
+            'having_dash': [having_dash(modified_url)],
+            'having_underbar': [having_underbar(modified_url)],
+            'having_redirection': [having_redirection(modified_url)],
+            'sub_domains': [sub_domains(modified_url)],
+            'long_domain': [long_domain(modified_url)],
+            'similar_url': [similar_url(modified_url, well_known_hostnames)],
+            'non_standard_port': [non_standard_port(modified_url)],
+            'is_https': [is_https(modified_url)],
+            'is_trusted_cert': [is_trusted_cert(modified_url, trusted_issuer)],
+            'get_creation_date': [get_creation_date(modified_url)],
+            'get_expiration_date': [get_expiration_date(modified_url)]
+        }
     df = pd.DataFrame(data)
     X_input = df.drop('url', axis=1)  # URL 열은 피처로 사용하지 않음
     return X_input
@@ -237,6 +256,7 @@ def prepare_input(url):
 X_input = prepare_input(test_url)
 # 전송해야하는 값
 X_input.to_csv('x_input.csv', index=False)
+print(X_input.values[0])
 
 
 def load_input_data(filepath):
@@ -252,5 +272,5 @@ prediction = model.predict(input_data)
 # prediction = model.predict(X_input)
 
 # # 예측 결과 해석 (0: 정상, 1: 피싱)
-# result = "Phishing" if prediction[0] == 1 else "Not Phishing"
-# print(f'The URL {test_url} is {result}.')
+result = "Phishing" if prediction[0] == 1 else "Not Phishing"
+print(f'The URL {test_url} is {result}.')

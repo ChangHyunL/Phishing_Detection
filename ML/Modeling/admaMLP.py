@@ -12,7 +12,7 @@ from tensorflow.keras.metrics import Precision, Recall
 
 # 데이터 로드
 df = pd.read_csv(
-    'C:/Users/dlckd/Desktop/2024-1학기/캡스톤디자인/Phising_Detection/ML/Datasets/testDataset/merged.csv')
+    'C:/Users/dlckd/Desktop/2024-1학기/캡스톤디자인/Phising_Detection/ML/Datasets/testDataset/2nd_merged.csv')
 
 # 특성과 레이블 분리
 X = df.drop('isphishing', axis=1)    # features
@@ -61,7 +61,7 @@ early_stopping = EarlyStopping(
     monitor='val_loss', patience=10, restore_best_weights=True)
 
 # 모델 학습
-model.fit(X_train, y_train, epochs=100, batch_size=32,
+model.fit(X_train, y_train, epochs=50, batch_size=10,
           validation_data=(X_test, y_test), callbacks=[early_stopping, lr_scheduler])
 
 # 모델 평가
