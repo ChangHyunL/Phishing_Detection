@@ -42,7 +42,7 @@ early_stopping = EarlyStopping(
     monitor='val_loss', patience=10, restore_best_weights=True)
 
 # 모델 학습
-history = model.fit(X_train, y_train, epochs=100, batch_size=32,
+history = model.fit(X_train, y_train, epochs=50, batch_size=10,
                     validation_data=(X_test, y_test), callbacks=[early_stopping])
 
 # 모델 평가
