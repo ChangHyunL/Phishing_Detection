@@ -32,7 +32,7 @@ def binder(client_socket, addr):
 
             # msg를 머신러닝으로 돌려 결과 값 반환
             # 예시
-            input_data = list(map(int, msg.split(',')))
+            input_data = list(map(int, msg.split(' ')))
             sendMessage = predict(input_data)
             data = str(sendMessage).encode()  # 바이너리(byte)형식으로 변환한다.
             # data = msg.encode()  # 바이너리(byte)형식으로 변환한다.
