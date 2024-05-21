@@ -22,19 +22,22 @@ import pandas as pd
 # df['isphishing'] = 1
 # df.to_csv(output_file, index=False)
 
-df = pd.read_csv(
-    'C:/Users/dlckd/Desktop/2024-1학기/캡스톤디자인/Phising_Detection/ML/Datasets/testDataset/merged.csv')
+# df = pd.read_csv(
+#     'C:/Users/dlckd/Desktop/2024-1학기/캡스톤디자인/Phising_Detection/ML/Datasets/2nd/2nd_processed_malicious_url.csv')
 # add = pd.read_csv(file1)
 
-# df.drop([df.columns[13], df.columns[14]], axis=1, inplace=True)
-df.drop(df.columns[0], axis=1, inplace=True)
 
+df = pd.read_csv('malicious.csv')
+add = pd.read_csv('normal.csv')
+
+# df.drop(df.columns[0], axis=1, inplace=True)
+# df.replace(-1, 1, inplace=True)
 # df.to_csv('merged3.csv', index=False)
 
 # merged_dataframe = pd.concat([df, add], axis=1)
-# merged_dataframe = pd.concat([df, add])
+merged_dataframe = pd.concat([df, add])
 
 # 결과 저장
-# merged_dataframe.to_csv('merged1.csv', index=False)
-df.to_csv('merged.csv', index=False)
+merged_dataframe.to_csv('merged1.csv', index=False)
+# df.to_csv('malicious.csv', index=False)
 # merged_dataframe.to_csv('processed_malicious_url2.csv', index=False)
