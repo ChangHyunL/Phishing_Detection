@@ -10,7 +10,7 @@ from tensorflow.keras.metrics import Precision, Recall
 
 # 데이터 로드
 df = pd.read_csv(
-    'C:/Users/dlckd/Desktop/2024-1학기/캡스톤디자인/Phising_Detection/ML/Datasets/testDataset/merged.csv')
+    'C:/Users/dlckd/Desktop/2024-1학기/캡스톤디자인/Phising_Detection/ML/Datasets/testDataset/4th_merged.csv')
 
 # 특성과 레이블 분리
 X = df.drop('isphishing', axis=1)    # 특성
