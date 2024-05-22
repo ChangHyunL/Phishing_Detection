@@ -7,7 +7,7 @@ import joblib
 
 # 데이터 로드
 data = pd.read_csv(
-    'C:/Users/dlckd/Desktop/2024-1학기/캡스톤디자인/Phising_Detection/ML/Datasets/testDataset/2nd_merged.csv')
+    'C:/Users/dlckd/Desktop/2024-1학기/캡스톤디자인/Phising_Detection/ML/Datasets/testDataset/4th_merged.csv')
 X = data.drop('isphishing', axis=1)  # 특성 데이터
 y = data['isphishing']  # 타겟 레이블
 
