@@ -22,6 +22,9 @@ def binder(client_socket, addr):
             url = data.decode()
             print('Received URL from', addr, url)
 
+            if url == "":
+                break
+
             input_data = prepare_input(url)
             #input_data.to_csv('x_input.csv', index=False)
             var = input_data.values[0]
