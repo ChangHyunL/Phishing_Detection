@@ -60,22 +60,22 @@ public class Phishing {
 
 
     public Phishing(List<Integer> detectedData) {
-
-        this.isRedirection = detectedData.get(0);
-        this.longUrl = detectedData.get(1);
-        this.havingIp = detectedData.get(2);
-        this.havingAt = detectedData.get(3);
-        this.havingDash = detectedData.get(4);
-        this.havingUnderbar = detectedData.get(5);
-        this.havingRedirection = detectedData.get(6);
-        this.subDomains = detectedData.get(7);
-        this.longDomain = detectedData.get(8);
-        this.similarUrl = detectedData.get(9);
-        this.nonStandardPort = detectedData.get(10);
-        this.isHttps = detectedData.get(11);
-        this.isTrustedCert = detectedData.get(12);
-        this.creationDate = detectedData.get(13);
-        this.expirationDate = detectedData.get(14);
+        System.out.println(detectedData);
+        this.isRedirection=0;
+        this.longUrl = detectedData.get(0);
+        this.havingIp = detectedData.get(1);
+        this.havingAt = detectedData.get(2);
+        this.havingDash = detectedData.get(3);
+        this.havingUnderbar = detectedData.get(4);
+        this.havingRedirection = detectedData.get(5);
+        this.subDomains = detectedData.get(6);
+        this.longDomain = detectedData.get(7);
+        this.similarUrl = detectedData.get(8);
+        this.nonStandardPort = detectedData.get(9);
+        this.isHttps = detectedData.get(10);
+        this.isTrustedCert = detectedData.get(11);
+        this.creationDate = detectedData.get(12);
+        this.expirationDate = detectedData.get(13);
 
     }
 

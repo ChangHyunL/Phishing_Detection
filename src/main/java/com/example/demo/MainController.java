@@ -37,7 +37,7 @@ public class MainController {
 
         String fileName = file.getOriginalFilename();
         System.out.println("fileName = " + fileName);
-        String UPLOAD_DIR  = "C:\\Users\\Public\\Python_tool\\QR_Codes\\"; //저장할 디렉토리 이름
+        String UPLOAD_DIR  = "C:\\Users\\Administrator\\Pictures\\QRcodes\\"; //저장할 디렉토리 이름
         String filePath = UPLOAD_DIR + fileName;
         File dest = new File(filePath);
         file.transferTo(dest);

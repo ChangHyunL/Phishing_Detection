@@ -56,7 +56,8 @@ public class SocketCommunication {
                 }else {
                     //common domain
                     System.out.println("newPhishing = None ");
-                    return new Phishing(detectedData);
+                    System.out.println("detectedData : "+detectedData);
+                    newPhishing = new Phishing(detectedData);
                 }
             }
         } catch (Throwable e) {
@@ -72,9 +73,7 @@ public class SocketCommunication {
 
         // 쉼표를 기준으로 문자열을 분리하여 배열로 변환
         String[] processedData = numbersOnly.split(",");
-        String redirectedUrl = processedData[0];
-        System.out.println("redirectedUrl = " + redirectedUrl);
-        List<String> list = Arrays.stream(processedData).toList().subList(1, processedData.length);
+        List<String> list = Arrays.stream(processedData).toList();
         //String[] numArray = Arrays.stream(processedData).toList().remove(0).split(",");
 
         // 문자열 배열을 정수 리스트로 변환
