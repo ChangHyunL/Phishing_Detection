@@ -19,7 +19,7 @@ def binder(client_socket, addr):
 
             # msg를 머신러닝으로 돌려 결과 값 반환
             # 예시
-            sendMessage = [1,1,1,1,1,1,1,-1,-1,1,-1,1,1,1,1]
+            sendMessage = ['https://21tsrzkb.square.site/',0,0,0,0,0,0,0,0,0,0,0,0,0,-1,1]
             data = sendMessage.__str__().encode()  # 바이너리(byte)형식으로 변환한다.
             #data = msg.encode()  # 바이너리(byte)형식으로 변환한다.
             length = len(data)  # 바이너리의 데이터 사이즈를 구한다.

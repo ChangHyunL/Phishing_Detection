@@ -1,10 +1,11 @@
 import socket
+import subprocess
 import threading
 import pandas as pd
 import joblib
 
 model = joblib.load(
-    'C:/Users/dlckd/Desktop/2024-1학기/캡스톤디자인/Phising_Detection/ML/Models/isolation_forest_model.pkl')
+    'C:\\Users\\Administrator\\PycharmProjects\\Phishing_Detection\\ML\\Models\\isolation_forest_model.pkl')
 
 
 def load_input_data(filepath):
@@ -13,7 +14,7 @@ def load_input_data(filepath):
 
 
 input_data = load_input_data(
-    'C:/Users/dlckd/Desktop/2024-1학기/캡스톤디자인/Phising_Detection/x_input.csv')
+    'C:\\Users\\Administrator\\PycharmProjects\\Phishing_Detection\\x_input.csv')
 # input_data.values[0]의 형태는 [0 0 0 0 0 0 1 1 0 0 0 0 0 0] 같은 형태 -> 어떤 rule을 위반하는지 표현
 
 
@@ -40,9 +41,16 @@ def binder(client_socket, addr):
             msg = data.decode()
             print('Received from', addr, msg)
 
+            result = subprocess.run(['python', 'C:\\Users\\Administrator\\PycharmProjects\\Phishing_Detection\\ML\\test.py', msg], capture_output=True, text=True)
+            print(result)
+            print('통과')
+
             # msg를 머신러닝으로 돌려 결과 값 반환
-            input_data = list(map(int, msg.split(' ')))
+            input_data = list(map(int, input_data.split(' ')))
+            print("input_data : ", input_data)
+
             sendMessage = predict(input_data)
+            print("sendMessage : ", sendMessage)
             data = str(sendMessage).encode()  # 바이너리(byte)형식으로 변환한다.
             # data = msg.encode()  # 바이너리(byte)형식으로 변환한다.
             length = len(data)  # 바이너리의 데이터 사이즈를 구한다.

@@ -1,30 +1,33 @@
+import sys
+
 import joblib
 import pandas as pd
 import requests
 from datetime import datetime
 import re
-import Levenshtein
+#import Levenshtein
 import whois
 import ssl
 import socket
 from urllib.parse import urlparse
-from tensorflow.keras.models import load_model
+#from tensorflow.keras.models import load_model
 
 
 # 모델과 벡터라이저 로드 (이미 학습된 상태라고 가정)
 # model = load_model(
 #     'C:/Users/dlckd/Desktop/2024-1학기/캡스톤디자인/Phising_Detection/ML/Models/adam_phishing_detection_model.keras')
 model = joblib.load(
-    'C:/Users/dlckd/Desktop/2024-1학기/캡스톤디자인/Phising_Detection/ML/Models/random_forest_model.pkl')
+    'C:\\Users\\Administrator\\PycharmProjects\\Phishing_Detection\\ML\\Models\\isolation_forest_model.pkl')
 
 # 테스트할 URL
+#test_url = sys.argv[1]
 test_url = "http://ajbell123123-co.com"
 # test_url = "https://www.naver.com/"
 # test_url = 'https://domain.autopay.electricfarmgates.com/?SMdY280YU=45VQD11D...'
 # test_url = 'https://0948481wklnyj.plenoinversiones.cl/indexes1.php?=https://www.ir...'
 
-filepath = "C:/Users/dlckd/Desktop/2024-1학기/캡스톤디자인/Phising_Detection/ML/Datasets/rawdata/non_phishing.csv"
-ca_filepath = "C:/Users/dlckd/Desktop/2024-1학기/캡스톤디자인/Phising_Detection/RuleDetection/trusted_ca.csv"
+filepath = "C:\\Users\\Administrator\PycharmProjects\\Phishing_Detection\\ML\\Datasets\\rawdata\\non_phishing.csv"
+ca_filepath = "C:\\Users\\Administrator\\PycharmProjects\\Phishing_Detection\\RuleDetection\\trusted_ca.csv"
 
 
 def is_redirection(url):    # 만약 url이 redirection한다면 redirection하는 url을 반환해서 그 url을 분석
@@ -111,16 +114,16 @@ def read_well_known_hostnames(filepath):
 
 
 def similar_url(url, well_known_hostnames, threshold=2):
-    hostname = urlparse(url).netloc
-    for well_known_hostname in well_known_hostnames:
-        distance = Levenshtein.distance(hostname, well_known_hostname)
+    #hostname = urlparse(url).netloc
+    #for well_known_hostname in well_known_hostnames:
+     #   distance = Levenshtein.distance(hostname, well_known_hostname)
 
         # hostname과 well_known_hostname이 일치하지 않는 경우만 거리를 계산
-        if hostname != well_known_hostname:
-            if distance <= threshold:
-                return 1
-        else:
-            return 0
+      #  if hostname != well_known_hostname:
+       #     if distance <= threshold:
+        #        return 1
+        #else:
+         #   return 0
     return 0
 
 
@@ -265,7 +268,7 @@ def load_input_data(filepath):
 
 
 input_data = load_input_data(
-    'C:/Users/dlckd/Desktop/2024-1학기/캡스톤디자인/Phising_Detection/x_input.csv')
+    'C:\\Users\\Administrator\\PycharmProjects\\Phishing_Detection\\x_input.csv')
 prediction = model.predict(input_data)
 # print(input_data.values[0])
 # print(prediction)
