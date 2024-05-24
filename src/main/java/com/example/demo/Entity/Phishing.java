@@ -60,15 +60,15 @@ public class Phishing {
 
 
     public Phishing(List<Integer> detectedData) {
-        System.out.println(detectedData);
-        this.isRedirection=0;
+
+        this.isRedirection = 0;
         this.longUrl = detectedData.get(0);
         this.havingIp = detectedData.get(1);
         this.havingAt = detectedData.get(2);
         this.havingDash = detectedData.get(3);
         this.havingUnderbar = detectedData.get(4);
         this.havingRedirection = detectedData.get(5);
-        this.subDomains = detectedData.get(6);
+        this.subDomains =  detectedData.get(6);
         this.longDomain = detectedData.get(7);
         this.similarUrl = detectedData.get(8);
         this.nonStandardPort = detectedData.get(9);

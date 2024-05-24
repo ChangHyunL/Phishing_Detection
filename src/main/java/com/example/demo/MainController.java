@@ -53,6 +53,7 @@ public class MainController {
 
             if (responseCode >= 300 && responseCode < 400) { // 리다이렉션 상태 코드인 경우
                 redirectURL = connection.getHeaderField("Location");
+                result.setIsRedirection(1);
                 System.out.println("Redirect URL: " + redirectURL);
             } else {
                 System.out.println("No redirection.");

@@ -56,7 +56,6 @@ public class SocketCommunication {
                 }else {
                     //common domain
                     System.out.println("newPhishing = None ");
-                    System.out.println("detectedData : "+detectedData);
                     newPhishing = new Phishing(detectedData);
                 }
             }
@@ -74,7 +73,6 @@ public class SocketCommunication {
         // 쉼표를 기준으로 문자열을 분리하여 배열로 변환
         String[] processedData = numbersOnly.split(",");
         List<String> list = Arrays.stream(processedData).toList();
-        //String[] numArray = Arrays.stream(processedData).toList().remove(0).split(",");
 
         // 문자열 배열을 정수 리스트로 변환
         List<Integer> resultList = new ArrayList<>();
