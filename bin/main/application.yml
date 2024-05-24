@@ -1,0 +1,24 @@
+spring:
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    generate-ddl: true
+    database: oracle
+    database-platform: org.hibernate.dialect.OracleDialect
+    properties:
+      hibernate:
+        format_sql: true
+  datasource:
+    driver-class-name: oracle.jdbc.driver.OracleDriver
+    url: jdbc:oracle:thin:@175.45.200.166:1521/xe
+    username: c##32182559
+    password: 1234
+  sql:
+    init:
+      encoding: utf-8
+
+logging:
+  level:
+    #org.hibernate.sql: debug
+    org.hibernate.type.descriptor.sql: trace #????? ????

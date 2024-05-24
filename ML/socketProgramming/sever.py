@@ -1,7 +1,31 @@
-import socket, threading
+import socket
+import subprocess
+import threading
+import pandas as pd
+import joblib
 
+model = joblib.load(
+    'C:\\Users\\Administrator\\PycharmProjects\\Phishing_Detection\\ML\\Models\\isolation_forest_model.pkl')
+
+
+def load_input_data(filepath):
+    df = pd.read_csv(filepath)
+    return df
+
+
+input_data = load_input_data(
+    'C:\\Users\\Administrator\\PycharmProjects\\Phishing_Detection\\x_input.csv')
+# input_data.values[0]의 형태는 [0 0 0 0 0 0 1 1 0 0 0 0 0 0] 같은 형태 -> 어떤 rule을 위반하는지 표현
+
+
+def predict(input_data):
+    prediction = model.predict(input_data)
+    return prediction
+# [0](정상), [1](피싱) return -> 피싱인지 정상인지 표현
 
 # binder함수는 서버에서 accept가 되면 생성되는 socket 인스턴스를 통해 client로 부터 데이터를 받으면 echo형태로 재송신하는 메소드이다.
+
+
 def binder(client_socket, addr):
     # 커넥션이 되면 접속 주소가 나온다.
     print('Connected by', addr)
@@ -17,11 +41,18 @@ def binder(client_socket, addr):
             msg = data.decode()
             print('Received from', addr, msg)
 
+            result = subprocess.run(['python', 'C:\\Users\\Administrator\\PycharmProjects\\Phishing_Detection\\ML\\test.py', msg], capture_output=True, text=True)
+            print(result)
+            print('통과')
+
             # msg를 머신러닝으로 돌려 결과 값 반환
-            # 예시
-            sendMessage = [1,1,1,1,1,1,1,-1,-1,1,-1,1,1,1,1]
-            data = sendMessage.__str__().encode()  # 바이너리(byte)형식으로 변환한다.
-            #data = msg.encode()  # 바이너리(byte)형식으로 변환한다.
+            input_data = list(map(int, input_data.split(' ')))
+            print("input_data : ", input_data)
+
+            sendMessage = predict(input_data)
+            print("sendMessage : ", sendMessage)
+            data = str(sendMessage).encode()  # 바이너리(byte)형식으로 변환한다.
+            # data = msg.encode()  # 바이너리(byte)형식으로 변환한다.
             length = len(data)  # 바이너리의 데이터 사이즈를 구한다.
             # 데이터 사이즈를 little 엔디언 형식으로 byte로 변환한 다음 전송한다.
             client_socket.sendall(length.to_bytes(4, byteorder='little'))

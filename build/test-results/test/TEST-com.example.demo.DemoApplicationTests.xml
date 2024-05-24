@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.example.demo.DemoApplicationTests" tests="1" skipped="0" failures="0" errors="0" timestamp="2024-05-20T16:26:52" hostname="DESKTOP-A69NA9M" time="1.253">
+  <properties/>
+  <testcase name="contextLoads()" classname="com.example.demo.DemoApplicationTests" time="1.253"/>
+  <system-out><![CDATA[01:26:38.445 [Test worker] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.example.demo.DemoApplicationTests]: DemoApplicationTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+01:26:38.989 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.example.demo.DemoApplication for test class com.example.demo.DemoApplicationTests
+01:26:39.599 [Test worker] INFO org.springframework.boot.devtools.restart.RestartApplicationListener -- Restart disabled due to context in which it is running
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::                (v3.2.3)
+
+2024-05-21T01:26:40.703+09:00  INFO 27864 --- [    Test worker] com.example.demo.DemoApplicationTests    : Starting DemoApplicationTests using Java 17.0.11 with PID 27864 (started by dlckd in C:\Users\dlckd\Desktop\2024-1학기\캡스톤디자인\Phising_Detection)
+2024-05-21T01:26:40.707+09:00  INFO 27864 --- [    Test worker] com.example.demo.DemoApplicationTests    : No active profile set, falling back to 1 default profile: "default"
+2024-05-21T01:26:42.203+09:00  INFO 27864 --- [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-05-21T01:26:42.324+09:00  INFO 27864 --- [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 96 ms. Found 1 JPA repository interface.
+2024-05-21T01:26:43.271+09:00  INFO 27864 --- [    Test worker] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-05-21T01:26:43.400+09:00  INFO 27864 --- [    Test worker] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.4.4.Final
+2024-05-21T01:26:43.467+09:00  INFO 27864 --- [    Test worker] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2024-05-21T01:26:44.130+09:00  INFO 27864 --- [    Test worker] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-05-21T01:26:44.207+09:00  INFO 27864 --- [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2024-05-21T01:26:44.219+09:00  WARN 27864 --- [    Test worker] c.zaxxer.hikari.util.DriverDataSource    : Registered driver with driverClassName=oracle.jdbc.driver.OracleDriver was not found, trying direct instantiation.
+2024-05-21T01:26:44.819+09:00  INFO 27864 --- [    Test worker] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection oracle.jdbc.driver.T4CConnection@1c6ac73c
+2024-05-21T01:26:44.824+09:00  INFO 27864 --- [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2024-05-21T01:26:45.032+09:00  WARN 27864 --- [    Test worker] org.hibernate.orm.deprecation            : HHH90000025: OracleDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+Hibernate: 
+    create global temporary table HTE_phishing(get_creation_date number(10, 0), get_expiration_date number(10, 0), having_at number(10, 0), having_dash number(10, 0), having_ip number(10, 0), having_redirection number(10, 0), having_underbar number(10, 0), is_https number(10, 0), is_redirection number(10, 0), is_trusted_cert number(10, 0), long_domain number(10, 0), long_url number(10, 0), non_standard_port number(10, 0), rn_ number(10, 0) not null, similar_url number(10, 0), sub_domains number(10, 0), id number(19, 0), primary key (rn_)) 
+        on commit delete rows
+2024-05-21T01:26:47.359+09:00  INFO 27864 --- [    Test worker] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2024-05-21T01:26:48.667+09:00  INFO 27864 --- [    Test worker] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-05-21T01:26:50.540+09:00  WARN 27864 --- [    Test worker] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-05-21T01:26:52.601+09:00  INFO 27864 --- [    Test worker] com.example.demo.DemoApplicationTests    : Started DemoApplicationTests in 13.057 seconds (process running for 17.459)
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
