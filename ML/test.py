@@ -115,14 +115,14 @@ def read_well_known_hostnames(filepath):
 def similar_url(url, well_known_hostnames, threshold=2):
     hostname = urlparse(url).netloc
     for well_known_hostname in well_known_hostnames:
-       distance = Levenshtein.distance(hostname, well_known_hostname)
+        distance = Levenshtein.distance(hostname, well_known_hostname)
 
-        hostname과 well_known_hostname이 일치하지 않는 경우만 거리를 계산
-       if hostname != well_known_hostname:
-           if distance <= threshold:
-               return 1
+        # hostname과 well_known_hostname이 일치하지 않는 경우만 거리를 계산
+        if hostname != well_known_hostname:
+            if distance <= threshold:
+                return 1
         else:
-           return 0
+            return 0
     return 0
 
 
