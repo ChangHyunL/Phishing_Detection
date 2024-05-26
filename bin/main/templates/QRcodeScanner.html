@@ -755,7 +755,7 @@
             color: red;
         }
 
-        .bs-text-a.with-type-bg-a.expired-url {
+        .bs-text-a.with-type-bg-a.redCircle {
             border: 4px solid red;
             border-radius: 10px; /* 모서리를 10px만큼 둥글게 설정 */
         }
@@ -987,7 +987,8 @@
                             <div class="bs-div-j-row">
                                 <div class="row">
                                     <div class="col-12 col-sm-6 col-lg-3" data-fadeup>
-                                        <div class="bs-text-a with-type-bg-a">
+                                        <div class="bs-text-a with-type-bg-a"
+                                             th:classappend="${result != null && result.isRedirection == 1} ? 'redCircle' : ''">
                                             <span class="bs-div-j-icon ratio ratio-1x1">
                                                 <span class="lazy-loader">
                                                     <img alt="#1 Method" class="lazyload"
@@ -1007,7 +1008,8 @@
                                         </div>
                                     </div>
                                     <div class="col-12 col-sm-6 col-lg-3" data-fadeup>
-                                        <div class="bs-text-a with-type-bg-a">
+                                        <div class="bs-text-a with-type-bg-a"
+                                             th:classappend="${result != null && result.longUrl == 1} ? 'redCircle' : ''">
                                             <span class="bs-div-j-icon ratio ratio-1x1">
                                                 <span class="lazy-loader">
                                                     <img alt="shield" class="lazyload"
@@ -1030,7 +1032,8 @@
                                         </div>
                                     </div>
                                     <div class="col-12 col-sm-6 col-lg-3" data-fadeup>
-                                        <div class="bs-text-a with-type-bg-a">
+                                        <div class="bs-text-a with-type-bg-a"
+                                             th:classappend="${result != null && result.havingIp == 1} ? 'redCircle' : ''">
                                             <span class="bs-div-j-icon ratio ratio-1x1">
                                                 <span class="lazy-loader">
                                                     <img alt="#2 Threat Category" class="lazyload"
@@ -1053,7 +1056,8 @@
                                         </div>
                                     </div>
                                     <div class="col-12 col-sm-6 col-lg-3" data-fadeup>
-                                        <div class="bs-text-a with-type-bg-a">
+                                        <div class="bs-text-a with-type-bg-a"
+                                             th:classappend="${result != null && result.havingAt == 1} ? 'redCircle' : ''">
                                             <span class="bs-div-j-icon ratio ratio-1x1">
                                                 <span class="lazy-loader">
                                                     <img alt="4.2 Million" class="lazyload"
@@ -1077,7 +1081,8 @@
                                     </div>
 
                                     <div class="col-12 col-sm-6 col-lg-3" data-fadeup>
-                                        <div class="bs-text-a with-type-bg-a">
+                                        <div class="bs-text-a with-type-bg-a"
+                                             th:classappend="${result != null && result.havingDash == 1} ? 'redCircle' : ''">
                                             <span class="bs-div-j-icon ratio ratio-1x1">
                                                 <span class="lazy-loader">
                                                     <img alt="4.2 Million" class="lazyload"
@@ -1101,7 +1106,8 @@
                                     </div>
 
                                     <div class="col-12 col-sm-6 col-lg-3" data-fadeup>
-                                        <div class="bs-text-a with-type-bg-a">
+                                        <div class="bs-text-a with-type-bg-a"
+                                             th:classappend="${result != null && result.havingUnderbar == 1} ? 'redCircle' : ''">
                                             <span class="bs-div-j-icon ratio ratio-1x1">
                                                 <span class="lazy-loader">
                                                     <img alt="4.2 Million" class="lazyload"
@@ -1125,7 +1131,8 @@
                                     </div>
 
                                     <div class="col-12 col-sm-6 col-lg-3" data-fadeup>
-                                        <div class="bs-text-a with-type-bg-a">
+                                        <div class="bs-text-a with-type-bg-a"
+                                             th:classappend="${result != null && result.havingRedirection == 1} ? 'redCircle' : ''">
                                             <span class="bs-div-j-icon ratio ratio-1x1">
                                                 <span class="lazy-loader">
                                                     <img alt="4.2 Million" class="lazyload"
@@ -1149,7 +1156,8 @@
                                     </div>
 
                                     <div class="col-12 col-sm-6 col-lg-3" data-fadeup>
-                                        <div class="bs-text-a with-type-bg-a">
+                                        <div class="bs-text-a with-type-bg-a"
+                                             th:classappend="${result != null && result.subDomains == 1} ? 'redCircle' : ''">
                                             <span class="bs-div-j-icon ratio ratio-1x1">
                                                 <span class="lazy-loader">
                                                     <img alt="4.2 Million" class="lazyload"
@@ -1173,7 +1181,8 @@
                                     </div>
 
                                     <div class="col-12 col-sm-6 col-lg-3" data-fadeup>
-                                        <div class="bs-text-a with-type-bg-a">
+                                        <div class="bs-text-a with-type-bg-a"
+                                             th:classappend="${result != null && result.longDomain == 1} ? 'redCircle' : ''">
                                             <span class="bs-div-j-icon ratio ratio-1x1">
                                                 <span class="lazy-loader">
                                                     <img alt="4.2 Million" class="lazyload"
@@ -1196,7 +1205,8 @@
                                     </div>
 
                                     <div class="col-12 col-sm-6 col-lg-3" data-fadeup>
-                                        <div class="bs-text-a with-type-bg-a">
+                                        <div class="bs-text-a with-type-bg-a"
+                                             th:classappend="${result != null && result.similarUrl == 1} ? 'redCircle' : ''">
                                             <span class="bs-div-j-icon ratio ratio-1x1">
                                                 <span class="lazy-loader">
                                                     <img alt="4.2 Million" class="lazyload"
@@ -1220,7 +1230,8 @@
                                     </div>
 
                                     <div class="col-12 col-sm-6 col-lg-3" data-fadeup>
-                                        <div class="bs-text-a with-type-bg-a">
+                                        <div class="bs-text-a with-type-bg-a"
+                                             th:classappend="${result != null && result.nonStandardPort == 1} ? 'redCircle' : ''">
                                             <span class="bs-div-j-icon ratio ratio-1x1">
                                                 <span class="lazy-loader">
                                                     <img alt="4.2 Million" class="lazyload"
@@ -1242,7 +1253,8 @@
                                     </div>
 
                                     <div class="col-12 col-sm-6 col-lg-3" data-fadeup>
-                                        <div class="bs-text-a with-type-bg-a">
+                                        <div class="bs-text-a with-type-bg-a"
+                                             th:classappend="${result != null && result.isHttps == 1} ? 'redCircle' : ''">
                                             <span class="bs-div-j-icon ratio ratio-1x1">
                                                 <span class="lazy-loader">
                                                     <img alt="4.2 Million" class="lazyload"
@@ -1266,7 +1278,8 @@
                                     </div>
 
                                     <div class="col-12 col-sm-6 col-lg-3" data-fadeup>
-                                        <div class="bs-text-a with-type-bg-a">
+                                        <div class="bs-text-a with-type-bg-a"
+                                             th:classappend="${result != null && result.isTrustedCert == 1} ? 'redCircle' : ''">
                                             <span class="bs-div-j-icon ratio ratio-1x1">
                                                 <span class="lazy-loader">
                                                     <img alt="4.2 Million" class="lazyload"
@@ -1290,7 +1303,8 @@
                                     </div>
 
                                     <div class="col-12 col-sm-6 col-lg-3" data-fadeup>
-                                        <div class="bs-text-a with-type-bg-a">
+                                        <div class="bs-text-a with-type-bg-a"
+                                             th:classappend="${result != null && result.creationDate == 1} ? 'redCircle' : ''">
                                             <span class="bs-div-j-icon ratio ratio-1x1">
                                                 <span class="lazy-loader">
                                                     <img alt="4.2 Million" class="lazyload"
@@ -1314,7 +1328,7 @@
 
                                     <div class="col-12 col-sm-6 col-lg-3" data-fadeup>
                                         <div class="bs-text-a with-type-bg-a"
-                                             th:classappend="${result != null && result.expirationDate == 1} ? 'expired-url' : ''">
+                                             th:classappend="${result != null && result.expirationDate == 1} ? 'redCircle' : ''">
                                             <span class="bs-div-j-icon ratio ratio-1x1">
                                                 <span class="lazy-loader">
                                                     <img alt="4.2 Million" class="lazyload"
