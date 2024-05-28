@@ -14,9 +14,9 @@ from urllib.parse import urlparse
 
 # 모델과 벡터라이저 로드 (이미 학습된 상태라고 가정)
 # model = load_model(
-#     'C:/Users/dlckd/Desktop/2024-1학기/캡스톤디자인/Phising_Detection/ML/Models/adam_phishing_detection_model.keras')
+#     'C:/Users/dlckd/Desktop/2024-1학기/캡스톤디자인/Phishing_Detection/ML/Models/adam_phishing_detection_model.keras')
 model = joblib.load(
-    'C:\\Users\\Administrator\\PycharmProjects\\Phishing_Detection\\ML\\Models\\isolation_forest_model.pkl')
+    'C:\\Users\\Administrator\\PycharmProjects\\Phishing_Detection\\ML\\Models\\random_forest_model.pkl')
 
 # 테스트할 URL
 # test_url = sys.argv[1]
