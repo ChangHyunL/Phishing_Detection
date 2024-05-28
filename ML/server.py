@@ -1,9 +1,5 @@
 import socket
-import subprocess
 import threading
-import pandas as pd
-import joblib
-from urllib.parse import urlparse
 
 # 두 번째 파일의 함수들을 임포트합니다.
 from url_detection import prepare_input, model
