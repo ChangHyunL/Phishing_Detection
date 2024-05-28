@@ -10,7 +10,7 @@ from tensorflow.keras.metrics import Precision, Recall
 
 # 데이터 로드
 df = pd.read_csv(
-    'C:/Users/dlckd/Desktop/2024-1학기/캡스톤디자인/Phising_Detection/ML/Datasets/testDataset/4th_merged.csv')
+    'C:/Users/dlckd/Desktop/2024-1학기/캡스톤디자인/Phishing_Detection/ML/Datasets/testDataset/4th_merged.csv')
 
 # 특성과 레이블 분리
 X = df.drop('isphishing', axis=1)    # 특성
@@ -54,4 +54,4 @@ print(f"Recall: {recall:.4f}")
 print(f"F1 Score: {f1:.4f}")
 
 # 모델 저장
-model.save('C:/Users/dlckd/Desktop/2024-1학기/캡스톤디자인/Phising_Detection/ML/Models/phishing_detection_model.keras')
+model.save('C:/Users/dlckd/Desktop/2024-1학기/캡스톤디자인/Phishing_Detection/ML/Models/phishing_detection_model.keras')

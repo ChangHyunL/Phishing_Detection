@@ -10,10 +10,10 @@ import socket
 import whois
 import pandas as pd
 
-filepath = "C:/Users/dlckd/Desktop/2024-1학기/캡스톤디자인/Phising_Detection/ML/Datasets/rawdata/non_phishing.csv"
-ca_filepath = "C:/Users/dlckd/Desktop/2024-1학기/캡스톤디자인/Phising_Detection/RuleDetection/trusted_ca.csv"
-# input_file_path = 'C:/Users/dlckd/Desktop/2024-1학기/캡스톤디자인/Phising_Detection/ML/Datasets/normal_url.csv'
-# output_file_path = 'C:/Users/dlckd/Desktop/2024-1학기/캡스톤디자인/Phising_Detection/ML/Datasets/processed_normal_url1.csv'
+filepath = "C:/Users/dlckd/Desktop/2024-1학기/캡스톤디자인/Phishing_Detection/ML/Datasets/rawdata/non_phishing.csv"
+ca_filepath = "C:/Users/dlckd/Desktop/2024-1학기/캡스톤디자인/Phishing_Detection/RuleDetection/trusted_ca.csv"
+# input_file_path = 'C:/Users/dlckd/Desktop/2024-1학기/캡스톤디자인/Phishing_Detection/ML/Datasets/normal_url.csv'
+# output_file_path = 'C:/Users/dlckd/Desktop/2024-1학기/캡스톤디자인/Phishing_Detection/ML/Datasets/processed_normal_url1.csv'
 
 # df = pd.read_csv(input_file_path, usecols=[1])
 # df = pd.read_csv(input_file_path, header=None, names=['url'])
