@@ -45,7 +45,7 @@ js_contents = download_js(url)
 if js_contents:
     # os.makedirs('js_files', exist_ok=True)
     counter = 1  # 파일 이름에 붙일 숫자를 세기 위한 카운터
-    for js_file, js_content in js_contents:
+    for js_content in js_contents:
         filename = f'script{counter}.js'
         save_file(js_content, os.path.join(file_path, filename))
         # save_file(js_content, os.path.join('js_files', filename))
