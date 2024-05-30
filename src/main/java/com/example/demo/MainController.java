@@ -64,8 +64,9 @@ public class MainController {
             model.addAttribute("wrongUrl", 1);
             e.printStackTrace();
         }
-
+        System.out.println("result : "+result);
         phishingCheck = phishingService.phishingCheck(result);
+
         if(phishingCheck==1){
             phishingService.create(result);
             model.addAttribute("phishingCheck", phishingCheck);

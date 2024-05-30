@@ -14,7 +14,7 @@ public class PhishingService {
 
     public int phishingCheck(Phishing phishing){
         int result = 0;
-        if(phishing.getIsRedirection()==1) result=1;
+        //if(phishing.getIsRedirection()==1) result=1;
         if(phishing.getLongUrl()==1) result=1;
         if(phishing.getHavingIp()==1) result=1;
         if(phishing.getHavingAt()==1) result=1;
