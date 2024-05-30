@@ -2,9 +2,6 @@ from bs4 import BeautifulSoup
 import requests
 from urllib.parse import urlparse, urljoin
 
-url = 'https://ssxsxs.weeblysite.com/'
-
-
 def download_html(url):
     response = requests.get(url)
     if response.status_code == 200:
@@ -57,6 +54,8 @@ def analyze_html(html_content, url):
     isURL_of_Anchor(html_content, url)
 
 
-html_content = download_html(url)
-if html_content:
-    analyze_html(html_content, url)
+
+def exec(url):
+    html_content = download_html(url)
+    if html_content:
+        analyze_html(html_content, url)

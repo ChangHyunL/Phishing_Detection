@@ -3,7 +3,6 @@ import requests
 import re
 from urllib.parse import urljoin
 
-url = 'https://www.naver.com/'
 
 
 def download_js(url):
@@ -57,8 +56,8 @@ def check_drive_by_download(js_content):
 def analyze_javascript(js_content):
     check_drive_by_download(js_content)
 
-
-js_contents = download_js(url)
-if js_contents:
-    for _, js_content in js_contents:
-        analyze_javascript(js_content)
+def exec(url):
+    js_contents = download_js(url)
+    if js_contents:
+        for _, js_content in js_contents:
+            analyze_javascript(js_content)
