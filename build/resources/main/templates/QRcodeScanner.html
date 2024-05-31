@@ -1350,9 +1350,29 @@
                                             </div>
                                         </div>
                                     </div>
+
+
+                                    <div class="col-12 col-sm-6 col-lg-3" data-fadeup>
+                                        <div class="bs-text-a with-type-bg-a"
+                                             th:classappend="${result != null && result.creationDate == 1} ? 'redCircle' : ''">
+                                            <span class="bs-div-j-icon ratio ratio-1x1">
+                                                <span class="lazy-loader">
+                                                    <img alt="4.2 Million" class="lazyload"
+                                                         loading="lazy"
+                                                         src="https://checkphish.bolster.ai/wp-content/uploads/2024/02/cp-money-recive-blue.svg">
+                                                </span>
+                                            </span>
+                                            <h3 class="h4">정밀 탐지 하기</h3>
+                                            <div class="bs-text-desc">
+                                                <p th:if="${result == null}">
+                                                    추가적인 탐지를 통해서 더욱 정밀한 탐지 결과를 보여줍니다.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 </div>
