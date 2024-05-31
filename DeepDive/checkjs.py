@@ -28,19 +28,15 @@ def download_js(url):
 def check_drive_by_download(js_content):
     # 드라이브 바이 다운로드와 관련된 의심스러운 코드 패턴 검색
     drive_by_download_patterns = [
-        r'download\s*=\s*".*\.exe"',
-        r'href\s*=\s*".*\.zip"',
-        r'document\.createElement\("iframe"\)\.src\s*=\s*".*malicious-site\.com"',
-        r'window\.location\s*=\s*".*malicious-site\.com"',
-        r'script\s*src\s*=\s*".*malicious-site\.com"',
-        r'eval\s*\(.*document\.getElementById\("malicious"\)\.innerHTML'
+        re.compile(r"window\.location\.href\s*=\s*'([^']+?\.(?:exe|zip))'"),
+        re.compile(r"window\.location\s*=\s*'([^']+?\.(?:exe|zip))'"),
+        re.compile(r"window\.open\('([^']+?\.(?:exe|zip))'\)")
     ]
 
     suspicious_lines = []
     for pattern in drive_by_download_patterns:
-        matches = re.findall(pattern, js_content)
-        if matches:
-            suspicious_lines.extend(matches)
+        if pattern.search(js_content):
+            suspicious_lines.extend(pattern.pattern)
 
     if suspicious_lines:
         print("드라이브 바이 다운로드와 관련된 의심스러운 코드가 발견되었습니다.")
