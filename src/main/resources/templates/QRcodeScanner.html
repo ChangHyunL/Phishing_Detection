@@ -1353,11 +1353,11 @@
 
 
                                     <div class="col-12 col-sm-6 col-lg-3" data-fadeup>
-                                        <div th:if="result == null">
+                                        <div th:if="url != null">
                                             <form action="/deepdive" enctype="multipart/form-data" method="post">
-                                                <button style="border-color: white">
-                                                    <div class="bs-text-a with-type-bg-a"
-                                                         th:classappend="${result != null && result.creationDate == 1} ? 'redCircle' : ''">
+                                                <input type="hidden" name="url" th:value="${url}" />
+                                                <button type="submit" style="border-color: white">
+                                                    <div class="bs-text-a with-type-bg-a">
                                                     <span class="bs-div-j-icon ratio ratio-1x1">
                                                         <span class="lazy-loader">
                                                             <img alt="4.2 Million" class="lazyload" loading="lazy" src="https://checkphish.bolster.ai/wp-content/uploads/2024/02/cp-money-recive-blue.svg">
@@ -1372,7 +1372,6 @@
                                                     </div>
                                                 </button>
                                             </form>
-
                                         </div>
 
                                     </div>

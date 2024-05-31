@@ -116,11 +116,13 @@ public class MainController {
         return "QRcodeScanner";
     }
 
-    @GetMapping("/deepdive")
+    @PostMapping("/deepdive")
     public String deepdive (@RequestParam("url") String url, Model model){
         if (url.isEmpty()) {
             return "redirect:scan";
         }
+        System.out.println("통과");
+        System.out.println("url = " + url);
         try {
             System.out.println("url = " + url);
             URL urlObj = new URL(url);

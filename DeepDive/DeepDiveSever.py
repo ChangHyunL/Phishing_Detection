@@ -17,7 +17,7 @@ def binder(client_socket, addr):
             if url == "":
                 break
 
-            input_data = deepdive(url)
+            input_data = exec(url)
             # input_data.to_csv('x_input.csv', index=False)
             #var = input_data.values[0]
             # input_data = list(map(int, input_data.split(' ')))
@@ -27,7 +27,7 @@ def binder(client_socket, addr):
             #int_list = list(map(int, input_list))
             # int_list.insert(0, url)
             #print('int_list : ', int_list)
-
+            print("input_data : ", input_data)
             sendMessage = input_data
             print("sendMessage : ", sendMessage)
 
@@ -45,7 +45,7 @@ def binder(client_socket, addr):
 
 server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-server_socket.bind(('', 9999))
+server_socket.bind(('', 9998))
 server_socket.listen()
 
 try:
@@ -59,10 +59,11 @@ finally:
     server_socket.close()
 
 
-def deepdive(url):
+def exec(url):
     test_exec(url)
     checkjs_exec(url)
     checkhtml_exec(url)
+    return "hello"
 
 
 
