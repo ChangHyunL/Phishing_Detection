@@ -67,7 +67,7 @@ def is_external_domain(src, url):
 def check_iframe(js_content, url):
     iframe_pattern = r'document\.createElement\("iframe"\)'
     external_iframe_pattern = r'document\.createElement\("iframe"\)\.src\s*=\s*["\'](.*?)["\']'
-    hidden_iframe_pattern = r'<iframe.*?(display\s*:\s*none|visibility\s*:\s*hidden|width\s*=\s*["\']?0["\']?|height\s*=\s*["\']?0["\']?).*?>'
+    hidden_iframe_pattern = r'\.style\.(display|visibility)\s*=\s*[\'"](none|hidden)[\'"]'
 
     hidden_iframes = []
     external_iframes = []
@@ -130,14 +130,14 @@ def check_redirection(js_content):
         return 0
 
 
-def check_external_scripts(js_content):
-    # 외부 스크립트 로드 확인
-    external_script_pattern = r'<script\s+src\s*=\s*"https?://[^"]+"'
-    if re.search(external_script_pattern, js_content):
-        print("외부 스크립트가 로드되었습니다.")
+def check_dynamic_script_load(js_content):
+    # 동적으로 외부 스크립트를 로드하는 패턴 확인
+    dynamic_script_pattern = r'document\.createElement\(\s*[\'"]script[\'"]\s*\)'
+    if re.search(dynamic_script_pattern, js_content):
+        print("동적으로 외부 스크립트를 로드하는 코드가 있습니다.")
         return 1
     else:
-        print("외부 스크립트가 로드되지 않았습니다.")
+        print("동적으로 외부 스크립트를 로드하는 코드가 없습니다.")
         return 0
 
 
@@ -187,7 +187,7 @@ def analyze_javascript(js_content):
         check_drive_by_download,
         lambda content: check_iframe(content, url),
         check_redirection,
-        check_external_scripts,
+        check_dynamic_script_load,
         check_dynamic_forms,
         check_external_data_transfer
     ]
