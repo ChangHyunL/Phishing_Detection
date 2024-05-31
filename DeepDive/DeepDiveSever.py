@@ -1,8 +1,8 @@
 import socket
 import threading
-from test import exec as test_exec
 from checkjs import exec as checkjs_exec
 from checkhtml import exec as checkhtml_exec
+
 
 def binder(client_socket, addr):
     print('Connected by', addr)
@@ -19,14 +19,14 @@ def binder(client_socket, addr):
 
             input_data = exec(url)
             # input_data.to_csv('x_input.csv', index=False)
-            #var = input_data.values[0]
+            # var = input_data.values[0]
             # input_data = list(map(int, input_data.split(' ')))
             # print("input_data : ", input_data)
-            #print('var = ', var)
-            #input_list = var.tolist()
-            #int_list = list(map(int, input_list))
+            # print('var = ', var)
+            # input_list = var.tolist()
+            # int_list = list(map(int, input_list))
             # int_list.insert(0, url)
-            #print('int_list : ', int_list)
+            # print('int_list : ', int_list)
             print("input_data : ", input_data)
             sendMessage = input_data
             print("sendMessage : ", sendMessage)
@@ -60,15 +60,6 @@ finally:
 
 
 def exec(url):
-    test_exec(url)
     checkjs_exec(url)
     checkhtml_exec(url)
     return "hello"
-
-
-
-
-
-
-
-
