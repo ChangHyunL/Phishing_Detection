@@ -5,10 +5,9 @@ from checkhtml import exec as checkhtml_exec
 
 def exec(url):
     js_exec = checkjs_exec(url)
-    print("js_exec : ", js_exec)
     html_exec = checkhtml_exec(url)
-    print("html_exec : ", html_exec)
-    return "hello"
+    return_nums = js_exec + html_exec
+    return return_nums
 
 def binder(client_socket, addr):
     print('Connected by', addr)
@@ -24,10 +23,7 @@ def binder(client_socket, addr):
                 break
 
             input_data = exec(url)
-            print("input_data : ", input_data)
             sendMessage = input_data
-            print("sendMessage : ", sendMessage)
-
             data = str(sendMessage).encode()
             print('data :  ', data)
             length = len(data)
