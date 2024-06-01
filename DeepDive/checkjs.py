@@ -3,6 +3,7 @@ import requests
 import re
 from urllib.parse import urljoin, urlparse
 
+global_url = None
 
 def download_js(url):
     try:
@@ -185,7 +186,7 @@ def analyze_javascript(js_content):
     results = []
     analysis_functions = [
         check_drive_by_download,
-        lambda content: check_iframe(content, url),
+        lambda content: check_iframe(content, global_url),
         check_redirection,
         check_dynamic_script_load,
         check_dynamic_forms,
@@ -202,6 +203,8 @@ def analyze_javascript(js_content):
 
 
 def exec(url):
+    global global_url
+    global_url = url
     js_contents = download_js(url)
     count = 0
     if js_contents:
@@ -212,5 +215,5 @@ def exec(url):
         return (result)
 
 
-url = 'https://os.korea.ac.kr/research/'
-exec(url)
+#url = 'https://os.korea.ac.kr/research/'
+#exec(url)

@@ -3,7 +3,6 @@ from bs4 import BeautifulSoup
 import requests
 from urllib.parse import urlparse, urljoin
 
-
 def download_html(url):
     response = requests.get(url)
     if response.status_code == 200:
@@ -148,5 +147,5 @@ def exec(url):
         return result
 
 
-url = 'https://www.naver.com'
-exec(url)
+#url = 'https://www.naver.com'
+#exec(url)
