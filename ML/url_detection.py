@@ -4,29 +4,33 @@ import pandas as pd
 import requests
 from datetime import datetime
 import re
+import Levenshtein
 import whois
 import ssl
 import socket
 from urllib.parse import urlparse
 
-model = joblib.load('C:\\Users\\Administrator\\PycharmProjects\\Phishing_Detection\\ML\\Models\\isolation_forest_model.pkl')
-
+model = joblib.load(
+    'C:\\Users\\Administrator\\PycharmProjects\\Phishing_Detection\\ML\\Models\\random_forest_model.pkl')
 filepath = "C:\\Users\\Administrator\\PycharmProjects\\Phishing_Detection\\ML\\Datasets\\rawdata\\non_phishing.csv"
 ca_filepath = "C:\\Users\\Administrator\\PycharmProjects\\Phishing_Detection\\RuleDetection\\trusted_ca.csv"
+
 
 def is_redirection(url):
     try:
         response = requests.head(url, allow_redirects=True)
         return response.url
     except:
-        #print(f"{url}은 url이 아닙니다.")
+        # print(f"{url}은 url이 아닙니다.")
         return 1
+
 
 def long_url(url):
     if len(url) > 75:
         return 1
     else:
         return 0
+
 
 def having_ip(url):
     pattern = r'^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$'
@@ -37,11 +41,13 @@ def having_ip(url):
     else:
         return 0
 
+
 def having_at(url):
     if re.search('@', url):
         return 1
     else:
         return 0
+
 
 def having_dash(url):
     if re.search('-', urlparse(url).netloc):
@@ -49,11 +55,13 @@ def having_dash(url):
     else:
         return 0
 
+
 def having_underbar(url):
     if re.search('_', urlparse(url).netloc):
         return 1
     else:
         return 0
+
 
 def having_redirection(url):
     start = url.find("://") + 3
@@ -64,11 +72,13 @@ def having_redirection(url):
     else:
         return 0
 
+
 def sub_domains(url):
     if url.count(".") > 5:
         return 1
     else:
         return 0
+
 
 def long_domain(url):
     domain = urlparse(url).netloc
@@ -76,6 +86,7 @@ def long_domain(url):
         return 1
     else:
         return 0
+
 
 def read_well_known_hostnames(filepath):
     with open(filepath, 'r') as file:
@@ -85,16 +96,16 @@ def read_well_known_hostnames(filepath):
 
 
 def similar_url(url, well_known_hostnames, threshold=2):
-    #hostname = urlparse(url).netloc
-    #for well_known_hostname in well_known_hostnames:
-    #   distance = Levenshtein.distance(hostname, well_known_hostname)
+    hostname = urlparse(url).netloc
+    for well_known_hostname in well_known_hostnames:
+        distance = Levenshtein.distance(hostname, well_known_hostname)
 
     # hostname과 well_known_hostname이 일치하지 않는 경우만 거리를 계산
-    #  if hostname != well_known_hostname:
-    #     if distance <= threshold:
-    #        return 1
-    #else:
-    #   return 0
+        if hostname != well_known_hostname:
+            if distance <= threshold:
+                return 1
+        else:
+            return 0
     return 0
 
 
@@ -110,16 +121,19 @@ def non_standard_port(url):
     else:
         return 1
 
+
 def is_https(url):
     if urlparse(url).scheme == 'https':
         return 0
     else:
         return 1
 
+
 def read_trusted_ca(ca_filepath):
     with open(ca_filepath, 'r', encoding='utf-8') as f:
         trusted_issuer = f.read()
     return trusted_issuer
+
 
 def is_trusted_cert(url, trusted_issuer):
     try:
@@ -136,8 +150,9 @@ def is_trusted_cert(url, trusted_issuer):
                 return 0
         return 1
     except Exception as e:
-        #print(f"Error while checking url {url}: {e}")
+        # print(f"Error while checking url {url}: {e}")
         return 1
+
 
 def get_creation_date(url):
     try:
@@ -152,8 +167,9 @@ def get_creation_date(url):
         else:
             return 0
     except Exception as e:
-        #print(f"{url}, Error: {e}")
+        # print(f"{url}, Error: {e}")
         return 1
+
 
 def get_expiration_date(url):
     try:
@@ -168,8 +184,9 @@ def get_expiration_date(url):
         else:
             return 0
     except Exception as e:
-        #print(f"Error: {e}")
+        # print(f"Error: {e}")
         return 1
+
 
 def prepare_input(url):
     well_known_hostnames = read_well_known_hostnames(filepath)
@@ -213,7 +230,5 @@ def prepare_input(url):
         }
     df = pd.DataFrame(data)
     X_input = df.drop('url', axis=1)
-    X_input.to_csv('x_input.csv', index=False)
+    # X_input.to_csv('x_input.csv', index=False)
     return X_input
-
-

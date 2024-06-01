@@ -2,11 +2,13 @@ package com.example.demo;
 
 import com.example.demo.Entity.Phishing;
 import com.example.demo.Service.PhishingService;
+import com.example.demo.socketProgramming.deepDiveSocketCommunication;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import java.net.HttpURLConnection;
@@ -14,6 +16,7 @@ import java.net.URL;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -114,4 +117,34 @@ public class MainController {
 
         return "QRcodeScanner";
     }
+
+    @PostMapping("/deepdive")
+    public String deepdive (@RequestParam("url") String url, Model model){
+        if (url.isEmpty()) {
+            return "redirect:scan";
+        }
+        System.out.println("통과");
+        System.out.println("url = " + url);
+        try {
+            System.out.println("url = " + url);
+            URL urlObj = new URL(url);
+            HttpURLConnection connection = (HttpURLConnection) urlObj.openConnection();
+            connection.setRequestMethod("HEAD");
+            int responseCode = connection.getResponseCode();
+            System.out.println("connection.getURL() = " + connection.getURL());
+            System.out.println("Response Code: " + responseCode);
+
+            connection.disconnect();
+
+        }catch ( Exception e) {
+            e.printStackTrace();
+            //URL이 아닌 값
+            model.addAttribute("wrongUrl", 1);
+            return "QRcodeScanner";
+        }
+        List<Integer> list = deepDiveSocketCommunication.socketCommunication(url);
+        System.out.println("list: " + list);
+        return null;
+    }
+
 }
