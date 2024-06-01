@@ -1,16 +1,14 @@
 import socket
-import subprocess
 import threading
-import pandas as pd
-import joblib
-from urllib.parse import urlparse
 
 # 두 번째 파일의 함수들을 임포트합니다.
-from test_demo import prepare_input, model
+from url_detection import prepare_input, model
+
 
 def predict(input_data):
     prediction = model.predict(input_data)
     return prediction[0]  # 예측 결과의 첫 번째 값을 반환
+
 
 def binder(client_socket, addr):
     print('Connected by', addr)
@@ -26,15 +24,15 @@ def binder(client_socket, addr):
                 break
 
             input_data = prepare_input(url)
-            #input_data.to_csv('x_input.csv', index=False)
+            # input_data.to_csv('x_input.csv', index=False)
             var = input_data.values[0]
-            #input_data = list(map(int, input_data.split(' ')))
-            #print("input_data : ", input_data)
-            print('var = ',var)
+            # input_data = list(map(int, input_data.split(' ')))
+            # print("input_data : ", input_data)
+            print('var = ', var)
             input_list = var.tolist()
             int_list = list(map(int, input_list))
-            #int_list.insert(0, url)
-            print('int_list : ',int_list)
+            # int_list.insert(0, url)
+            print('int_list : ', int_list)
 
             sendMessage = predict(input_data)
             print("sendMessage : ", sendMessage)
@@ -44,11 +42,12 @@ def binder(client_socket, addr):
             length = len(data)
             client_socket.sendall(length.to_bytes(4, byteorder='little'))
             client_socket.sendall(data)
-            
+
     except Exception as e:
         print("Exception:", e)
     finally:
         client_socket.close()
+
 
 server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
