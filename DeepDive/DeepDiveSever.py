@@ -1,8 +1,13 @@
 import socket
 import threading
-from test import exec as test_exec
 from checkjs import exec as checkjs_exec
 from checkhtml import exec as checkhtml_exec
+
+def exec(url):
+    js_exec = checkjs_exec(url)
+    html_exec = checkhtml_exec(url)
+    return_nums = js_exec + html_exec
+    return return_nums
 
 def binder(client_socket, addr):
     print('Connected by', addr)
@@ -17,20 +22,8 @@ def binder(client_socket, addr):
             if url == "":
                 break
 
-            input_data = deepdive(url)
-            # input_data.to_csv('x_input.csv', index=False)
-            #var = input_data.values[0]
-            # input_data = list(map(int, input_data.split(' ')))
-            # print("input_data : ", input_data)
-            #print('var = ', var)
-            #input_list = var.tolist()
-            #int_list = list(map(int, input_list))
-            # int_list.insert(0, url)
-            #print('int_list : ', int_list)
-
+            input_data = exec(url)
             sendMessage = input_data
-            print("sendMessage : ", sendMessage)
-
             data = str(sendMessage).encode()
             print('data :  ', data)
             length = len(data)
@@ -42,10 +35,9 @@ def binder(client_socket, addr):
     finally:
         client_socket.close()
 
-
 server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-server_socket.bind(('', 9999))
+server_socket.bind(('', 9998))
 server_socket.listen()
 
 try:
@@ -57,17 +49,3 @@ except Exception as e:
     print("Server exception:", e)
 finally:
     server_socket.close()
-
-
-def deepdive(url):
-    test_exec(url)
-    checkjs_exec(url)
-    checkhtml_exec(url)
-
-
-
-
-
-
-
-

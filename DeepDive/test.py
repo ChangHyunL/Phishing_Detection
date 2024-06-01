@@ -33,6 +33,7 @@ def save_file(content, filename):
     with open(filename, 'w', encoding='utf-8') as file:
         file.write(content)
 
+
 def exec(url):
     html_content = download_html(url)
     if html_content:
