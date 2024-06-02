@@ -3,6 +3,10 @@ from bs4 import BeautifulSoup
 import requests
 from urllib.parse import urlparse, urljoin
 
+
+global_total_links = None
+global_external_links = None
+
 def download_html(url):
     response = requests.get(url)
     if response.status_code == 200:
@@ -31,6 +35,8 @@ def isFavicon(html_content, url):
 
 
 def isURL_of_Anchor(html_content, url):
+    global global_total_links
+    global global_external_links
     soup = BeautifulSoup(html_content, 'html.parser')
     # 외부 도메인 링크 비율 확인
     anchors = soup.find_all('a', href=True)
@@ -40,6 +46,8 @@ def isURL_of_Anchor(html_content, url):
     external_link_ratio = len(external_links) / \
         total_links if total_links > 0 else 0
 
+    global_total_links = total_links
+    global_external_links = len(external_links)
     print(f"전체 링크 수: {total_links}")
     print(f"외부 도메인 링크 수: {len(external_links)}")
     print(f"외부 도메인 링크 비율: {external_link_ratio:.2f}")
@@ -143,6 +151,8 @@ def exec(url):
     html_content = download_html(url)
     if html_content:
         result = analyze_html(html_content, url)
+        result.append(global_total_links)
+        result.append(global_external_links)
         print(result)
         return result
 
