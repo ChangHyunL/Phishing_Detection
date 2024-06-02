@@ -16,7 +16,10 @@ import java.net.URL;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Controller
 @RequiredArgsConstructor
@@ -119,12 +122,19 @@ public class MainController {
     }
 
     @PostMapping("/deepdive")
-    public String deepdive (@RequestParam("url") String url, Model model){
+    public String deepdive (@RequestParam("url") String url,@RequestParam("result") String result, Model model){
         if (url.isEmpty()) {
             return "redirect:scan";
         }
         System.out.println("통과");
-        System.out.println("url = " + url);
+        Pattern pattern = Pattern.compile("(?<!id)=([0-9]+)");
+        Matcher matcher = pattern.matcher(result);
+        List<Integer> numbers = new ArrayList<>();
+        while (matcher.find()) {
+            numbers.add(Integer.parseInt(matcher.group(1)));
+        }
+        Phishing deepdive_phisihing = new Phishing(numbers);
+        System.out.println("deepdive_phisihing = " + deepdive_phisihing);
         try {
             System.out.println("url = " + url);
             URL urlObj = new URL(url);
@@ -143,8 +153,11 @@ public class MainController {
             return "QRcodeScanner";
         }
         List<Integer> list = deepDiveSocketCommunication.socketCommunication(url);
-        System.out.println("list: " + list);
-        return null;
+        model.addAttribute("url", url);
+        model.addAttribute("list", list);
+        System.out.println("list_result = " + list);
+        model.addAttribute("result", deepdive_phisihing);
+        return "DeepDiveResult";
     }
 
 }

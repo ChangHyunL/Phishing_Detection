@@ -1356,6 +1356,7 @@
                                         <div th:if="${url != null}">
                                             <form action="/deepdive" enctype="multipart/form-data" method="post">
                                                 <input type="hidden" name="url" th:value="${url}"/>
+                                                <input type="hidden" name="result" th:value="${result}"/>
                                                 <button type="submit" style="border-color: white">
                                                     <div class="bs-text-a with-type-bg-a">
                                                     <span class="bs-div-j-icon ratio ratio-1x1">

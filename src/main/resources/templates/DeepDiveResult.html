@@ -986,7 +986,8 @@
                             </div>
                             <div class="bs-div-j-row">
                                 <div class="row">
-                                    <div class="col-12 col-sm-6 col-lg-3" data-fadeup>
+                                    <div class="col-12 col-sm-6 col-lg-3" data-fadeup
+                                         th:style="${result != null && result.isRedirection == 0} ? 'display: none;' : ''">
                                         <div class="bs-text-a with-type-bg-a"
                                              th:classappend="${result != null && result.isRedirection == 1} ? 'redCircle' : ''">
                                             <span class="bs-div-j-icon ratio ratio-1x1">
@@ -1007,7 +1008,8 @@
                                             </p>
                                         </div>
                                     </div>
-                                    <div class="col-12 col-sm-6 col-lg-3" data-fadeup>
+                                    <div class="col-12 col-sm-6 col-lg-3" data-fadeup
+                                         th:style="${result != null && result.longUrl == 0} ? 'display: none;' : ''">
                                         <div class="bs-text-a with-type-bg-a"
                                              th:classappend="${result != null && result.longUrl == 1} ? 'redCircle' : ''">
                                             <span class="bs-div-j-icon ratio ratio-1x1">
@@ -1031,7 +1033,8 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-12 col-sm-6 col-lg-3" data-fadeup>
+                                    <div class="col-12 col-sm-6 col-lg-3" data-fadeup
+                                         th:style="${result != null && result.havingIp == 0} ? 'display: none;' : ''">
                                         <div class="bs-text-a with-type-bg-a"
                                              th:classappend="${result != null && result.havingIp == 1} ? 'redCircle' : ''">
                                             <span class="bs-div-j-icon ratio ratio-1x1">
@@ -1055,7 +1058,8 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-12 col-sm-6 col-lg-3" data-fadeup>
+                                    <div class="col-12 col-sm-6 col-lg-3" data-fadeup
+                                         th:style="${result != null && result.havingAt == 0} ? 'display: none;' : ''">
                                         <div class="bs-text-a with-type-bg-a"
                                              th:classappend="${result != null && result.havingAt == 1} ? 'redCircle' : ''">
                                             <span class="bs-div-j-icon ratio ratio-1x1">
@@ -1080,7 +1084,8 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-12 col-sm-6 col-lg-3" data-fadeup>
+                                    <div class="col-12 col-sm-6 col-lg-3" data-fadeup
+                                         th:style="${result != null && result.havingDash == 0} ? 'display: none;' : ''">
                                         <div class="bs-text-a with-type-bg-a"
                                              th:classappend="${result != null && result.havingDash == 1} ? 'redCircle' : ''">
                                             <span class="bs-div-j-icon ratio ratio-1x1">
@@ -1105,7 +1110,8 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-12 col-sm-6 col-lg-3" data-fadeup>
+                                    <div class="col-12 col-sm-6 col-lg-3" data-fadeup
+                                         th:style="${result != null && result.havingUnderbar == 0} ? 'display: none;' : ''">
                                         <div class="bs-text-a with-type-bg-a"
                                              th:classappend="${result != null && result.havingUnderbar == 1} ? 'redCircle' : ''">
                                             <span class="bs-div-j-icon ratio ratio-1x1">
@@ -1130,7 +1136,8 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-12 col-sm-6 col-lg-3" data-fadeup>
+                                    <div class="col-12 col-sm-6 col-lg-3" data-fadeup
+                                         th:style="${result != null && result.havingRedirection == 0} ? 'display: none;' : ''">
                                         <div class="bs-text-a with-type-bg-a"
                                              th:classappend="${result != null && result.havingRedirection == 1} ? 'redCircle' : ''">
                                             <span class="bs-div-j-icon ratio ratio-1x1">
@@ -1155,7 +1162,8 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-12 col-sm-6 col-lg-3" data-fadeup>
+                                    <div class="col-12 col-sm-6 col-lg-3" data-fadeup
+                                         th:style="${result != null && result.subDomains == 0} ? 'display: none;' : ''">
                                         <div class="bs-text-a with-type-bg-a"
                                              th:classappend="${result != null && result.subDomains == 1} ? 'redCircle' : ''">
                                             <span class="bs-div-j-icon ratio ratio-1x1">
@@ -1180,7 +1188,8 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-12 col-sm-6 col-lg-3" data-fadeup>
+                                    <div class="col-12 col-sm-6 col-lg-3" data-fadeup
+                                         th:style="${result != null && result.longDomain == 0} ? 'display: none;' : ''">
                                         <div class="bs-text-a with-type-bg-a"
                                              th:classappend="${result != null && result.longDomain == 1} ? 'redCircle' : ''">
                                             <span class="bs-div-j-icon ratio ratio-1x1">
@@ -1204,7 +1213,8 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-12 col-sm-6 col-lg-3" data-fadeup>
+                                    <div class="col-12 col-sm-6 col-lg-3" data-fadeup
+                                         th:style="${result != null && result.similarUrl == 0} ? 'display: none;' : ''">
                                         <div class="bs-text-a with-type-bg-a"
                                              th:classappend="${result != null && result.similarUrl == 1} ? 'redCircle' : ''">
                                             <span class="bs-div-j-icon ratio ratio-1x1">
@@ -1229,7 +1239,8 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-12 col-sm-6 col-lg-3" data-fadeup>
+                                    <div class="col-12 col-sm-6 col-lg-3" data-fadeup
+                                         th:style="${result != null && result.nonStandardPort == 0} ? 'display: none;' : ''">
                                         <div class="bs-text-a with-type-bg-a"
                                              th:classappend="${result != null && result.nonStandardPort == 1} ? 'redCircle' : ''">
                                             <span class="bs-div-j-icon ratio ratio-1x1">
@@ -1252,7 +1263,8 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-12 col-sm-6 col-lg-3" data-fadeup>
+                                    <div class="col-12 col-sm-6 col-lg-3" data-fadeup
+                                         th:style="${result != null && result.isHttps == 0} ? 'display: none;' : ''">
                                         <div class="bs-text-a with-type-bg-a"
                                              th:classappend="${result != null && result.isHttps == 1} ? 'redCircle' : ''">
                                             <span class="bs-div-j-icon ratio ratio-1x1">
@@ -1277,7 +1289,8 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-12 col-sm-6 col-lg-3" data-fadeup>
+                                    <div class="col-12 col-sm-6 col-lg-3" data-fadeup
+                                         th:style="${result != null && result.isTrustedCert == 0} ? 'display: none;' : ''">
                                         <div class="bs-text-a with-type-bg-a"
                                              th:classappend="${result != null && result.isTrustedCert == 1} ? 'redCircle' : ''">
                                             <span class="bs-div-j-icon ratio ratio-1x1">
@@ -1302,7 +1315,8 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-12 col-sm-6 col-lg-3" data-fadeup>
+                                    <div class="col-12 col-sm-6 col-lg-3" data-fadeup
+                                         th:style="${result != null && result.creationDate == 0} ? 'display: none;' : ''">
                                         <div class="bs-text-a with-type-bg-a"
                                              th:classappend="${result != null && result.creationDate == 1} ? 'redCircle' : ''">
                                             <span class="bs-div-j-icon ratio ratio-1x1">
@@ -1326,7 +1340,8 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-12 col-sm-6 col-lg-3" data-fadeup>
+                                    <div class="col-12 col-sm-6 col-lg-3" data-fadeup
+                                         th:style="${result != null && result.expirationDate == 0} ? 'display: none;' : ''">
                                         <div class="bs-text-a with-type-bg-a"
                                              th:classappend="${result != null && result.expirationDate == 1} ? 'redCircle' : ''">
                                             <span class="bs-div-j-icon ratio ratio-1x1">
@@ -1351,31 +1366,206 @@
                                         </div>
                                     </div>
 
+                                    <div class="col-12 col-sm-6 col-lg-3" data-fadeup>
+                                        <div class="bs-text-a with-type-bg-a"
+                                             th:classappend="${list.get(0) != 0} ? 'redCircle' : ''">
+                                            <span class="bs-div-j-icon ratio ratio-1x1">
+                                                <span class="lazy-loader">
+                                                    <img alt="4.2 Million" class="lazyload"
+                                                         loading="lazy"
+                                                         src="https://checkphish.bolster.ai/wp-content/uploads/2024/02/cp-money-recive-blue.svg">
+                                                </span>
+                                            </span>
+                                            <div class="bs-text-desc">
+                                                <p th:if="${list.get(0) == 0}">
+                                                    드라이브 바이 다운로드와 관련된 의심스러운 코드가 발견되지 않았습니다.
+                                                </p>
+                                                <p th:if="${list.get(0) != 0}">
+                                                    드라이브 바이 다운로드와 관련된 의심스러운 코드가 발견되었습니다.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
 
                                     <div class="col-12 col-sm-6 col-lg-3" data-fadeup>
-                                        <div th:if="${url != null}">
-                                            <form action="/deepdive" enctype="multipart/form-data" method="post">
-                                                <input type="hidden" name="url" th:value="${url}"/>
-                                                <input type="hidden" name="result" th:value="${result}"/>
-                                                <button type="submit" style="border-color: white">
-                                                    <div class="bs-text-a with-type-bg-a">
-                                                    <span class="bs-div-j-icon ratio ratio-1x1">
-                                                        <span class="lazy-loader">
-                                                            <img alt="4.2 Million" class="lazyload" loading="lazy"
-                                                                 src="https://checkphish.bolster.ai/wp-content/uploads/2024/02/cp-money-recive-blue.svg">
-                                                        </span>
-                                                    </span>
-                                                        <h3 class="h4">정밀 탐지 하기</h3>
-                                                        <div class="bs-text-desc">
-                                                            <h6>
-                                                                추가적인 탐지를 통해서 더욱 정밀한 탐지 결과를 보여줍니다.
-                                                            </h6>
-                                                        </div>
-                                                    </div>
-                                                </button>
-                                            </form>
+                                        <div class="bs-text-a with-type-bg-a"  th:classappend="${list.get(1) != 0} ? 'redCircle' : ''">
+                                            <span class="bs-div-j-icon ratio ratio-1x1">
+                                                <span class="lazy-loader">
+                                                    <img alt="4.2 Million" class="lazyload"
+                                                         loading="lazy"
+                                                         src="https://checkphish.bolster.ai/wp-content/uploads/2024/02/cp-money-recive-blue.svg">
+                                                </span>
+                                            </span>
+                                            <div class="bs-text-desc">
+                                                <p th:if="${list.get(1) == 0}">
+                                                    iframe이 사용되지 않았습니다.
+                                                </p>
+                                                <p th:if="${list.get(1) != 0}">
+                                                    iframe이 사용되었습니다.
+                                                </p>
+                                            </div>
                                         </div>
+                                    </div>
 
+                                    <div class="col-12 col-sm-6 col-lg-3" data-fadeup>
+                                        <div class="bs-text-a with-type-bg-a"  th:classappend="${list.get(2) != 0} ? 'redCircle' : ''">
+                                            <span class="bs-div-j-icon ratio ratio-1x1">
+                                                <span class="lazy-loader">
+                                                    <img alt="4.2 Million" class="lazyload"
+                                                         loading="lazy"
+                                                         src="https://checkphish.bolster.ai/wp-content/uploads/2024/02/cp-money-recive-blue.svg">
+                                                </span>
+                                            </span>
+                                            <div class="bs-text-desc">
+                                                <p th:if="${list.get(2) == 0}">
+                                                    JavaScript 리디렉션 코드가 발견되지 않았습니다.
+                                                </p>
+                                                <p th:if="${list.get(2) != 0}">
+                                                    JavaScript 리디렉션 코드가 발견되었습니다.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12 col-sm-6 col-lg-3" data-fadeup>
+                                        <div class="bs-text-a with-type-bg-a" th:classappend="${list.get(3) != 0} ? 'redCircle' : ''">
+                                            <span class="bs-div-j-icon ratio ratio-1x1">
+                                                <span class="lazy-loader">
+                                                    <img alt="4.2 Million" class="lazyload"
+                                                         loading="lazy"
+                                                         src="https://checkphish.bolster.ai/wp-content/uploads/2024/02/cp-money-recive-blue.svg">
+                                                </span>
+                                            </span>
+                                            <div class="bs-text-desc">
+                                                <p th:if="${list.get(3) == 0}">
+                                                    동적으로 외부 스크립트를 로드하는 코드가 없습니다.
+                                                </p>
+                                                <p th:if="${list.get(3) != 0}">
+                                                    동적으로 외부 스크립트를 로드하는 코드가 있습니다.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="col-12 col-sm-6 col-lg-3" data-fadeup>
+                                        <div class="bs-text-a with-type-bg-a" th:classappend="${list.get(4) != 0} ? 'redCircle' : ''">
+                                            <span class="bs-div-j-icon ratio ratio-1x1">
+                                                <span class="lazy-loader">
+                                                    <img alt="4.2 Million" class="lazyload"
+                                                         loading="lazy"
+                                                         src="https://checkphish.bolster.ai/wp-content/uploads/2024/02/cp-money-recive-blue.svg">
+                                                </span>
+                                            </span>
+                                            <div class="bs-text-desc">
+                                                <p th:if="${list.get(4) == 0}">
+                                                    동적으로 삽입된 폼이 발견되지 않았습니다.
+                                                </p>
+                                                <p th:if="${list.get(4) != 0}">
+                                                    동적으로 삽입된 폼이 발견되었습니다.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12 col-sm-6 col-lg-3" data-fadeup>
+                                        <div class="bs-text-a with-type-bg-a" th:classappend="${list.get(5) != 0} ? 'redCircle' : ''">
+                                            <span class="bs-div-j-icon ratio ratio-1x1">
+                                                <span class="lazy-loader">
+                                                    <img alt="4.2 Million" class="lazyload"
+                                                         loading="lazy"
+                                                         src="https://checkphish.bolster.ai/wp-content/uploads/2024/02/cp-money-recive-blue.svg">
+                                                </span>
+                                            </span>
+                                            <div class="bs-text-desc">
+                                                <p th:if="${list.get(5) == 0}">
+                                                    사용자 입력을 외부 서버로 전송하는 코드가 발견되지 않았습니다.
+                                                </p>
+                                                <p th:if="${list.get(5) != 0}">
+                                                    사용자 입력을 외부 서버로 전송하는 코드가 발견되었습니다.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12 col-sm-6 col-lg-3" data-fadeup>
+                                        <div class="bs-text-a with-type-bg-a" th:classappend="${list.get(6) != 0} ? 'redCircle' : ''">
+                                            <span class="bs-div-j-icon ratio ratio-1x1">
+                                                <span class="lazy-loader">
+                                                    <img alt="4.2 Million" class="lazyload"
+                                                         loading="lazy"
+                                                         src="https://checkphish.bolster.ai/wp-content/uploads/2024/02/cp-money-recive-blue.svg">
+                                                </span>
+                                            </span>
+                                            <div class="bs-text-desc">
+                                                <p th:if="${list.get(6) == 0}">
+                                                    파비콘이 외부 도메인으로부터 제공되지 않습니다.
+                                                </p>
+                                                <p th:if="${list.get(6) != 0}">
+                                                    파비콘이 외부 도메인으로부터 제공되었습니다.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12 col-sm-6 col-lg-3" data-fadeup>
+                                        <div class="bs-text-a with-type-bg-a" >
+                                            <span class="bs-div-j-icon ratio ratio-1x1">
+                                                <span class="lazy-loader">
+                                                    <img alt="4.2 Million" class="lazyload"
+                                                         loading="lazy"
+                                                         src="https://checkphish.bolster.ai/wp-content/uploads/2024/02/cp-money-recive-blue.svg">
+                                                </span>
+                                            </span>
+                                            <div class="bs-text-desc">
+                                                <p th:if="${list.get(10) == 0}">
+                                                    전체 링크 수: 0
+                                                </p>
+                                                <p th:if="${list.get(10) != 0}">
+                                                    전체 링크 수: <span th:text="${list.get(10)}"/>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12 col-sm-6 col-lg-3" data-fadeup>
+                                        <div class="bs-text-a with-type-bg-a" >
+                                            <span class="bs-div-j-icon ratio ratio-1x1">
+                                                <span class="lazy-loader">
+                                                    <img alt="4.2 Million" class="lazyload"
+                                                         loading="lazy"
+                                                         src="https://checkphish.bolster.ai/wp-content/uploads/2024/02/cp-money-recive-blue.svg">
+                                                </span>
+                                            </span>
+                                            <div class="bs-text-desc">
+                                                <p th:if="${list.get(11) == 0}">
+                                                    외부 도메인 링크 수: 0
+                                                </p>
+                                                <p th:if="${list.get(11) != 0}">
+                                                    외부 도메인 링크 수: <span th:text="${list.get(11)}"/>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12 col-sm-6 col-lg-3" data-fadeup>
+                                        <div class="bs-text-a with-type-bg-a" th:classappend="${list.get(9) != 0} ? 'redCircle' : ''">
+                                            <span class="bs-div-j-icon ratio ratio-1x1">
+                                                <span class="lazy-loader">
+                                                    <img alt="4.2 Million" class="lazyload"
+                                                         loading="lazy"
+                                                         src="https://checkphish.bolster.ai/wp-content/uploads/2024/02/cp-money-recive-blue.svg">
+                                                </span>
+                                            </span>
+                                            <div class="bs-text-desc">
+                                                <p th:if="${list.get(9) == 0}">
+                                                    외부 도메인 링크 비율이 0.61이하 입니다.
+                                                </p>
+                                                <p th:if="${list.get(9) != 0}">
+                                                    외부 도메인 링크 비율이 0.61이상 입니다.
+                                                </p>
+                                            </div>
+                                        </div>
                                     </div>
 
                                 </div>
