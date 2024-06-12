@@ -1,4 +1,3 @@
-import sys
 import joblib
 import pandas as pd
 import requests
@@ -9,24 +8,15 @@ import whois
 import ssl
 import socket
 from urllib.parse import urlparse
-# from tensorflow.keras.models import load_model
 
 
 # 모델과 벡터라이저 로드 (이미 학습된 상태라고 가정)
-# model = load_model(
-#     'C:/Users/dlckd/Desktop/2024-1학기/캡스톤디자인/Phishing_Detection/ML/Models/adam_phishing_detection_model.keras')
-model = joblib.load(
-    'C:\\Users\\Administrator\\PycharmProjects\\Phishing_Detection\\ML\\Models\\random_forest_model.pkl')
+model = joblib.load('./ML/Models/best_rf_model.pkl')
 
-# 테스트할 URL
-# test_url = sys.argv[1]
 test_url = "http://ajbell123123-co.com"
-# test_url = "https://www.naver.com/"
-# test_url = 'https://domain.autopay.electricfarmgates.com/?SMdY280YU=45VQD11D...'
-# test_url = 'https://0948481wklnyj.plenoinversiones.cl/indexes1.php?=https://www.ir...'
 
-filepath = "C:\\Users\\Administrator\PycharmProjects\\Phishing_Detection\\ML\\Datasets\\rawdata\\non_phishing.csv"
-ca_filepath = "C:\\Users\\Administrator\\PycharmProjects\\Phishing_Detection\\RuleDetection\\trusted_ca.csv"
+filepath = "./ML/Datasets/rawdata/non_phishing.csv"
+ca_filepath = "./RuleDetection/trusted_ca.csv"
 
 
 def is_redirection(url):    # 만약 url이 redirection한다면 redirection하는 url을 반환해서 그 url을 분석
@@ -266,12 +256,8 @@ def load_input_data(filepath):
     return df
 
 
-input_data = load_input_data(
-    'C:\\Users\\Administrator\\PycharmProjects\\Phishing_Detection\\x_input.csv')
+input_data = load_input_data('./x_input.csv')
 prediction = model.predict(input_data)
-# print(input_data.values[0])
-# print(prediction)
-# prediction = model.predict(X_input)
 
 # # 예측 결과 해석 (0: 정상, 1: 피싱)
 result = "Phishing" if prediction[0] == 1 else "Not Phishing"

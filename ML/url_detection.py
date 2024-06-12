@@ -1,4 +1,3 @@
-import sys
 import joblib
 import pandas as pd
 import requests
@@ -10,10 +9,9 @@ import ssl
 import socket
 from urllib.parse import urlparse
 
-model = joblib.load(
-    'C:\\Users\\Administrator\\PycharmProjects\\Phishing_Detection\\ML\\Models\\random_forest_model.pkl')
-filepath = "C:\\Users\\Administrator\\PycharmProjects\\Phishing_Detection\\ML\\Datasets\\rawdata\\non_phishing.csv"
-ca_filepath = "C:\\Users\\Administrator\\PycharmProjects\\Phishing_Detection\\RuleDetection\\trusted_ca.csv"
+model = joblib.load('./ML/Models/best_rf_model.pkl')
+filepath = "./ML/Datasets/rawdata/non_phishing.csv"
+ca_filepath = "./RuleDetection/trusted_ca.csv"
 
 
 def is_redirection(url):
@@ -21,7 +19,7 @@ def is_redirection(url):
         response = requests.head(url, allow_redirects=True)
         return response.url
     except:
-        # print(f"{url}은 url이 아닙니다.")
+        print(f"{url}은 url이 아닙니다.")
         return 1
 
 
@@ -150,7 +148,7 @@ def is_trusted_cert(url, trusted_issuer):
                 return 0
         return 1
     except Exception as e:
-        # print(f"Error while checking url {url}: {e}")
+        print(f"Error while checking url {url}: {e}")
         return 1
 
 
@@ -184,7 +182,7 @@ def get_expiration_date(url):
         else:
             return 0
     except Exception as e:
-        # print(f"Error: {e}")
+        print(f"Error: {e}")
         return 1
 
 
@@ -230,5 +228,4 @@ def prepare_input(url):
         }
     df = pd.DataFrame(data)
     X_input = df.drop('url', axis=1)
-    # X_input.to_csv('x_input.csv', index=False)
     return X_input

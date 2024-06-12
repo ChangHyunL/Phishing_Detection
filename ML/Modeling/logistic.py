@@ -8,8 +8,7 @@ import joblib
 # "url", "feature1", "feature2", ..., "feature14", "isphishing"
 # 0은 정상 1은 피싱, "isphishing"은 실제 url이 피싱인지 아닌지를 나타냄
 
-df = pd.read_csv(
-    'C:/Users/dlckd/Desktop/2024-1학기/캡스톤디자인/Phishing_Detection/ML/Datasets/testDataset/4th_merged.csv')
+df = pd.read_csv('./ML/Datasets/testDataset/4th_merged.csv')
 
 # 특성과 레이블 분리
 X = df.drop('isphishing', axis=1)    # features

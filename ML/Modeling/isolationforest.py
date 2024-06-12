@@ -4,8 +4,7 @@ import pandas as pd
 import joblib
 
 # 데이터 로드 (이전에 사용한 데이터와 동일)
-df = pd.read_csv(
-    'C:/Users/dlckd/Desktop/2024-1학기/캡스톤디자인/Phishing_Detection/ML/Datasets/testDataset/4th_merged.csv')
+df = pd.read_csv('./ML/Datasets/testDataset/4th_merged.csv')
 
 # 특성과 레이블 분리
 X = df.drop('isphishing', axis=1)  # features
