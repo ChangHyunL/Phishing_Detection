@@ -927,13 +927,13 @@
                                     <div class="col-12 col-lg-10">
                                         <div class="bs-text-a">
                                             <h2 class="h3 text-tangaroa" data-fadeup>
-                                                머신러닝을 통한 탐지 결과 </h2>
+                                                코드 분석을 통한 탐지 결과 </h2>
                                             <div class="h4 bs-text-desc text-east-bay" data-fadeup th:text="${url}">
                                                 <span th:if="${url == null || url == ''}">&nbsp;</span>
                                             </div>
                                             <div class="h4 bs-text-desc text-east-bay"
                                                  th:if="${phishingCheck == 1 and url != null}"
-                                                 th:inline="none">은(는) 피싱 사이트 입니다.
+                                                 th:inline="none">은(는) 피싱 사이트로 의심됩니다.
                                             </div>
                                             <div class="h4 bs-text-desc text-east-bay"
                                                  th:if="${phishingCheck != 1 and url != null}"
@@ -979,9 +979,9 @@
                                 <div class="h6 text-royal-blue" data-fadeup>
                                 </div>
                                 <h2 class="h3 text-tangaroa" data-fadeup>
-                                    QR코드/URL 피싱 탐지 내용 </h2>
+                                    QR코드/URL 코드 분석 내용 </h2>
                                 <div class="bs-text-desc text-east-bay" data-fadeup>
-                                    <p>QR코드/URL를 머신러닝을 통해 피싱사이트 유무를 체크합니다.</p>
+                                    <p>QR코드/URL를 코드 분석을 통해 피싱사이트 유무를 체크합니다.</p>
                                 </div>
                             </div>
                             <div class="bs-div-j-row">

@@ -153,6 +153,9 @@ public class MainController {
             return "QRcodeScanner";
         }
         List<Integer> list = deepDiveSocketCommunication.socketCommunication(url);
+        if(list.contains(1)){
+            model.addAttribute("phishingCheck", 1);
+        }
         model.addAttribute("url", url);
         model.addAttribute("list", list);
         System.out.println("list_result = " + list);
