@@ -1,11 +1,12 @@
 import re
 from bs4 import BeautifulSoup
 import requests
-from urllib.parse import urlparse, urljoin
+from urllib.parse import urlparse
 
 
 global_total_links = None
 global_external_links = None
+
 
 def download_html(url):
     response = requests.get(url)
@@ -155,7 +156,3 @@ def exec(url):
         result.append(global_external_links)
         print(result)
         return result
-
-
-#url = 'https://www.naver.com'
-#exec(url)

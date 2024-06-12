@@ -3,11 +3,13 @@ import threading
 from checkjs import exec as checkjs_exec
 from checkhtml import exec as checkhtml_exec
 
+
 def exec(url):
     js_exec = checkjs_exec(url)
     html_exec = checkhtml_exec(url)
     return_nums = js_exec + html_exec
     return return_nums
+
 
 def binder(client_socket, addr):
     print('Connected by', addr)
@@ -34,6 +36,7 @@ def binder(client_socket, addr):
         print("Exception:", e)
     finally:
         client_socket.close()
+
 
 server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)

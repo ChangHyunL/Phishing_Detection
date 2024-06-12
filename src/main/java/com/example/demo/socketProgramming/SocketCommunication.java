@@ -17,7 +17,10 @@ import java.net.URL;
 
 @Component
 public class SocketCommunication {
-
+    static int ML_result;
+    public static int ML_result(){
+        return ML_result;
+    }
     public static Phishing socketCommunication(String domain){
         Phishing newPhishing = null;
         try (Socket client = new Socket()) {
@@ -79,6 +82,10 @@ public class SocketCommunication {
         for (String num : list) {
             resultList.add(Integer.parseInt(num));
         }
+        ML_result=resultList.get(list.size()-1);
+        resultList.remove(list.size()-1);
+        System.out.println("resultList = " + resultList);
+        System.out.println("ML_result = " + ML_result);
         return resultList;
     }
 }
