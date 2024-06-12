@@ -932,11 +932,11 @@
                                                 <span th:if="${url == null || url == ''}">&nbsp;</span>
                                             </div>
                                             <div class="h4 bs-text-desc text-east-bay"
-                                                 th:if="${phishingCheck == 1 and url != null}"
+                                                 th:if="${ML_result == 1 and url != null}"
                                                  th:inline="none">은(는) 피싱 사이트 입니다.
                                             </div>
                                             <div class="h4 bs-text-desc text-east-bay"
-                                                 th:if="${phishingCheck != 1 and url != null}"
+                                                 th:if="${ML_result != 1 and url != null}"
                                                  th:inline="none">은(는) 정상 사이트 입니다.
                                             </div>
                                         </div>
@@ -952,8 +952,7 @@
 
     <div class="bs-section bs-div-k bg-dark-blue" data-animated>
         <div class="bs-section-bg">
-            <img alt="bs-real-time-bg"
-                 src="https://checkphish.bolster.ai/wp-content/themes/checkphish/gfx/bs-real-time-bg.png">
+
         </div>
         <div class="bs-div-inner">
             <div class="container">
@@ -1007,7 +1006,7 @@
                                             </p>
                                         </div>
                                     </div>
-                                    <div class="col-12 col-sm-6 col-lg-3" data-fadeup>
+                                    <div class="col-12 col-sm-6 col-lg-3" data-fadeup style="display: none;">
                                         <div class="bs-text-a with-type-bg-a"
                                              th:classappend="${result != null && result.longUrl == 1} ? 'redCircle' : ''">
                                             <span class="bs-div-j-icon ratio ratio-1x1">
@@ -1172,7 +1171,7 @@
                                                     사용자에게 속임수를 부리거나 피해를 입히려는 목적으로 이루어집니다.
                                                 </p>
                                                 <p th:if="${result != null}">
-                                                    <span style="color: red" th:if="${result.subDomains == 1}">유효하지 않은 URL 주소입니다.</span>
+                                                    <span class="phishingURL" th:if="${result.subDomains == 1}">유효하지 않은 URL 주소입니다.</span>
                                                     <span th:unless="${result.subDomains == 1}">유효한 URL 주소입니다.</span>
                                                 </p>
 
@@ -1196,7 +1195,7 @@
                                                     도메인 이름이 지나치게 길거나 이상하게 보일 경우, 이는 사용자에게 의심스러운 사이트임을 알리는 신호가 될 수 있습니다.
                                                 </p>
                                                 <p th:if="${result != null}">
-                                                    <span th:if="${result.longDomain == 1}">유효하지 않은 URL 주소입니다.</span>
+                                                    <span class="phishingURL" th:if="${result.longDomain == 1}">유효하지 않은 URL 주소입니다.</span>
                                                     <span th:unless="${result.longDomain == 1}">유효한 URL 주소입니다.</span>
                                                 </p>
 
@@ -1221,7 +1220,7 @@
                                                     생성하여 사용자를 속일 수 있습니다.
                                                 </p>
                                                 <p th:if="${result != null}">
-                                                    <span th:if="${result.similarUrl == 1}">유효하지 않은 URL 주소입니다.</span>
+                                                    <span class="phishingURL" th:if="${result.similarUrl == 1}">유효하지 않은 URL 주소입니다.</span>
                                                     <span th:unless="${result.similarUrl == 1}">유효한 URL 주소입니다.</span>
                                                 </p>
 
@@ -1245,34 +1244,9 @@
                                                     표준이 아닌 포트를 사용하는 경우, 일반적인 웹사이트가 아닐 가능성이 있으며, 피싱 사이트일 수 있습니다.
                                                 </p>
                                                 <p th:if="${result != null}">
-                                                    <span th:if="${result.nonStandardPort == 1}">유효하지 않은 URL 주소입니다.</span>
+                                                    <span class="phishingURL" th:if="${result.nonStandardPort == 1}">유효하지 않은 URL 주소입니다.</span>
                                                     <span th:unless="${result.nonStandardPort == 1}">유효한 URL 주소입니다.</span>
                                                 </p>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-12 col-sm-6 col-lg-3" data-fadeup>
-                                        <div class="bs-text-a with-type-bg-a"
-                                             th:classappend="${result != null && result.isHttps == 1} ? 'redCircle' : ''">
-                                            <span class="bs-div-j-icon ratio ratio-1x1">
-                                                <span class="lazy-loader">
-                                                    <img alt="4.2 Million" class="lazyload"
-                                                         loading="lazy"
-                                                         src="https://checkphish.bolster.ai/wp-content/uploads/2024/02/cp-money-recive-blue.svg">
-                                                </span>
-                                            </span>
-                                            <h3 class="h5">신뢰 가능한 인증서</h3>
-                                            <div class="bs-text-desc">
-                                                <p th:if="${result == null}">
-                                                    주어진 웹사이트의 SSL/TLS 인증서가 신뢰할 수 있는 인증 기관에 의해 서명되었는지 여부를 나타내는 부울 값입니다.
-                                                    웹사이트가 신뢰할 수 있는 인증 기관에 의해 발급된 인증서를 사용하면, 사용자의 브라우저는 해당 인증서를 신뢰하고 안전한
-                                                    연결임을 보장할 수 있습니다. </p>
-                                                <p th:if="${result != null}">
-                                                    <span th:if="${result.isHttps == 1}">유효하지 않은 URL 주소입니다.</span>
-                                                    <span th:unless="${result.isHttps == 1}">유효한 URL 주소입니다.</span>
-                                                </p>
-
                                             </div>
                                         </div>
                                     </div>
@@ -1287,6 +1261,31 @@
                                                          src="https://checkphish.bolster.ai/wp-content/uploads/2024/02/cp-money-recive-blue.svg">
                                                 </span>
                                             </span>
+                                            <h3 class="h4">신뢰 가능한 인증서</h3>
+                                            <div class="bs-text-desc">
+                                                <p th:if="${result == null}">
+                                                    주어진 웹사이트의 SSL/TLS 인증서가 신뢰할 수 있는 인증 기관에 의해 서명되었는지 여부를 나타내는 부울 값입니다.
+                                                    웹사이트가 신뢰할 수 있는 인증 기관에 의해 발급된 인증서를 사용하면, 사용자의 브라우저는 해당 인증서를 신뢰하고 안전한
+                                                    연결임을 보장할 수 있습니다. </p>
+                                                <p th:if="${result != null}">
+                                                    <span class="phishingURL" th:if="${result.isTrustedCert == 1}">유효하지 않은 URL 주소입니다.</span>
+                                                    <span th:unless="${result.isTrustedCert == 1}">유효한 URL 주소입니다.</span>
+                                                </p>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12 col-sm-6 col-lg-3" data-fadeup>
+                                        <div class="bs-text-a with-type-bg-a"
+                                             th:classappend="${result != null && result.isHttps == 1} ? 'redCircle' : ''">
+                                            <span class="bs-div-j-icon ratio ratio-1x1">
+                                                <span class="lazy-loader">
+                                                    <img alt="4.2 Million" class="lazyload"
+                                                         loading="lazy"
+                                                         src="https://checkphish.bolster.ai/wp-content/uploads/2024/02/cp-money-recive-blue.svg">
+                                                </span>
+                                            </span>
                                             <h3 class="h4">HTTPS 여부</h3>
                                             <div class="bs-text-desc">
                                                 <p th:if="${result == null}">
@@ -1294,8 +1293,8 @@
                                                     피싱 사이트는 종종 HTTPS를 사용하지 않거나, HTTPS가 아니더라도 HTTP를 통해 연결을 시도할 수 있습니다.
                                                 </p>
                                                 <p th:if="${result != null}">
-                                                    <span th:if="${result.isTrustedCert == 1}">유효하지 않은 URL 주소입니다.</span>
-                                                    <span th:unless="${result.isTrustedCert == 1}">유효한 URL 주소입니다.</span>
+                                                    <span class="phishingURL" th:if="${result.isHttps == 1}">유효하지 않은 URL 주소입니다.</span>
+                                                    <span th:unless="${result.isHttps == 1}">유효한 URL 주소입니다.</span>
                                                 </p>
 
                                             </div>
@@ -1319,7 +1318,7 @@
                                                     나타내며, 피싱 사이트를 식별하거나 새로운 도메인을 감지하는 데 도움이 될 수 있습니다.
                                                 </p>
                                                 <p th:if="${result != null}">
-                                                    <span th:if="${result.creationDate == 1}">유효하지 않은 URL 주소입니다.</span>
+                                                    <span class="phishingURL" th:if="${result.creationDate == 1}">유효하지 않은 URL 주소입니다.</span>
                                                     <span th:unless="${result.creationDate == 1}">유효한 URL 주소입니다.</span>
                                                 </p>
                                             </div>
@@ -1344,7 +1343,7 @@
                                                     URL은 피싱 사이트일 가능성이 높습니다.
                                                 </p>
                                                 <p th:if="${result != null}">
-                                                    <span th:if="${result.expirationDate == 1 }">유효하지 않은 URL 주소입니다.</span>
+                                                    <span class="phishingURL" th:if="${result.expirationDate == 1 }">유효하지 않은 URL 주소입니다.</span>
                                                     <span th:unless="${result.expirationDate == 1}">유효한 URL 주소입니다.</span>
                                                 </p>
                                             </div>
