@@ -24,14 +24,10 @@ def binder(client_socket, addr):
                 break
 
             input_data = prepare_input(url)
-            # input_data.to_csv('x_input.csv', index=False)
             var = input_data.values[0]
-            # input_data = list(map(int, input_data.split(' ')))
-            # print("input_data : ", input_data)
             print('var = ', var)
             input_list = var.tolist()
             int_list = list(map(int, input_list))
-            # int_list.insert(0, url)
             print('int_list : ', int_list)
 
             sendMessage = predict(input_data)

@@ -5,7 +5,7 @@ from sklearn.metrics import accuracy_score, classification_report
 import joblib
 
 # 데이터 로드
-data_path = 'C:/Users/dlckd/Desktop/2024-1학기/캡스톤디자인/Phishing_Detection/ML/Datasets/testDataset/4th_merged.csv'
+data_path = './ML/Datasets/testDataset/4th_merged.csv'
 data = pd.read_csv(data_path)
 
 # 특성과 레이블 분리

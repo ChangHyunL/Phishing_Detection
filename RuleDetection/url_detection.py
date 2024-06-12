@@ -1,4 +1,3 @@
-# url이 블랙리스트에 있는지 확인하는 코드 필요 -> 이 코드는 학습을 위한 코드이므로 일단 빼둠 마지막에 DB구성 후 추가할 예정
 from dateutil import parser
 from datetime import datetime
 import re
@@ -8,15 +7,9 @@ import requests
 import ssl
 import socket
 import whois
-import pandas as pd
 
-filepath = "C:/Users/dlckd/Desktop/2024-1학기/캡스톤디자인/Phishing_Detection/ML/Datasets/rawdata/non_phishing.csv"
-ca_filepath = "C:/Users/dlckd/Desktop/2024-1학기/캡스톤디자인/Phishing_Detection/RuleDetection/trusted_ca.csv"
-# input_file_path = 'C:/Users/dlckd/Desktop/2024-1학기/캡스톤디자인/Phishing_Detection/ML/Datasets/normal_url.csv'
-# output_file_path = 'C:/Users/dlckd/Desktop/2024-1학기/캡스톤디자인/Phishing_Detection/ML/Datasets/processed_normal_url1.csv'
-
-# df = pd.read_csv(input_file_path, usecols=[1])
-# df = pd.read_csv(input_file_path, header=None, names=['url'])
+filepath = "./ML/Datasets/rawdata/non_phishing.csv"
+ca_filepath = "./RuleDetection/trusted_ca.csv"
 
 
 def is_redirection(url):    # 만약 url이 redirection한다면 redirection하는 url을 반환해서 그 url을 분석
@@ -107,12 +100,6 @@ def read_well_known_hostnames(filepath):
 
 def similar_url(url, well_known_hostnames, threshold=2):
     hostname = urlparse(url).netloc
-
-    # 파일에서 well_known_hostname 목록을 읽어온다.
-    # with open(filepath, 'r') as file:
-    #     well_known_hostnames = [
-    #         urlparse(line).netloc for line in file.read().splitlines()]
-
     for well_known_hostname in well_known_hostnames:
         distance = Levenshtein.distance(hostname, well_known_hostname)
 
@@ -167,8 +154,6 @@ def is_trusted_cert(url, trusted_issuer):
         cert = conn.getpeercert()
         issuer = dict(x[0] for x in cert['issuer'])
         issuer_name = issuer.get('organizationName', '')
-        # with open('IncludedCACertificateReportForMSFT.csv', 'r', encoding='utf-8') as f:
-        #     trusted_issuer = f.read()
         for trusted_ca in trusted_issuer:
             if trusted_ca in issuer_name:
                 return 0
@@ -179,7 +164,6 @@ def is_trusted_cert(url, trusted_issuer):
 
 
 def get_creation_date(url):
-    # url = urlparse(url).netloc
     try:
         domain = whois.whois(url)
         creation_date = domain.creation_date

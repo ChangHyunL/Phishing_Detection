@@ -5,6 +5,7 @@ from urllib.parse import urljoin, urlparse
 
 global_url = None
 
+
 def download_js(url):
     try:
         response = requests.get(url)
@@ -53,16 +54,6 @@ def is_external_domain(src, url):
     src_domain = urlparse(src).netloc
     base_domain = urlparse(url).netloc
     return src_domain != base_domain
-
-# def check_iframe(js_content):
-#     # iframe 사용 여부 확인
-#     iframe_pattern = r'document\.createElement\("iframe"\)'
-#     if re.search(iframe_pattern, js_content):
-#         print("iframe이 사용되었습니다.")
-#         return 1
-#     else:
-#         print("iframe이 사용되지 않았습니다.")
-#         return 0
 
 
 def check_iframe(js_content, url):
@@ -215,5 +206,5 @@ def exec(url):
         return (result)
 
 
-#url = 'https://os.korea.ac.kr/research/'
-#exec(url)
+# url = 'https://os.korea.ac.kr/research/'
+# exec(url)

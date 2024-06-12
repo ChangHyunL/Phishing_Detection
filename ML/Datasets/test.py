@@ -1,7 +1,7 @@
 # import pandas as pd
 
 # # CSV 파일 경로
-# file_path = 'C:/Users/dlckd/Desktop/2024-1학기/캡스톤디자인/Phishing_Detection/ML/Datasets/3rd/normal.csv'
+# file_path = './ML/Datasets/3rd/normal.csv'
 # merge_file_path = 'random_filtered_data.csv'
 
 # # CSV 파일 읽기
@@ -59,6 +59,6 @@ def remove_trailing_dot_from_csv(input_file, output_file):
 
 
 # 사용 예제
-input_csv = 'C:/Users/dlckd/Desktop/2024-1학기/캡스톤디자인/Phishing_Detection/ML/Datasets/rawdata/non_phishing.csv'   # 입력 파일 경로
+input_csv = './ML/Datasets/rawdata/non_phishing.csv'   # 입력 파일 경로
 output_csv = 'output.csv'  # 출력 파일 경로
 remove_trailing_dot_from_csv(input_csv, output_csv)
