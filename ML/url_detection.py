@@ -9,9 +9,10 @@ import ssl
 import socket
 from urllib.parse import urlparse
 
-model = joblib.load('./ML/Models/best_rf_model.pkl')
-filepath = "./ML/Datasets/rawdata/non_phishing.csv"
-ca_filepath = "./RuleDetection/trusted_ca.csv"
+model = joblib.load(
+    'C:\\Users\\Administrator\\PycharmProjects\\Phishing_Detection\\ML\\Models\\random_forest_model.pkl')
+filepath = "C:\\Users\\Administrator\\PycharmProjects\\Phishing_Detection\\ML\\Datasets\\rawdata\\non_phishing.csv"
+ca_filepath = "C:\\Users\\Administrator\\PycharmProjects\\Phishing_Detection\\RuleDetection\\trusted_ca.csv"
 
 
 def is_redirection(url):
