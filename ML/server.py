@@ -36,6 +36,7 @@ def binder(client_socket, addr):
 
             sendMessage = predict(input_data)
             print("sendMessage : ", sendMessage)
+            int_list.append(sendMessage)
 
             data = str(int_list).encode()
             print('data :  ', data)
