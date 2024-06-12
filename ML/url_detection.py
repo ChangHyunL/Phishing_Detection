@@ -98,7 +98,7 @@ def similar_url(url, well_known_hostnames, threshold=2):
     hostname = urlparse(url).netloc
     for well_known_hostname in well_known_hostnames:
         if hostname == well_known_hostname:
-            return 0
+            break
         distance = Levenshtein.distance(hostname, well_known_hostname)
         if distance <= threshold:
             return 1
