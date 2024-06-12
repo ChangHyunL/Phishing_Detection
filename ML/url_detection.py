@@ -101,6 +101,7 @@ def similar_url(url, well_known_hostnames, threshold=2):
             break
         distance = Levenshtein.distance(hostname, well_known_hostname)
         if distance <= threshold:
+            print(well_known_hostname)
             return 1
     return 0
 
@@ -144,6 +145,7 @@ def is_trusted_cert(url, trusted_issuer):
         for trusted_ca in trusted_issuer:
             if trusted_ca in issuer_name:
                 return 0
+        print(issuer_name)
         return 1
     except Exception as e:
         print(f"Error while checking url {url}: {e}")

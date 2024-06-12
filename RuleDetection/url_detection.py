@@ -12,38 +12,33 @@ filepath = "./ML/Datasets/rawdata/non_phishing.csv"
 ca_filepath = "./RuleDetection/trusted_ca.csv"
 
 
-def is_redirection(url):    # 만약 url이 redirection한다면 redirection하는 url을 반환해서 그 url을 분석
+def is_redirection(url):
     try:
         response = requests.head(url, allow_redirects=True)
-        if response.url == url:
-            return 0
-        else:
-            return 1
+        return response.url
     except:
         print(f"{url}은 url이 아닙니다.")
         return 1
 
 
-def long_url(url):  # url의 길이가 75자 보다 큰 경우 비정상
+def long_url(url):
     if len(url) > 75:
         return 1
     else:
         return 0
 
 
-def having_ip(url):  # url의 형태가 ip주소 형태인 경우 비정상
-    # 000.000.000.000
+def having_ip(url):
     pattern = r'^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$'
-    pattern += r'|((?:0x[0-9a-fA-F]{1,2}\.){3}0x[0-9a-fA-F]{1,2})'  # 16진수 ip형태
-    pattern += r'|(?:[a-fA-F0-9]{1,4}:){7}[a-fA-F0-9]{1,4}'  # ipv6
-
+    pattern += r'|((?:0x[0-9a-fA-F]{1,2}\.){3}0x[0-9a-fA-F]{1,2})'
+    pattern += r'|(?:[a-fA-F0-9]{1,4}:){7}[a-fA-F0-9]{1,4}'
     if re.match(pattern, url):
         return 1
     else:
         return 0
 
 
-def having_at(url):  # url에 악의적으로 사용될 가능성이 있는 문자가 사용된 경우 비정상
+def having_at(url):
     if re.search('@', url):
         return 1
     else:
@@ -74,22 +69,20 @@ def having_redirection(url):
         return 0
 
 
-def sub_domains(url):   # url에 .이 5개 이상 있는 경우 비정상
+def sub_domains(url):
     if url.count(".") > 5:
         return 1
     else:
         return 0
 
 
-def long_domain(url):  # url의 호스트 이름이 30글자보다 큰 경우 비정상
+def long_domain(url):
     domain = urlparse(url).netloc
     if len(domain) > 30:
         return 1
     else:
         return 0
 
-
-# url의 도메인이 잘 알려진 url의 도메인과 비슷하게 생긴 경우 비정상
 
 def read_well_known_hostnames(filepath):
     with open(filepath, 'r') as file:
@@ -101,14 +94,12 @@ def read_well_known_hostnames(filepath):
 def similar_url(url, well_known_hostnames, threshold=2):
     hostname = urlparse(url).netloc
     for well_known_hostname in well_known_hostnames:
+        if hostname == well_known_hostname:
+            break
         distance = Levenshtein.distance(hostname, well_known_hostname)
-
-        # hostname과 well_known_hostname이 일치하지 않는 경우만 거리를 계산
-        if hostname != well_known_hostname:
-            if distance <= threshold:
-                return 1
-        else:
-            return 0
+        if distance <= threshold:
+            print(well_known_hostname)
+            return 1
     return 0
 
 
@@ -117,9 +108,9 @@ def non_standard_port(url):
     port = parsed_url.port
     if port is None:
         return 0
-    elif port == 80:    # http 포트
+    elif port == 80:
         return 0
-    elif port == 443:   # https 포트
+    elif port == 443:
         return 0
     else:
         return 1
@@ -131,16 +122,10 @@ def is_https(url):
     else:
         return 1
 
-# 네트워크가 필요함
-
-# 신뢰받는 인증기관인지, 인증서의 수명도 확인하려했으나 실제로 신뢰받는 사이트의 인증서의 수명이 길지않음 -> 불필요한 것 같음
-# 구글, 마이크로소프트, 애플의 인증서의 수명이 1년이 안됨
-
 
 def read_trusted_ca(ca_filepath):
     with open(ca_filepath, 'r', encoding='utf-8') as f:
         trusted_issuer = f.read()
-    print(trusted_issuer)
     return trusted_issuer
 
 
@@ -156,7 +141,9 @@ def is_trusted_cert(url, trusted_issuer):
         issuer_name = issuer.get('organizationName', '')
         for trusted_ca in trusted_issuer:
             if trusted_ca in issuer_name:
+                print('pass')
                 return 0
+        print(issuer_name)
         return 1
     except Exception as e:
         print(f"Error while checking url {url}: {e}")
@@ -169,17 +156,14 @@ def get_creation_date(url):
         creation_date = domain.creation_date
         if isinstance(creation_date, list):
             creation_date = creation_date[0]
-        print(
-            f'{url}: type: {type(creation_date)}, {creation_date}')
         today = datetime.now()
         age = today - creation_date
-        print(age)
         if age.days < 180:
             return 1
         else:
             return 0
     except Exception as e:
-        print(f"{url}, Error: {e}")
+        # print(f"{url}, Error: {e}")
         return 1
 
 
@@ -189,11 +173,8 @@ def get_expiration_date(url):
         expiration_date = domain.expiration_date
         if isinstance(expiration_date, list):
             expiration_date = expiration_date[0]
-        print(
-            f'{url}: type: {type(expiration_date)}, {expiration_date}, {expiration_date.year}')
         today = datetime.now()
         age = expiration_date - today
-        print(age)
         if age.days < 180:
             return 1
         else:
@@ -202,6 +183,10 @@ def get_expiration_date(url):
         print(f"Error: {e}")
         return 1
 
+
+url = 'https://www.deepl.com/ko/translator'
+similar_url(url, read_well_known_hostnames(filepath), threshold=2)
+is_trusted_cert(url, read_trusted_ca(ca_filepath))
 
 # df['is_redirection'] = df['url'].apply(is_redirection)
 
