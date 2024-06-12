@@ -173,38 +173,6 @@ def check_external_data_transfer(js_content):
         return 0
 
 
-# def analyze_javascript(js_content):
-#     results = []
-#     analysis_functions = [
-#         check_drive_by_download,
-#         lambda content: check_iframe(content, global_url),
-#         check_redirection,
-#         check_dynamic_script_load,
-#         check_dynamic_forms,
-#         check_external_data_transfer
-#     ]
-#     for func in analysis_functions:
-#         result = 0
-#         result += func(js_content)
-#         if result > 0:
-#             result = 1
-#         results.append(result)
-
-#     return results
-
-
-# def exec(url):
-#     global global_url
-#     global_url = url
-#     js_contents = download_js(url)
-#     count = 0
-#     if js_contents:
-#         for _, js_content in js_contents:
-#             result = analyze_javascript(js_content)
-#             count += 1
-#         print(result)
-#         return (result)
-
 def analyze_javascript(js_content):
     results = [0, 0, 0, 0, 0, 0]
     analysis_functions = [

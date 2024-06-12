@@ -8,6 +8,7 @@ import whois
 import ssl
 import socket
 from urllib.parse import urlparse
+import certifi
 
 model = joblib.load(
     'C:\\Users\\Administrator\\PycharmProjects\\Phishing_Detection\\ML\\Models\\random_forest_model.pkl')
@@ -135,16 +136,21 @@ def read_trusted_ca(ca_filepath):
 def is_trusted_cert(url, trusted_issuer):
     try:
         hostname = urlparse(url).netloc
-        context = ssl.create_default_context()
-        conn = context.wrap_socket(socket.socket(
-            socket.AF_INET), server_hostname=hostname)
+
+        # certifi를 사용하여 SSL 컨텍스트 생성
+        context = ssl.create_default_context(cafile=certifi.where())
+        conn = context.wrap_socket(socket.socket(socket.AF_INET), server_hostname=hostname)
         conn.connect((hostname, 443))
+
         cert = conn.getpeercert()
         issuer = dict(x[0] for x in cert['issuer'])
         issuer_name = issuer.get('organizationName', '')
+
         for trusted_ca in trusted_issuer:
             if trusted_ca in issuer_name:
+                print("pass")
                 return 0
+
         print(issuer_name)
         return 1
     except Exception as e:
