@@ -987,8 +987,8 @@
                                 </div>
                                 <div class="bs-div-j-row">
                                     <div class="row">
-                                        <div class="col-12 col-sm-6 col-lg-3" data-fadeup>
-                                            <div class="bs-text-a with-type-bg-a"
+                                        <div class="col-12 col-sm-6 col-lg-3" data-fadeup style="display: none;">
+                                            <div class=" bs-text-a with-type-bg-a"
                                                 th:classappend="${result != null && result.isRedirection == 1} ? 'redCircle' : ''">
                                                 <span class="bs-div-j-icon ratio ratio-1x1">
                                                     <span class="lazy-loader">
@@ -1130,7 +1130,8 @@
                                                     </p>
                                                     <p th:if="${result != null}">
                                                         <span class="phishingURL"
-                                                            th:if="${result.havingUnderbar == 1}">유효하지 않은 URL
+                                                            th:if="${result.havingUnderbar == 1}">유효하지
+                                                            않은 URL
                                                             주소입니다.</span>
                                                         <span th:unless="${result.havingUnderbar == 1}">유효한 URL
                                                             주소입니다.</span>
@@ -1292,7 +1293,8 @@
                                                         연결임을 보장할 수 있습니다. </p>
                                                     <p th:if="${result != null}">
                                                         <span class="phishingURL"
-                                                            th:if="${result.isTrustedCert == 1}">유효하지 않은 URL
+                                                            th:if="${result.isTrustedCert == 1}">유효하지
+                                                            않은 URL
                                                             주소입니다.</span>
                                                         <span th:unless="${result.isTrustedCert == 1}">유효한 URL
                                                             주소입니다.</span>
@@ -1346,7 +1348,8 @@
                                                     </p>
                                                     <p th:if="${result != null}">
                                                         <span class="phishingURL"
-                                                            th:if="${result.creationDate == 1}">유효하지 않은 URL
+                                                            th:if="${result.creationDate == 1}">유효하지
+                                                            않은 URL
                                                             주소입니다.</span>
                                                         <span th:unless="${result.creationDate == 1}">유효한 URL
                                                             주소입니다.</span>
